@@ -11,10 +11,6 @@ public class Order : BaseAggregate
     protected Order()
     {
     }
-    public Order() : base(10)
-    {
-        
-    }
 
     public void AddProduct(ProductEntity product){
         product.ParentId = Id;
@@ -22,7 +18,7 @@ public class Order : BaseAggregate
     }
 
     public void RemoveProduct(ProductEntity product){
-        new FigureEntity();
+        
     }
 
     public bool HasProduct(){
