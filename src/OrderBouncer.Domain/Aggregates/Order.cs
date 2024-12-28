@@ -17,6 +17,7 @@ public class Order : BaseAggregate
     public Order(int Some) : base(10)
     {
         Something = Some;
+        
     }
 
 

@@ -3,5 +3,8 @@ namespace SharedKernel.Enums;
 public enum ProductTypeEnum
 {
     PersonalizedSingle,
-    PersonalizedCouple
+    PersonalizedCouple,
+    Accessory,
+    Pet,
+    PersonalizedFamily
 }

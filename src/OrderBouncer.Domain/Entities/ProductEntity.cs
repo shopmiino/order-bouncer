@@ -1,76 +1,42 @@
 using System;
-using System.Reflection.Metadata;
-using SharedKernel;
+using OrderBouncer.Domain.Entities.Base;
+using OrderBouncer.Domain.ValueObjects;
+using OrderBouncer.Domain.ValueObjects.Sets;
+using SharedKernel.Constants;
 using SharedKernel.Enums;
 
 namespace OrderBouncer.Domain.Entities;
 
-public class ProductEntity : BaseEntity
+public class ProductEntity : NoteImageBaseEntity
 {
-    public int OrderId {get; protected set;}
     public ProductTypeEnum Type { get; protected set; }
-    public ICollection<AccessoryEntity>? Accessories {get; protected set;} = null;
-    public ICollection<PetEntity>? Pets {get; protected set;} = null;
+    public AccessorySet AccessorySet { get; private set; }
+    public PetSet PetSet {get; private set;}
+    public FigureSet FigureSet {get; private set;}
 
-    public void AddPet(PetEntity pet){
-        Pets ??= [];
+    public Money PetsCost => PetSet.Pets is null ? new(0,"TL") : new(PetSet.Pets.Sum(p => p.Cost.Amount),"TL");
+    public Money AccessoriesCost => AccessorySet.Accessories is null ? new(0,"TL") : new(AccessorySet.Accessories.Sum(p => p.Cost.Amount),"TL");
+    public Money FiguresCost => FigureSet.Figures is null ? new(0,"TL") : new(FigureSet.Figures.Sum(p => p.TotalCost.Amount),"TL");
+    public Money TotalCost => AccessoriesCost + FiguresCost + PetsCost; 
 
-        ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(Pets.Count, Constants.MaxPetCountInProduct);
-
-        PetEntity? exists = Pets.FirstOrDefault(p => pet.Id == p.Id); 
-        exists ??= Pets.FirstOrDefault(p => p == pet);
-
-        if(exists is not null){
-            throw new InvalidOperationException("You cannot add already existing item to Pets list");
-        }
-
-        Pets.Add(pet);
+    public ProductEntity(ProductTypeEnum productType, int parentId, EntityTypeEnum parentType) : base(parentId: parentId, parentType: parentType)
+    {
+        Type = productType;
+        AccessorySet = new(EntityTypeEnum.Product);
+        PetSet = new();
+        FigureSet = new(productType);
     }
 
-    public void RemovePet(PetEntity pet){
-        if(Pets is null) throw new InvalidOperationException("Cannot remove from null list");
+    internal bool HasAccessory() => AccessorySet.HasAccessory();
+    internal void AddAccessory(AccessoryEntity accessory) => AccessorySet.AddAccessory(accessory);
+    internal void RemoveAccessory(AccessoryEntity accessory) => AccessorySet.RemoveAccessory(accessory);
 
-        PetEntity? exists = Pets.FirstOrDefault(p => pet.Id == p.Id); 
-        exists ??= Pets.FirstOrDefault(p => p == pet);
+    internal bool HasPet() => PetSet.HasPet();
+    internal void AddPet(PetEntity pet) => PetSet.AddPet(pet);
+    internal void RemovePet(PetEntity pet) => PetSet.RemovePet(pet);
 
-        if(exists is null) {
-            throw new InvalidOperationException("Pet must be exist in order to remove");
-        }
+    internal bool HasFigure() => FigureSet.HasFigure();
+    internal void AddFigure(FigureEntity figure) => FigureSet.AddFigure(figure);
+    internal void RemoveFigure(FigureEntity figure) => FigureSet.RemoveFigure(figure);
 
-        Pets.Remove(pet);
-    }
-
-    public void AddAccessory(AccessoryEntity accessory){
-        Accessories ??= [];
-
-        if(Type == ProductTypeEnum.PersonalizedSingle){
-            ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(Accessories.Count, Constants.MaxAccessoriesInStandard);
-        } 
-
-        if(Type == ProductTypeEnum.PersonalizedCouple){
-            ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(Accessories.Count, Constants.MaxAccessoriesInCouple);
-        }
-
-        AccessoryEntity? exists = Accessories.FirstOrDefault(p => accessory.Id == p.Id); 
-        exists ??= Accessories.FirstOrDefault(p => p == accessory);
-
-        if(exists is not null){
-            throw new InvalidOperationException("You cannot add already existing item to Accessories list");
-        }
-
-        Accessories.Add(accessory);
-    }
-
-    public void RemoveAccessory(AccessoryEntity accessory){
-        if(Accessories is null) throw new InvalidOperationException("Cannot remove from null list");
-
-        AccessoryEntity? exists = Accessories.FirstOrDefault(p => accessory.Id == p.Id); 
-        exists ??= Accessories.FirstOrDefault(p => p == accessory);
-
-        if(exists is null) {
-            throw new InvalidOperationException("Accessory must be exist in order to remove");
-        }
-
-        Accessories.Remove(accessory);
-    }
 }

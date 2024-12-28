@@ -20,6 +20,22 @@ public class Money
         Currency = currency;
     }
 
+    public static Money operator +(Money m1, Money m2){
+        if (!string.Equals(m1.Currency, m2.Currency)){
+            throw new InvalidOperationException("Currencies must be same to make addition");
+        }
+
+        return new Money(m1.Amount + m2.Amount, m1.Currency);
+    } 
+
+    public static Money operator -(Money m1, Money m2){
+        if (!string.Equals(m1.Currency, m2.Currency)){
+            throw new InvalidOperationException("Currencies must be same to make substraction");
+        }
+
+        return new Money(m1.Amount - m2.Amount, m1.Currency);
+    } 
+
     internal void MarkAsUnknown(){
         Unknown = true;
     }

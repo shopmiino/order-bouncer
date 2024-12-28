@@ -4,8 +4,7 @@ public enum EntityTypeEnum
 {
     Product,
     Pet,
-    Couple,
-    Standard,
+    Figure,
     Accessory,
     Order
 }
