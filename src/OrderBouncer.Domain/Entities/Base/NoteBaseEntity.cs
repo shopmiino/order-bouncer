@@ -5,20 +5,22 @@ namespace OrderBouncer.Domain.Entities.Base;
 
 public abstract class NoteBaseEntity : BaseEntity
 {
-    public NoteEntity CustomerNote { get; } = new();
+    public NoteEntity Note { get; } = new();
 
     protected NoteBaseEntity() { }
     protected NoteBaseEntity(int? id = null, int? parentId = null, EntityTypeEnum? parentType = null, bool isNoteRequired = false) : base(id, parentId, parentType)
     {
-        if (isNoteRequired) CustomerNote = new(true);
+        if (isNoteRequired) Note = new(true, parentId, parentType);
     }
 
-    internal bool HasNote() => CustomerNote.HasNote();
+    internal bool HasNote() => Note.HasNote();
 
-    internal void SetNote(string note) => CustomerNote.SetNote(note);
+    internal void AttachNote(int parentId, EntityTypeEnum parentType) => Note.Attach(parentId, parentType);
 
-    internal void RemoveNote() => CustomerNote.RemoveNote();
+    internal void SetNote(string note) => Note.SetNote(note);
 
-    internal string GetNote() => CustomerNote.GetNote();
+    internal void RemoveNote() => Note.RemoveNote();
+
+    internal string GetNote() => Note.GetNote();
 
 }

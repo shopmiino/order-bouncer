@@ -8,8 +8,8 @@ public abstract class BaseEntity
 {
     [Key]
     public int Id {get; protected set;}
-    public int ParentId {get; protected set;}
-    public EntityTypeEnum ParentType {get; protected set;}
+    public int ParentId {get; internal set;}
+    public EntityTypeEnum ParentType {get; internal set;}
     public DateTime CreatedAt {get; protected set;} = DateTime.UtcNow;
     public DateTime? DeletedAt {get; protected set;} = null;
 

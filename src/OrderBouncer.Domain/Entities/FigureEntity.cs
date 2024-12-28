@@ -15,7 +15,7 @@ public class FigureEntity : NoteImageBaseEntity
     public Money AccessoryCost => AccessorySet.Accessories is null ? new Money(0,"TL") : new Money(AccessorySet.Accessories.Sum(a => a.Cost.Amount), "TL");
     public Money TotalCost => AccessoryCost + FigureCost;
 
-    public FigureEntity(Money figureCost, FigureTypeEnum figureType, int parentId, EntityTypeEnum parentType) : base(parentId: parentId, parentType: parentType)
+    public FigureEntity(Money figureCost, FigureTypeEnum figureType, int? parentId = null, EntityTypeEnum? parentType = null) : base(parentId: parentId, parentType: parentType)
     {
         Type = figureType;
         AccessorySet = new(EntityTypeEnum.Figure);
@@ -24,7 +24,11 @@ public class FigureEntity : NoteImageBaseEntity
 
     internal bool HasAccessory() => AccessorySet.HasAccessory();
 
-    internal void AddAccessory(AccessoryEntity accessory) => AccessorySet.AddAccessory(accessory);
+    internal void AddAccessory(AccessoryEntity accessory) {
+        accessory.ParentId = Id;
+        accessory.ParentType = EntityTypeEnum.Figure;
+        AccessorySet.AddAccessory(accessory);
+    }
 
     internal void RemoveAccessory(AccessoryEntity accessory) => AccessorySet.RemoveAccessory(accessory);
 

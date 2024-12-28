@@ -28,15 +28,27 @@ public class ProductEntity : NoteImageBaseEntity
     }
 
     internal bool HasAccessory() => AccessorySet.HasAccessory();
-    internal void AddAccessory(AccessoryEntity accessory) => AccessorySet.AddAccessory(accessory);
+    internal void AddAccessory(AccessoryEntity accessory) {
+        accessory.ParentId = Id;
+        accessory.ParentType = EntityTypeEnum.Product;
+        AccessorySet.AddAccessory(accessory);
+    }
     internal void RemoveAccessory(AccessoryEntity accessory) => AccessorySet.RemoveAccessory(accessory);
 
     internal bool HasPet() => PetSet.HasPet();
-    internal void AddPet(PetEntity pet) => PetSet.AddPet(pet);
+    internal void AddPet(PetEntity pet) {
+        pet.ParentId = Id;
+        pet.ParentType = EntityTypeEnum.Product;
+        PetSet.AddPet(pet);
+    }
     internal void RemovePet(PetEntity pet) => PetSet.RemovePet(pet);
 
     internal bool HasFigure() => FigureSet.HasFigure();
-    internal void AddFigure(FigureEntity figure) => FigureSet.AddFigure(figure);
+    internal void AddFigure(FigureEntity figure) {
+        figure.ParentId = Id;
+        figure.ParentType = EntityTypeEnum.Product;
+        FigureSet.AddFigure(figure);
+    }
     internal void RemoveFigure(FigureEntity figure) => FigureSet.RemoveFigure(figure);
 
 }

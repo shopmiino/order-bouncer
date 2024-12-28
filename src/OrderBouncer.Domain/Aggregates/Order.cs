@@ -1,24 +1,33 @@
 using System;
 using System.IO.Compression;
 using OrderBouncer.Domain.Entities;
+using SharedKernel.Enums;
 
 namespace OrderBouncer.Domain.Aggregates;
 
 public class Order : BaseAggregate
 {
-    public int Something { get; private set; }
     public ICollection<ProductEntity>? Products { get; private set; } = null;
-
-    //productType
-    //orderType
     protected Order()
     {
     }
-    public Order(int Some) : base(10)
+    public Order() : base(10)
     {
-        Something = Some;
         
     }
 
+    public void AddProduct(ProductEntity product){
+        product.ParentId = Id;
+        product.ParentType = EntityTypeEnum.Order;
+    }
+
+    public void RemoveProduct(ProductEntity product){
+        new FigureEntity();
+    }
+
+    public bool HasProduct(){
+        if(Products is null) return false;
+        return Products.Count > 0;
+    }
 
 }

@@ -18,4 +18,5 @@ public static class Limits
     public const int MaxFiguresInCouple = 2;
     public const int MaxFiguresInFamily = 10;
     public const int MaxFiguresForNonFigureProduct = 0;
+    public const int MaxProductsInOrder = 100;
 }
