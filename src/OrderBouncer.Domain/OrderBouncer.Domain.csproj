@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="DomainServices\" />
-    <Folder Include="Factories\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("OrderBouncer.Web")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fc2e94cf112578d388d28b876ee1fcb1d35660f8")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+008b05d2d5665baff2b5392c3fbefb754a492b40")]
 [assembly: System.Reflection.AssemblyProductAttribute("OrderBouncer.Web")]
 [assembly: System.Reflection.AssemblyTitleAttribute("OrderBouncer.Web")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
