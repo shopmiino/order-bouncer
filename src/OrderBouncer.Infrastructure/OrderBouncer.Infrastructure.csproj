@@ -6,4 +6,14 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="ExternalHttp\" />
+    <Folder Include="MinIO\" />
+    <Folder Include="Postgres\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OrderBouncer.Application\OrderBouncer.Application.csproj" />
+  </ItemGroup>
+
 </Project>

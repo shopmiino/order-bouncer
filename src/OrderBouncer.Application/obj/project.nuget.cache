@@ -1,8 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "XEhtoDe4bvzm5z6tC1b0kOAvc1oXpUUUk9Rb2qNXoOKE7MAelwhHPFBnwcKryhGpkObobX/z0N3wyR4xXMgotQ==",
+  "dgSpecHash": "wjKkF5eFh7Q=",
   "success": true,
   "projectFilePath": "C:\\Users\\Polat Efe Kaya\\Desktop\\Projects\\shopmiino\\order-bouncer\\src\\OrderBouncer.Application\\OrderBouncer.Application.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\Polat Efe Kaya\\.nuget\\packages\\microsoft.netcore.app.ref\\8.0.11\\microsoft.netcore.app.ref.8.0.11.nupkg.sha512",
+    "C:\\Users\\Polat Efe Kaya\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\8.0.11\\microsoft.windowsdesktop.app.ref.8.0.11.nupkg.sha512",
+    "C:\\Users\\Polat Efe Kaya\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\8.0.11\\microsoft.aspnetcore.app.ref.8.0.11.nupkg.sha512"
+  ],
   "logs": []
 }

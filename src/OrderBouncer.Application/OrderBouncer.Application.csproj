@@ -6,4 +6,14 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Interfaces\Api\" />
+    <Folder Include="Interfaces\MinIO\" />
+    <Folder Include="Interfaces\Repositories\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OrderBouncer.Domain\OrderBouncer.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
