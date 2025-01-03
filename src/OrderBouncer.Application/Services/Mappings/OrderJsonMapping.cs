@@ -24,14 +24,14 @@ public class OrderJsonMapping : IJsonMapping<Order>
     {
         JsonNode? node = JsonNode.Parse(json);
 
-        ProductEntity[]? products = _productMapping.MapMany(json);
+        ICollection<ProductEntity>? products = _productMapping.MapMany(json);
 
         Order order = _orderFactory.Create(new (products));
 
         return order;
     }
 
-    public Order[]? MapMany(string json)
+    public ICollection<Order>? MapMany(string json)
     {
         throw new NotImplementedException();
     }
