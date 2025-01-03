@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json.Nodes;
 using OrderBouncer.Application.Interfaces.Mappings;
 using OrderBouncer.Domain.DTOs;
 using OrderBouncer.Domain.Entities;
@@ -14,15 +15,26 @@ public class ProductJsonMapping : IJsonMapping<ProductEntity>
     private readonly IJsonMapping<PetEntity> _petMapping;
 
     public ProductJsonMapping(IEntityFactory<ProductCreateDto, ProductEntity> productFactory, IJsonMapping<AccessoryEntity> accessoryMapping, IJsonMapping<FigureEntity> figureMapping, IJsonMapping<PetEntity> petMapping){
-        
+        _productFactory = productFactory;
+        _accessoryMapping = accessoryMapping;
+        _figureMapping = figureMapping;
+        _petMapping = petMapping;
     }
 
     public ProductEntity? Map(string json)
     {
-        throw new NotImplementedException();
+        JsonNode? node = JsonNode.Parse(json);
+        
+        ICollection<AccessoryEntity>? accessories = _accessoryMapping.MapMany(json);
+        ICollection<FigureEntity>? figures = _figureMapping.MapMany(json);
+        ICollection<PetEntity>? pets = _petMapping.MapMany(json);
+
+        ProductEntity product = _productFactory.Create(new (accessories, pets, figures));
+ 
+        return product;
     }
 
-    public ProductEntity[]? MapMany(string json)
+    public ICollection<ProductEntity>? MapMany(string json)
     {
         throw new NotImplementedException();
     }

@@ -7,8 +7,8 @@ namespace OrderBouncer.Domain.Factories;
 
 public class OrderFactory : IEntityFactory<OrderCreateDto, Order>
 {
-    public Order Create(OrderCreateDto? dto)
+    public Order Create(OrderCreateDto? dto = null)
     {
-        throw new NotImplementedException();
+        return new Order(dto.Products);
     }
 }
