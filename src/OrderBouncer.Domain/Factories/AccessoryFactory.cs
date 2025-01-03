@@ -1,12 +1,13 @@
 using System;
+using OrderBouncer.Domain.DTOs;
 using OrderBouncer.Domain.Entities;
 using OrderBouncer.Domain.Interfaces.Factories;
 
 namespace OrderBouncer.Domain.Factories;
 
-public class AccessoryFactory : IAccessoryFactory
+public class AccessoryFactory : IEntityFactory<AccessoryCreateDto, AccessoryEntity>
 {
-    public AccessoryEntity Create()
+    public AccessoryEntity Create(AccessoryCreateDto? dto)
     {
         throw new NotImplementedException();
     }
