@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("OrderBouncer.Application")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6c093e57d5ebfb4e037ceeec494eba2c90322c96")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f90047b5735d8e8c7100620c874917ad78d57353")]
 [assembly: System.Reflection.AssemblyProductAttribute("OrderBouncer.Application")]
 [assembly: System.Reflection.AssemblyTitleAttribute("OrderBouncer.Application")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
