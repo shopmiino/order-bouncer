@@ -1323,32 +1323,40 @@
     ]
   },
   "packageFolders": {
-    "/home/polatefekaya/.nuget/packages/": {}
+    "C:\\Users\\Polat Efe Kaya\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/polatefekaya/Desktop/projects/order-bouncer/src/OrderBouncer.Web/OrderBouncer.Web.csproj",
+      "projectUniqueName": "C:\\Users\\Polat Efe Kaya\\Desktop\\Projects\\shopmiino\\order-bouncer\\src\\OrderBouncer.Web\\OrderBouncer.Web.csproj",
       "projectName": "OrderBouncer.Web",
-      "projectPath": "/home/polatefekaya/Desktop/projects/order-bouncer/src/OrderBouncer.Web/OrderBouncer.Web.csproj",
-      "packagesPath": "/home/polatefekaya/.nuget/packages/",
-      "outputPath": "/home/polatefekaya/Desktop/projects/order-bouncer/src/OrderBouncer.Web/obj/",
+      "projectPath": "C:\\Users\\Polat Efe Kaya\\Desktop\\Projects\\shopmiino\\order-bouncer\\src\\OrderBouncer.Web\\OrderBouncer.Web.csproj",
+      "packagesPath": "C:\\Users\\Polat Efe Kaya\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Polat Efe Kaya\\Desktop\\Projects\\shopmiino\\order-bouncer\\src\\OrderBouncer.Web\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "/home/polatefekaya/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\Polat Efe Kaya\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "/home/polatefekaya/Desktop/projects/order-bouncer/src/OrderBouncer.Application/OrderBouncer.Application.csproj": {
-              "projectPath": "/home/polatefekaya/Desktop/projects/order-bouncer/src/OrderBouncer.Application/OrderBouncer.Application.csproj"
+            "C:\\Users\\Polat Efe Kaya\\Desktop\\Projects\\shopmiino\\order-bouncer\\src\\OrderBouncer.Application\\OrderBouncer.Application.csproj": {
+              "projectPath": "C:\\Users\\Polat Efe Kaya\\Desktop\\Projects\\shopmiino\\order-bouncer\\src\\OrderBouncer.Application\\OrderBouncer.Application.csproj"
             }
           }
         }
@@ -1357,7 +1365,13 @@
         "warnAsError": [
           "NU1605"
         ]
-      }
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
+      },
+      "SdkAnalysisLevel": "9.0.100"
     },
     "frameworks": {
       "net8.0": {
@@ -1395,6 +1409,24 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[8.0.11, 8.0.11]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Host.win-x64",
+            "version": "[8.0.11, 8.0.11]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[8.0.11, 8.0.11]"
+          },
+          {
+            "name": "Microsoft.WindowsDesktop.App.Ref",
+            "version": "[8.0.11, 8.0.11]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -1403,7 +1435,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.111/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

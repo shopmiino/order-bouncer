@@ -1,5 +1,6 @@
 using System;
 using System.Text.Json.Nodes;
+using OrderBouncer.Application.Interfaces.Extractors;
 using OrderBouncer.Application.Interfaces.Mappings;
 using OrderBouncer.Domain.DTOs;
 using OrderBouncer.Domain.Entities;
@@ -11,12 +12,14 @@ namespace OrderBouncer.Application.Services.Mappings;
 public class ImageJsonMapping : IJsonMapping<ImageEntity>
 {
     private readonly IEntityFactory<ImageCreateDto, ImageEntity> _imageFactory;
-    public ImageJsonMapping(IEntityFactory<ImageCreateDto, ImageEntity> imageFactory){
+    private readonly IJsonExtractor _extractor;
+    public ImageJsonMapping(IEntityFactory<ImageCreateDto, ImageEntity> imageFactory, IJsonExtractor extractor){
         _imageFactory = imageFactory;
+        _extractor =  extractor;
     }
     public ImageEntity? Map(string json)
     {
-        JsonNode? node = JsonNode.Parse(json);
+        JsonNode? node = _extractor.Extract(json);
 
         ImageTypeEnum imageType = ImageTypeEnum.Face;
         string filePath = string.Empty;

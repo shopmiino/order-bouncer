@@ -1,5 +1,6 @@
 using System;
 using System.Text.Json.Nodes;
+using OrderBouncer.Application.Interfaces.Extractors;
 using OrderBouncer.Application.Interfaces.Mappings;
 using OrderBouncer.Domain.DTOs;
 using OrderBouncer.Domain.Entities;
@@ -12,15 +13,17 @@ public class AccessoryJsonMapping : IJsonMapping<AccessoryEntity>
     private readonly IEntityFactory<AccessoryCreateDto, AccessoryEntity> _accessoryFactory;
     private readonly IJsonMapping<ImageEntity> _imageMapping;
     private readonly IJsonMapping<NoteEntity> _noteMapping;
+    private readonly IJsonExtractor _extractor;
 
-    public AccessoryJsonMapping(IEntityFactory<AccessoryCreateDto, AccessoryEntity> accessoryFactory, IJsonMapping<ImageEntity> imageMapping, IJsonMapping<NoteEntity> noteMapping){
+    public AccessoryJsonMapping(IEntityFactory<AccessoryCreateDto, AccessoryEntity> accessoryFactory, IJsonMapping<ImageEntity> imageMapping, IJsonMapping<NoteEntity> noteMapping, IJsonExtractor extractor){
         _accessoryFactory = accessoryFactory;
         _imageMapping = imageMapping;
         _noteMapping = noteMapping;
+        _extractor = extractor;
     }
     public AccessoryEntity? Map(string json)
     {
-        JsonNode? node = JsonNode.Parse(json);
+        JsonNode? node = _extractor.Extract(json);
 
         ICollection<ImageEntity>? images = _imageMapping.MapMany(json);
         NoteEntity? note = _noteMapping.Map(json);
