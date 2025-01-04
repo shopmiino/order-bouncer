@@ -2,12 +2,21 @@ using System;
 
 namespace OrderBouncer.Application.DTOs;
 
-public class DriveUploadDto
+public record class DriveUploadDto
 {
-    public required string FileName {get; set;}
-    public required Stream Content {get; set;}
-    public required string MimeType {get; set;}
-    public required string Url {get; set;}
-    public required string Folder {get; set;}
-    public required string Directory {get; set;}
+    public string FileName {get; protected set;}
+    public Stream Content {get; protected set;}
+    public string MimeType {get; protected set;}
+    public string Url {get; protected set;}
+    public string Folder {get; protected set;}
+    public string Directory {get; protected set;}
+
+    public DriveUploadDto(string fileName, Stream content, string mimeType, string url, string folder, string directory){
+        FileName = fileName;
+        Content = content;
+        MimeType = mimeType;
+        Url = url;
+        Folder = folder;
+        Directory = directory;
+    }
 }
