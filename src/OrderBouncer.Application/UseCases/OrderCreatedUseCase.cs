@@ -17,9 +17,13 @@ public class OrderCreatedUseCase : IOrderCreatedUseCase
     }
     public bool Create(string json)
     {
-        ICollection<Order>? orders = _orderMapping.MapMany(json);
+        Order? order = _orderMapping.Map(json);
         //DriveUploadDto dto = new ();
+        //Add to Outbox
+
+        //In Outbox
         //_googleDrive.Upload();
+        //_excel.Upload();
         return false;
     }
 }
