@@ -22,18 +22,18 @@ public class PetJsonMapping : IJsonMapping<PetEntity>
         _extractor = extractor;
     }
 
-    public PetEntity? Map(string json)
+    public async Task<PetEntity?> Map(string json)
     {
-        JsonNode? node = _extractor.Extract(json);
+        JsonNode? node = await _extractor.Extract(json);
 
-        ICollection<ImageEntity>? images = _imageMapping.MapMany(json);
-        NoteEntity? note = _noteMapping.Map(json);
+        ICollection<ImageEntity>? images = await _imageMapping.MapMany(json);
+        NoteEntity? note = await _noteMapping.Map(json);
 
         PetEntity pet = _petFactory.Create(new (images, note));
         return pet;
     }
 
-    public ICollection<PetEntity>? MapMany(string json)
+    public Task<ICollection<PetEntity>?> MapMany(string json)
     {
         throw new NotImplementedException();
     }

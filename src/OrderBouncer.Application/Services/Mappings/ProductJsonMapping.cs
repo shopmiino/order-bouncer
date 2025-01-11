@@ -24,20 +24,20 @@ public class ProductJsonMapping : IJsonMapping<ProductEntity>
         _extractor = extractor;
     }
 
-    public ProductEntity? Map(string json)
+    public async Task<ProductEntity?> Map(string json)
     {
-        JsonNode? node = _extractor.Extract(json);
+        JsonNode? node = await _extractor.Extract(json);
         
-        ICollection<AccessoryEntity>? accessories = _accessoryMapping.MapMany(json);
-        ICollection<FigureEntity>? figures = _figureMapping.MapMany(json);
-        ICollection<PetEntity>? pets = _petMapping.MapMany(json);
+        ICollection<AccessoryEntity>? accessories = await _accessoryMapping.MapMany(json);
+        ICollection<FigureEntity>? figures = await _figureMapping.MapMany(json);
+        ICollection<PetEntity>? pets = await _petMapping.MapMany(json);
 
         ProductEntity product = _productFactory.Create(new (accessories, pets, figures));
  
         return product;
     }
 
-    public ICollection<ProductEntity>? MapMany(string json)
+    public Task<ICollection<ProductEntity>?> MapMany(string json)
     {
         throw new NotImplementedException();
     }

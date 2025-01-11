@@ -18,9 +18,9 @@ public class NoteJsonMapping : IJsonMapping<NoteEntity>
         _extractor = extractor;
     }
 
-    public NoteEntity? Map(string json)
+    public async Task<NoteEntity?> Map(string json)
     {
-        JsonNode? node = _extractor.Extract(json);
+        JsonNode? node = await _extractor.Extract(json);
 
         string NoteText = string.Empty;
 
@@ -29,7 +29,7 @@ public class NoteJsonMapping : IJsonMapping<NoteEntity>
         return note;
     }
 
-    public ICollection<NoteEntity>? MapMany(string json)
+    public Task<ICollection<NoteEntity>?> MapMany(string json)
     {
         throw new NotImplementedException();
     }

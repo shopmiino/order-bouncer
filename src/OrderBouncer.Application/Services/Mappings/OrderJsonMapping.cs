@@ -22,18 +22,18 @@ public class OrderJsonMapping : IJsonMapping<Order>
         _extractor = extractor;
     }
 
-    public Order? Map(string json)
+    public async Task<Order?> Map(string json)
     {
-        JsonNode? node = _extractor.Extract(json);
+        JsonNode? node = await _extractor.Extract(json);
 
-        ICollection<ProductEntity>? products = _productMapping.MapMany(json);
+        ICollection<ProductEntity>? products = await _productMapping.MapMany(json);
 
         Order order = _orderFactory.Create(new (products));
 
         return order;
     }
 
-    public ICollection<Order>? MapMany(string json)
+    public Task<ICollection<Order>?> MapMany(string json)
     {
         throw new NotImplementedException();
     }

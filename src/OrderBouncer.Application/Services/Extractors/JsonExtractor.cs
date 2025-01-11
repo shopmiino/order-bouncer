@@ -6,7 +6,7 @@ namespace OrderBouncer.Application.Services.Extractors;
 
 public class JsonExtractor : IJsonExtractor
 {
-    public JsonNode Extract(string json)
+    public Task<JsonNode> Extract(string json)
     {
         throw new NotImplementedException();
     }

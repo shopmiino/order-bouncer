@@ -21,19 +21,19 @@ public class AccessoryJsonMapping : IJsonMapping<AccessoryEntity>
         _noteMapping = noteMapping;
         _extractor = extractor;
     }
-    public AccessoryEntity? Map(string json)
+    public async Task<AccessoryEntity?> Map(string json)
     {
-        JsonNode? node = _extractor.Extract(json);
+        JsonNode? node = await _extractor.Extract(json);
 
-        ICollection<ImageEntity>? images = _imageMapping.MapMany(json);
-        NoteEntity? note = _noteMapping.Map(json);
+        ICollection<ImageEntity>? images = await _imageMapping.MapMany(json);
+        NoteEntity? note = await _noteMapping.Map(json);
 
         AccessoryEntity accessory = _accessoryFactory.Create(new (images, note));
 
         return accessory;
     }
 
-    public ICollection<AccessoryEntity>? MapMany(string json)
+    public Task<ICollection<AccessoryEntity>?> MapMany(string json)
     {
         throw new NotImplementedException();
     }

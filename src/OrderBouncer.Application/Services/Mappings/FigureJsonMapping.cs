@@ -24,19 +24,19 @@ public class FigureJsonMapping : IJsonMapping<FigureEntity>
         _extractor = extractor;
     }
 
-    public FigureEntity? Map(string json)
+    public async Task<FigureEntity?> Map(string json)
     {
-        JsonNode? node = _extractor.Extract(json);
+        JsonNode? node = await _extractor.Extract(json);
 
-        ICollection<AccessoryEntity>? accessories = _accessoryMapping.MapMany(json);
-        ICollection<ImageEntity>? images = _imageMapping.MapMany(json);
-        NoteEntity? note = _noteMapping.Map(json);
+        ICollection<AccessoryEntity>? accessories = await _accessoryMapping.MapMany(json);
+        ICollection<ImageEntity>? images = await _imageMapping.MapMany(json);
+        NoteEntity? note = await _noteMapping.Map(json);
 
         FigureEntity figure = _figureFactory.Create(new (accessories, images, note));
         return figure;
     }
 
-    public ICollection<FigureEntity>? MapMany(string json)
+    public Task<ICollection<FigureEntity>?> MapMany(string json)
     {
         throw new NotImplementedException();
     }

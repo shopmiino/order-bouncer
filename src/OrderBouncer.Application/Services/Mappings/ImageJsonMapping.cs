@@ -17,9 +17,9 @@ public class ImageJsonMapping : IJsonMapping<ImageEntity>
         _imageFactory = imageFactory;
         _extractor =  extractor;
     }
-    public ImageEntity? Map(string json)
+    public async Task<ImageEntity?> Map(string json)
     {
-        JsonNode? node = _extractor.Extract(json);
+        JsonNode? node = await _extractor.Extract(json);
 
         ImageTypeEnum imageType = ImageTypeEnum.Face;
         string filePath = string.Empty;
@@ -28,7 +28,7 @@ public class ImageJsonMapping : IJsonMapping<ImageEntity>
         return image;
     }
 
-    public ICollection<ImageEntity>? MapMany(string json)
+    public Task<ICollection<ImageEntity>?> MapMany(string json)
     {
         throw new NotImplementedException();
     }

@@ -19,7 +19,7 @@ public class OrderCreatedUseCase : IOrderCreatedUseCase
     }
     public async Task<bool> ExecuteAsync(string json, CancellationToken cancellationToken)
     {
-        Order? order = _orderMapping.Map(json);
+        Order? order = await _orderMapping.Map(json);
         //DriveUploadDto dto = new ();
         //Add to Outbox
         
