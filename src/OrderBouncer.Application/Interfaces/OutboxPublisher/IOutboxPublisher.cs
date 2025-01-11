@@ -1,8 +1,10 @@
 using System;
+using OrderBouncer.Domain.Outbox;
 
 namespace OrderBouncer.Application.Interfaces.OutboxPublisher;
 
 public interface IOutboxPublisher
 {
-    public Task PublishAsync(string fileName, byte[] fileContent);
+    public PublisherTargetSystem TargetSystem {get;}
+    public Task PublishAsync(byte[] fileContent, CancellationToken cancellationToken);
 }

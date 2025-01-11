@@ -1,5 +1,7 @@
 using System;
+using System.Text;
 using OrderBouncer.Application.DTOs;
+using OrderBouncer.Application.Interfaces.Executors;
 using OrderBouncer.Application.Interfaces.GoogleDrive;
 using OrderBouncer.Application.Interfaces.Mappings;
 using OrderBouncer.Application.Interfaces.UseCases;
@@ -10,20 +12,18 @@ namespace OrderBouncer.Application.UseCases;
 public class OrderCreatedUseCase : IOrderCreatedUseCase
 {
     private readonly IJsonMapping<Order> _orderMapping;
-    private readonly IGoogleDriveHttpClient _googleDrive;
-    public OrderCreatedUseCase(IJsonMapping<Order> orderMapping, IGoogleDriveHttpClient googleDrive){
+    private readonly IOutboxExecutor _outbox;
+    public OrderCreatedUseCase(IJsonMapping<Order> orderMapping, IOutboxExecutor outbox){
         _orderMapping = orderMapping;
-        _googleDrive = googleDrive;
+        _outbox = outbox;
     }
-    public bool Create(string json)
+    public async Task<bool> ExecuteAsync(string json, CancellationToken cancellationToken)
     {
         Order? order = _orderMapping.Map(json);
         //DriveUploadDto dto = new ();
         //Add to Outbox
-
-        //In Outbox
-        //_googleDrive.Upload();
-        //_excel.Upload();
+        
+        await _outbox.ExecuteAsync(Encoding.UTF8.GetBytes(json), cancellationToken);
         return false;
     }
 }
