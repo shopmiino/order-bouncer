@@ -34,8 +34,12 @@ public class AccessoryJsonMapping : IJsonMapping<AccessoryEntity>
         return accessory;
     }
 
-    public Task<ICollection<AccessoryEntity>?> MapMany(JsonNode json)
+    public async Task<ICollection<AccessoryEntity>?> MapMany(JsonNode json)
     {
+        JsonNode? node = await _extractor.Extract<AccessoryExtractorProfile>(json);
+        JsonArray? properties = node["properties"].AsArray();
+        JsonNode[]? accessories = properties.Where(prop => prop.GetPropertyName() == "Accessory").ToArray();
+
         throw new NotImplementedException();
     }
 }
