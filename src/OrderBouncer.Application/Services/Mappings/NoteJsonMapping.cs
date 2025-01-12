@@ -1,6 +1,8 @@
 using System;
 using System.Text.Json.Nodes;
+using OrderBouncer.Application.Interfaces.Extractors;
 using OrderBouncer.Application.Interfaces.Mappings;
+using OrderBouncer.Application.Services.Extractors.Profiles;
 using OrderBouncer.Domain.DTOs;
 using OrderBouncer.Domain.Entities;
 using OrderBouncer.Domain.Interfaces.Factories;
@@ -10,14 +12,16 @@ namespace OrderBouncer.Application.Services.Mappings;
 public class NoteJsonMapping : IJsonMapping<NoteEntity>
 {
     private readonly IEntityFactory<NoteCreateDto, NoteEntity> _noteFactory;
+    private readonly IJsonExtractor _extractor;
 
-    public NoteJsonMapping(IEntityFactory<NoteCreateDto, NoteEntity> noteFactory){
+    public NoteJsonMapping(IEntityFactory<NoteCreateDto, NoteEntity> noteFactory, IJsonExtractor extractor){
         _noteFactory = noteFactory;
+        _extractor = extractor;
     }
 
-    public NoteEntity? Map(string json)
+    public async Task<NoteEntity?> Map(string json)
     {
-        JsonNode? node = JsonNode.Parse(json);
+        JsonNode? node = await _extractor.Extract<NoteExtractorProfile>(json);
 
         string NoteText = string.Empty;
 
@@ -26,7 +30,7 @@ public class NoteJsonMapping : IJsonMapping<NoteEntity>
         return note;
     }
 
-    public ICollection<NoteEntity>? MapMany(string json)
+    public Task<ICollection<NoteEntity>?> MapMany(string json)
     {
         throw new NotImplementedException();
     }
