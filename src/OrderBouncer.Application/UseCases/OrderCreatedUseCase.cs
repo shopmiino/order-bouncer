@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using System.Text.Json.Nodes;
 using OrderBouncer.Application.DTOs;
 using OrderBouncer.Application.Interfaces.Executors;
 using OrderBouncer.Application.Interfaces.GoogleDrive;
@@ -19,7 +20,11 @@ public class OrderCreatedUseCase : IOrderCreatedUseCase
     }
     public async Task<bool> ExecuteAsync(string json, CancellationToken cancellationToken)
     {
-        Order? order = await _orderMapping.Map(json);
+        JsonNode? node = JsonNode.Parse(json);
+        if(node is null){
+            return false;
+        }
+        Order? order = await _orderMapping.Map(node);
         //DriveUploadDto dto = new ();
         
         //Save to db

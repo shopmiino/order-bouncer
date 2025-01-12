@@ -11,7 +11,7 @@ public class JsonExtractor : IJsonExtractor
     public JsonExtractor (IEnumerable<IJsonExtractorProfile> jsonExtractorProfiles){
         _jsonExtractorProfiles = jsonExtractorProfiles;
     }
-    public async Task<JsonNode?> Extract<TProfile>(string json) where TProfile: class
+    public async Task<JsonNode?> Extract<TProfile>(JsonNode json) where TProfile: class
     {
         IJsonExtractorProfile? jsonExtractorProfile = _jsonExtractorProfiles.FirstOrDefault(profile => profile.GetType() == typeof(TProfile));
         if(jsonExtractorProfile is null){
