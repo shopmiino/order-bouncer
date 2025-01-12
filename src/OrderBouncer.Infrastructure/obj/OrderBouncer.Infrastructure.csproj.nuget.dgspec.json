@@ -1,33 +1,40 @@
 {
   "format": 1,
   "restore": {
-    "/home/polatefekaya/Desktop/projects/order-bouncer/src/OrderBouncer.Infrastructure/OrderBouncer.Infrastructure.csproj": {}
+    "C:\\Users\\Polat Efe Kaya\\Desktop\\Projects\\shopmiino\\order-bouncer\\src\\OrderBouncer.Infrastructure\\OrderBouncer.Infrastructure.csproj": {}
   },
   "projects": {
-    "/home/polatefekaya/Desktop/projects/order-bouncer/src/OrderBouncer.Application/OrderBouncer.Application.csproj": {
+    "C:\\Users\\Polat Efe Kaya\\Desktop\\Projects\\shopmiino\\order-bouncer\\src\\OrderBouncer.Application\\OrderBouncer.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/polatefekaya/Desktop/projects/order-bouncer/src/OrderBouncer.Application/OrderBouncer.Application.csproj",
+        "projectUniqueName": "C:\\Users\\Polat Efe Kaya\\Desktop\\Projects\\shopmiino\\order-bouncer\\src\\OrderBouncer.Application\\OrderBouncer.Application.csproj",
         "projectName": "OrderBouncer.Application",
-        "projectPath": "/home/polatefekaya/Desktop/projects/order-bouncer/src/OrderBouncer.Application/OrderBouncer.Application.csproj",
-        "packagesPath": "/home/polatefekaya/.nuget/packages/",
-        "outputPath": "/home/polatefekaya/Desktop/projects/order-bouncer/src/OrderBouncer.Application/obj/",
+        "projectPath": "C:\\Users\\Polat Efe Kaya\\Desktop\\Projects\\shopmiino\\order-bouncer\\src\\OrderBouncer.Application\\OrderBouncer.Application.csproj",
+        "packagesPath": "C:\\Users\\Polat Efe Kaya\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Polat Efe Kaya\\Desktop\\Projects\\shopmiino\\order-bouncer\\src\\OrderBouncer.Application\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "/home/polatefekaya/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\Polat Efe Kaya\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "/home/polatefekaya/Desktop/projects/order-bouncer/src/OrderBouncer.Domain/OrderBouncer.Domain.csproj": {
-                "projectPath": "/home/polatefekaya/Desktop/projects/order-bouncer/src/OrderBouncer.Domain/OrderBouncer.Domain.csproj"
+              "C:\\Users\\Polat Efe Kaya\\Desktop\\Projects\\shopmiino\\order-bouncer\\src\\OrderBouncer.Domain\\OrderBouncer.Domain.csproj": {
+                "projectPath": "C:\\Users\\Polat Efe Kaya\\Desktop\\Projects\\shopmiino\\order-bouncer\\src\\OrderBouncer.Domain\\OrderBouncer.Domain.csproj"
               }
             }
           }
@@ -36,7 +43,13 @@
           "warnAsError": [
             "NU1605"
           ]
-        }
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
         "net8.0": {
@@ -52,39 +65,60 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[8.0.11, 8.0.11]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[8.0.11, 8.0.11]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[8.0.11, 8.0.11]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.111/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "/home/polatefekaya/Desktop/projects/order-bouncer/src/OrderBouncer.Domain/OrderBouncer.Domain.csproj": {
+    "C:\\Users\\Polat Efe Kaya\\Desktop\\Projects\\shopmiino\\order-bouncer\\src\\OrderBouncer.Domain\\OrderBouncer.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/polatefekaya/Desktop/projects/order-bouncer/src/OrderBouncer.Domain/OrderBouncer.Domain.csproj",
+        "projectUniqueName": "C:\\Users\\Polat Efe Kaya\\Desktop\\Projects\\shopmiino\\order-bouncer\\src\\OrderBouncer.Domain\\OrderBouncer.Domain.csproj",
         "projectName": "OrderBouncer.Domain",
-        "projectPath": "/home/polatefekaya/Desktop/projects/order-bouncer/src/OrderBouncer.Domain/OrderBouncer.Domain.csproj",
-        "packagesPath": "/home/polatefekaya/.nuget/packages/",
-        "outputPath": "/home/polatefekaya/Desktop/projects/order-bouncer/src/OrderBouncer.Domain/obj/",
+        "projectPath": "C:\\Users\\Polat Efe Kaya\\Desktop\\Projects\\shopmiino\\order-bouncer\\src\\OrderBouncer.Domain\\OrderBouncer.Domain.csproj",
+        "packagesPath": "C:\\Users\\Polat Efe Kaya\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Polat Efe Kaya\\Desktop\\Projects\\shopmiino\\order-bouncer\\src\\OrderBouncer.Domain\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "/home/polatefekaya/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\Polat Efe Kaya\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "/home/polatefekaya/Desktop/projects/order-bouncer/src/SharedKernel/SharedKernel.csproj": {
-                "projectPath": "/home/polatefekaya/Desktop/projects/order-bouncer/src/SharedKernel/SharedKernel.csproj"
+              "C:\\Users\\Polat Efe Kaya\\Desktop\\Projects\\shopmiino\\order-bouncer\\src\\SharedKernel\\SharedKernel.csproj": {
+                "projectPath": "C:\\Users\\Polat Efe Kaya\\Desktop\\Projects\\shopmiino\\order-bouncer\\src\\SharedKernel\\SharedKernel.csproj"
               }
             }
           }
@@ -93,7 +127,13 @@
           "warnAsError": [
             "NU1605"
           ]
-        }
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
         "net8.0": {
@@ -109,39 +149,60 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[8.0.11, 8.0.11]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[8.0.11, 8.0.11]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[8.0.11, 8.0.11]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.111/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "/home/polatefekaya/Desktop/projects/order-bouncer/src/OrderBouncer.Infrastructure/OrderBouncer.Infrastructure.csproj": {
+    "C:\\Users\\Polat Efe Kaya\\Desktop\\Projects\\shopmiino\\order-bouncer\\src\\OrderBouncer.Infrastructure\\OrderBouncer.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/polatefekaya/Desktop/projects/order-bouncer/src/OrderBouncer.Infrastructure/OrderBouncer.Infrastructure.csproj",
+        "projectUniqueName": "C:\\Users\\Polat Efe Kaya\\Desktop\\Projects\\shopmiino\\order-bouncer\\src\\OrderBouncer.Infrastructure\\OrderBouncer.Infrastructure.csproj",
         "projectName": "OrderBouncer.Infrastructure",
-        "projectPath": "/home/polatefekaya/Desktop/projects/order-bouncer/src/OrderBouncer.Infrastructure/OrderBouncer.Infrastructure.csproj",
-        "packagesPath": "/home/polatefekaya/.nuget/packages/",
-        "outputPath": "/home/polatefekaya/Desktop/projects/order-bouncer/src/OrderBouncer.Infrastructure/obj/",
+        "projectPath": "C:\\Users\\Polat Efe Kaya\\Desktop\\Projects\\shopmiino\\order-bouncer\\src\\OrderBouncer.Infrastructure\\OrderBouncer.Infrastructure.csproj",
+        "packagesPath": "C:\\Users\\Polat Efe Kaya\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Polat Efe Kaya\\Desktop\\Projects\\shopmiino\\order-bouncer\\src\\OrderBouncer.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "/home/polatefekaya/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\Polat Efe Kaya\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "/home/polatefekaya/Desktop/projects/order-bouncer/src/OrderBouncer.Application/OrderBouncer.Application.csproj": {
-                "projectPath": "/home/polatefekaya/Desktop/projects/order-bouncer/src/OrderBouncer.Application/OrderBouncer.Application.csproj"
+              "C:\\Users\\Polat Efe Kaya\\Desktop\\Projects\\shopmiino\\order-bouncer\\src\\OrderBouncer.Application\\OrderBouncer.Application.csproj": {
+                "projectPath": "C:\\Users\\Polat Efe Kaya\\Desktop\\Projects\\shopmiino\\order-bouncer\\src\\OrderBouncer.Application\\OrderBouncer.Application.csproj"
               }
             }
           }
@@ -150,7 +211,13 @@
           "warnAsError": [
             "NU1605"
           ]
-        }
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
         "net8.0": {
@@ -166,31 +233,52 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[8.0.11, 8.0.11]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[8.0.11, 8.0.11]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[8.0.11, 8.0.11]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.111/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "/home/polatefekaya/Desktop/projects/order-bouncer/src/SharedKernel/SharedKernel.csproj": {
+    "C:\\Users\\Polat Efe Kaya\\Desktop\\Projects\\shopmiino\\order-bouncer\\src\\SharedKernel\\SharedKernel.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/polatefekaya/Desktop/projects/order-bouncer/src/SharedKernel/SharedKernel.csproj",
+        "projectUniqueName": "C:\\Users\\Polat Efe Kaya\\Desktop\\Projects\\shopmiino\\order-bouncer\\src\\SharedKernel\\SharedKernel.csproj",
         "projectName": "SharedKernel",
-        "projectPath": "/home/polatefekaya/Desktop/projects/order-bouncer/src/SharedKernel/SharedKernel.csproj",
-        "packagesPath": "/home/polatefekaya/.nuget/packages/",
-        "outputPath": "/home/polatefekaya/Desktop/projects/order-bouncer/src/SharedKernel/obj/",
+        "projectPath": "C:\\Users\\Polat Efe Kaya\\Desktop\\Projects\\shopmiino\\order-bouncer\\src\\SharedKernel\\SharedKernel.csproj",
+        "packagesPath": "C:\\Users\\Polat Efe Kaya\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Polat Efe Kaya\\Desktop\\Projects\\shopmiino\\order-bouncer\\src\\SharedKernel\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "/home/polatefekaya/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\Polat Efe Kaya\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -203,7 +291,13 @@
           "warnAsError": [
             "NU1605"
           ]
-        }
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
         "net8.0": {
@@ -219,12 +313,26 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[8.0.11, 8.0.11]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[8.0.11, 8.0.11]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[8.0.11, 8.0.11]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.111/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
