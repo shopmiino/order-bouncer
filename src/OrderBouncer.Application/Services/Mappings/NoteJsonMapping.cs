@@ -2,6 +2,7 @@ using System;
 using System.Text.Json.Nodes;
 using OrderBouncer.Application.Interfaces.Extractors;
 using OrderBouncer.Application.Interfaces.Mappings;
+using OrderBouncer.Application.Services.Extractors.Profiles;
 using OrderBouncer.Domain.DTOs;
 using OrderBouncer.Domain.Entities;
 using OrderBouncer.Domain.Interfaces.Factories;
@@ -20,7 +21,7 @@ public class NoteJsonMapping : IJsonMapping<NoteEntity>
 
     public async Task<NoteEntity?> Map(string json)
     {
-        JsonNode? node = await _extractor.Extract(json);
+        JsonNode? node = await _extractor.Extract<NoteExtractorProfile>(json);
 
         string NoteText = string.Empty;
 

@@ -2,6 +2,7 @@ using System;
 using System.Text.Json.Nodes;
 using OrderBouncer.Application.Interfaces.Extractors;
 using OrderBouncer.Application.Interfaces.Mappings;
+using OrderBouncer.Application.Services.Extractors.Profiles;
 using OrderBouncer.Domain.DTOs;
 using OrderBouncer.Domain.Entities;
 using OrderBouncer.Domain.Interfaces.Factories;
@@ -26,7 +27,7 @@ public class ProductJsonMapping : IJsonMapping<ProductEntity>
 
     public async Task<ProductEntity?> Map(string json)
     {
-        JsonNode? node = await _extractor.Extract(json);
+        JsonNode? node = await _extractor.Extract<ProductExtractorProfile>(json);
         
         ICollection<AccessoryEntity>? accessories = await _accessoryMapping.MapMany(json);
         ICollection<FigureEntity>? figures = await _figureMapping.MapMany(json);

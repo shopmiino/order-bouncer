@@ -6,8 +6,18 @@ namespace OrderBouncer.Application.Services.Extractors;
 
 public class JsonExtractor : IJsonExtractor
 {
-    public Task<JsonNode> Extract(string json)
+    private readonly IEnumerable<IJsonExtractorProfile> _jsonExtractorProfiles;
+
+    public JsonExtractor (IEnumerable<IJsonExtractorProfile> jsonExtractorProfiles){
+        _jsonExtractorProfiles = jsonExtractorProfiles;
+    }
+    public async Task<JsonNode?> Extract<TProfile>(string json) where TProfile: class
     {
-        throw new NotImplementedException();
+        IJsonExtractorProfile? jsonExtractorProfile = _jsonExtractorProfiles.FirstOrDefault(profile => profile.GetType() == typeof(TProfile));
+        if(jsonExtractorProfile is null){
+            return null;
+        }
+
+        return await jsonExtractorProfile.GetProfilePart(json);
     }
 }

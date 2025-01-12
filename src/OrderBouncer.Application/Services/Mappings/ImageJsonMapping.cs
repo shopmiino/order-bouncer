@@ -2,6 +2,7 @@ using System;
 using System.Text.Json.Nodes;
 using OrderBouncer.Application.Interfaces.Extractors;
 using OrderBouncer.Application.Interfaces.Mappings;
+using OrderBouncer.Application.Services.Extractors.Profiles;
 using OrderBouncer.Domain.DTOs;
 using OrderBouncer.Domain.Entities;
 using OrderBouncer.Domain.Interfaces.Factories;
@@ -19,7 +20,7 @@ public class ImageJsonMapping : IJsonMapping<ImageEntity>
     }
     public async Task<ImageEntity?> Map(string json)
     {
-        JsonNode? node = await _extractor.Extract(json);
+        JsonNode? node = await _extractor.Extract<ImageExtractorProfile>(json);
 
         ImageTypeEnum imageType = ImageTypeEnum.Face;
         string filePath = string.Empty;
