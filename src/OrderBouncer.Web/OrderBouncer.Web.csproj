@@ -8,6 +8,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\OrderBouncer.Application\OrderBouncer.Application.csproj" />
+    <ProjectReference Include="..\OrderBouncer.GoogleDrive\OrderBouncer.GoogleDrive.csproj" />
+    <ProjectReference Include="..\OrderBouncer.GoogleSheets\OrderBouncer.GoogleSheets.csproj" />
+    <ProjectReference Include="..\OrderBouncer.Infrastructure\OrderBouncer.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
