@@ -21,7 +21,8 @@ public class OrderCreatedUseCase : IOrderCreatedUseCase
     {
         Order? order = await _orderMapping.Map(json);
         //DriveUploadDto dto = new ();
-        //Add to Outbox
+        
+        //Save to db
         
         await _outbox.ExecuteAsync(Encoding.UTF8.GetBytes(json), cancellationToken);
         return false;
