@@ -206,7 +206,11 @@
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
-            "projectReferences": {}
+            "projectReferences": {
+              "C:\\Users\\Polat Efe Kaya\\Desktop\\Projects\\shopmiino\\order-bouncer\\src\\OrderBouncer.Application\\OrderBouncer.Application.csproj": {
+                "projectPath": "C:\\Users\\Polat Efe Kaya\\Desktop\\Projects\\shopmiino\\order-bouncer\\src\\OrderBouncer.Application\\OrderBouncer.Application.csproj"
+              }
+            }
           }
         },
         "warningProperties": {
@@ -292,7 +296,11 @@
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
-            "projectReferences": {}
+            "projectReferences": {
+              "C:\\Users\\Polat Efe Kaya\\Desktop\\Projects\\shopmiino\\order-bouncer\\src\\OrderBouncer.Application\\OrderBouncer.Application.csproj": {
+                "projectPath": "C:\\Users\\Polat Efe Kaya\\Desktop\\Projects\\shopmiino\\order-bouncer\\src\\OrderBouncer.Application\\OrderBouncer.Application.csproj"
+              }
+            }
           }
         },
         "warningProperties": {

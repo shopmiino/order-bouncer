@@ -14,8 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces\" />
-    <Folder Include="Services\" />
+    <ProjectReference Include="..\OrderBouncer.Application\OrderBouncer.Application.csproj" />
   </ItemGroup>
 
 </Project>

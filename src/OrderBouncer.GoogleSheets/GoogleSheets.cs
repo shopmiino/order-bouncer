@@ -4,6 +4,9 @@ using Google.Apis.Services;
 using Google.Apis.Sheets.v4;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OrderBouncer.Application.Interfaces.OutboxPublisher;
+using OrderBouncer.GoogleSheets.Interfaces;
+using OrderBouncer.GoogleSheets.Services;
 
 namespace OrderBouncer.GoogleSheets;
 
@@ -26,6 +29,9 @@ public static class GoogleSheets
                 ApplicationName = configuration["Settings:Google:Sheets:ApplicationName"]
             });
         });
+        
+        services.AddScoped<IOutboxPublisher, GoogleSheetsOutboxPublisher>();
+        services.AddScoped<IGoogleSheetsRepository, GoogleSheetsRepository>();
         return services;
     }
 }

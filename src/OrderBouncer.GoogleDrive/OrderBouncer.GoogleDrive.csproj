@@ -10,4 +10,12 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OrderBouncer.Application\OrderBouncer.Application.csproj" />
+  </ItemGroup>
+
 </Project>

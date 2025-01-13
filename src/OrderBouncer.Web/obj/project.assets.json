@@ -1019,7 +1019,8 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
-          "Microsoft.Extensions.DependencyInjection": "9.0.0"
+          "Microsoft.Extensions.DependencyInjection": "9.0.0",
+          "OrderBouncer.Application": "1.0.0"
         },
         "compile": {
           "bin/placeholder/OrderBouncer.GoogleDrive.dll": {}
@@ -1035,7 +1036,8 @@
           "Google.Apis.Auth": "1.68.0",
           "Google.Apis.Sheets.v4": "1.68.0.3624",
           "Microsoft.Extensions.Configuration": "9.0.0",
-          "Microsoft.Extensions.DependencyInjection": "9.0.0"
+          "Microsoft.Extensions.DependencyInjection": "9.0.0",
+          "OrderBouncer.Application": "1.0.0"
         },
         "compile": {
           "bin/placeholder/OrderBouncer.GoogleSheets.dll": {}
