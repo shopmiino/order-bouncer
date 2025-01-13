@@ -14,8 +14,8 @@ public class GoogleSheetsOutboxPublisher : IOutboxPublisher
         _repository = repository;
     }
 
-    public Task PublishAsync(byte[] fileContent, CancellationToken cancellationToken)
+    public async Task PublishAsync(byte[] fileContent, CancellationToken cancellationToken)
     {
-        _repository.AddRow();
+        await _repository.AddRow(["John Doe", "2025-01-10", "ABC123", "Black", "Light", "Male", "true", "Type1", "Type2", "Print1", "Print2", "Pending", "false", "true", "Hat", "Dog", "Urgent delivery", "2025-01-20"], "A1:Z1");
     }
 }

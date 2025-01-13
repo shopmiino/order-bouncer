@@ -20,11 +20,11 @@ public class OrderCreatedUseCase : IOrderCreatedUseCase
     }
     public async Task<bool> ExecuteAsync(string json, CancellationToken cancellationToken)
     {
-        JsonNode? node = JsonNode.Parse(json);
-        if(node is null){
-            return false;
-        }
-        Order? order = await _orderMapping.Map(node);
+        //JsonNode? node = JsonNode.Parse(json);
+        //if(node is null){
+        //    return false;
+        //}
+        //Order? order = await _orderMapping.Map(node);
         //DriveUploadDto dto = new ();
         
         //Save to db

@@ -5,7 +5,7 @@
 /obj/
 # dotenv files
 .env
-
+/src/OrderBouncer.Web/Secret
 # User-specific files
 *.rsuser
 *.suo

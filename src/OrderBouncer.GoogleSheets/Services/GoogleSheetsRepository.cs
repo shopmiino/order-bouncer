@@ -18,9 +18,7 @@ public class GoogleSheetsRepository : IGoogleSheetsRepository
     public async Task AddRow(string[] rowElements, string range)
     {
         ValueRange valueRange = new ValueRange{
-            Values = new[]{
-                rowElements
-            }
+            Values = [rowElements]
         };
 
         var request = _sheets.Spreadsheets.Values.Append(valueRange, _configuration["Settings:Google:Sheets:OrderTrackSpreadSheetId"], range);
