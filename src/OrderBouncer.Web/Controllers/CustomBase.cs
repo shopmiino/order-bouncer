@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace OrderBouncer.Web.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class CustomBase : ControllerBase
     {
