@@ -6,8 +6,10 @@ namespace OrderBouncer.Application.Services.Extractors.Profiles;
 
 public class OrderExtractorProfile : IJsonExtractorProfile
 {
-    public Task<JsonNode?> GetProfilePart(string json)
+    public async Task<JsonNode?> GetProfilePart(JsonNode json)
     {
-        throw new NotImplementedException();
+        JsonNode? order = json["order"];
+        
+        return order;
     }
 }

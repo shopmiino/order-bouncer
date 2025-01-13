@@ -5,5 +5,5 @@ namespace OrderBouncer.Application.Interfaces.Extractors;
 
 public interface IJsonExtractorProfile
 {
-    public Task<JsonNode?> GetProfilePart(string json);
+    public Task<JsonNode?> GetProfilePart(JsonNode json);
 }

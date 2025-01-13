@@ -6,7 +6,7 @@ namespace OrderBouncer.Application.Services.Extractors.Profiles;
 
 public class ImageExtractorProfile : IJsonExtractorProfile
 {
-    public Task<JsonNode?> GetProfilePart(string json)
+    public Task<JsonNode?> GetProfilePart(JsonNode json)
     {
         throw new NotImplementedException();
     }

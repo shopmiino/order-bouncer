@@ -19,18 +19,22 @@ public class NoteJsonMapping : IJsonMapping<NoteEntity>
         _extractor = extractor;
     }
 
-    public async Task<NoteEntity?> Map(string json)
+    public async Task<NoteEntity?> Map(JsonNode json)
     {
         JsonNode? node = await _extractor.Extract<NoteExtractorProfile>(json);
+        
+        if(node is null){
+            throw new ArgumentNullException();
+        }
 
-        string NoteText = string.Empty;
+        string NoteText = node[""].ToString();
 
         NoteEntity note = _noteFactory.Create(new (NoteText));
 
         return note;
     }
 
-    public Task<ICollection<NoteEntity>?> MapMany(string json)
+    public Task<ICollection<NoteEntity>?> MapMany(JsonNode json)
     {
         throw new NotImplementedException();
     }

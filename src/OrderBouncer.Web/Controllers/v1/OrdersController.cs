@@ -20,7 +20,7 @@ namespace OrderBouncer.Web.Controllers.v1
         }
 
         [HttpPost]
-        public async Task<IActionResult> Created(string orderJsonModel){
+        public async Task<IActionResult> Created([FromBody]string orderJsonModel){
             //TODO: implement Cancellation Token 
             await _orderCreated.ExecuteAsync(orderJsonModel, new CancellationToken());
             //Order created
@@ -28,5 +28,6 @@ namespace OrderBouncer.Web.Controllers.v1
             //Add to database and upload to google drive
             return Ok(orderJsonModel);
         }
+
     }
 }

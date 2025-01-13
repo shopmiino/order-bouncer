@@ -6,8 +6,9 @@ namespace OrderBouncer.Application.Services.Extractors.Profiles;
 
 public class ProductExtractorProfile : IJsonExtractorProfile
 {
-    public Task<JsonNode?> GetProfilePart(string json)
+    public async Task<JsonNode?> GetProfilePart(JsonNode json)
     {
-        throw new NotImplementedException();
+        JsonNode? lineItems = json["line_items"];
+        return lineItems;
     }
 }
