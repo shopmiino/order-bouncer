@@ -1,6 +1,8 @@
 using System;
 using System.Text;
+using System.Text.Json;
 using System.Text.Json.Nodes;
+using Microsoft.Extensions.Logging;
 using OrderBouncer.Application.DTOs;
 using OrderBouncer.Application.Interfaces.Executors;
 using OrderBouncer.Application.Interfaces.GoogleDrive;
@@ -14,14 +16,23 @@ public class OrderCreatedUseCase : IOrderCreatedUseCase
 {
     private readonly IJsonMapping<Order> _orderMapping;
     private readonly IOutboxExecutor _outbox;
-    public OrderCreatedUseCase(IJsonMapping<Order> orderMapping, IOutboxExecutor outbox){
+    private readonly ILogger<OrderCreatedUseCase> _logger;
+    public OrderCreatedUseCase(IJsonMapping<Order> orderMapping, IOutboxExecutor outbox, ILogger<OrderCreatedUseCase> logger){
         _orderMapping = orderMapping;
         _outbox = outbox;
+        _logger = logger;
     }
-    public async Task<bool> ExecuteAsync(string json, CancellationToken cancellationToken)
-    {
+    public async Task<bool> ExecuteAsync(JsonDocument json, CancellationToken cancellationToken)
+    {   
+        JsonElement element = json.RootElement.GetProperty("mesaj");
+        string mesaj = element.GetString();
+
+        _logger.LogInformation("Executing Json: {0}", mesaj);
         //JsonNode? node = JsonNode.Parse(json);
+        //_logger.LogDebug("Node tried to parse the json, sample {0}", node["mesaj"]);
+
         //if(node is null){
+        //    _logger.LogDebug("{0} node is null", nameof(OrderCreatedUseCase));
         //    return false;
         //}
         //Order? order = await _orderMapping.Map(node);
@@ -29,7 +40,7 @@ public class OrderCreatedUseCase : IOrderCreatedUseCase
         
         //Save to db
         
-        await _outbox.ExecuteAsync(Encoding.UTF8.GetBytes(json), cancellationToken);
+        await _outbox.ExecuteAsync(Encoding.UTF8.GetBytes(mesaj), cancellationToken);
         return false;
     }
 }
