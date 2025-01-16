@@ -1,15 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "hQpEi5b8gAk=",
+  "dgSpecHash": "lJeDO4xkCrF5cSGcy8Fy1yycMGMGfc7BzETi6cz1seCqCTZYyCO+7al1rnsYwh8u4lWzxiVR8sbgD8srVZGT6w==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Polat Efe Kaya\\Desktop\\Projects\\shopmiino\\order-bouncer\\src\\OrderBouncer.Application\\OrderBouncer.Application.csproj",
+  "projectFilePath": "/home/polatefekaya/Desktop/projects/order-bouncer/src/OrderBouncer.Application/OrderBouncer.Application.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Polat Efe Kaya\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\9.0.0\\microsoft.extensions.dependencyinjection.abstractions.9.0.0.nupkg.sha512",
-    "C:\\Users\\Polat Efe Kaya\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\9.0.0\\microsoft.extensions.logging.abstractions.9.0.0.nupkg.sha512",
-    "C:\\Users\\Polat Efe Kaya\\.nuget\\packages\\system.diagnostics.diagnosticsource\\9.0.0\\system.diagnostics.diagnosticsource.9.0.0.nupkg.sha512",
-    "C:\\Users\\Polat Efe Kaya\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\8.0.11\\microsoft.aspnetcore.app.ref.8.0.11.nupkg.sha512",
-    "C:\\Users\\Polat Efe Kaya\\.nuget\\packages\\microsoft.netcore.app.ref\\8.0.11\\microsoft.netcore.app.ref.8.0.11.nupkg.sha512",
-    "C:\\Users\\Polat Efe Kaya\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\8.0.11\\microsoft.windowsdesktop.app.ref.8.0.11.nupkg.sha512"
+    "/home/polatefekaya/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/9.0.0/microsoft.extensions.dependencyinjection.abstractions.9.0.0.nupkg.sha512",
+    "/home/polatefekaya/.nuget/packages/microsoft.extensions.logging.abstractions/9.0.0/microsoft.extensions.logging.abstractions.9.0.0.nupkg.sha512",
+    "/home/polatefekaya/.nuget/packages/system.diagnostics.diagnosticsource/9.0.0/system.diagnostics.diagnosticsource.9.0.0.nupkg.sha512"
   ],
   "logs": []
 }
