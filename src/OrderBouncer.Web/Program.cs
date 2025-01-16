@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Host.ConfigureSerilog();
 
 
-//builder.Services.AddGoogleDrive();
+builder.Services.AddGoogleDrive();
 builder.Services.AddGoogleSheets();
 
 //Application Layer
