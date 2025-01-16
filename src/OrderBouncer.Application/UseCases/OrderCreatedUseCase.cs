@@ -24,10 +24,19 @@ public class OrderCreatedUseCase : IOrderCreatedUseCase
     }
     public async Task<bool> ExecuteAsync(JsonDocument json, CancellationToken cancellationToken)
     {   
-        JsonElement element = json.RootElement.GetProperty("mesaj");
-        string mesaj = element.GetString();
+        JsonElement element = json.RootElement.GetProperty("photo");
+        string imageData = element.GetProperty("data").GetString();
 
-        _logger.LogInformation("Executing Json: {0}", mesaj);
+        string base64Data = imageData.Substring(imageData.IndexOf(",") + 1);
+        
+        byte[] data = Convert.FromBase64String(base64Data);
+        string fileName = element.GetProperty("fileName").GetString();
+        string fileFormat = element.GetProperty("mimeType").GetString();
+        
+        string filePath = fileName + fileFormat;
+        await File.WriteAllBytesAsync(filePath, data);
+
+        _logger.LogInformation("Executing Json: {0}", fileName);
         //JsonNode? node = JsonNode.Parse(json);
         //_logger.LogDebug("Node tried to parse the json, sample {0}", node["mesaj"]);
 
@@ -40,7 +49,7 @@ public class OrderCreatedUseCase : IOrderCreatedUseCase
         
         //Save to db
         
-        await _outbox.ExecuteAsync(Encoding.UTF8.GetBytes(mesaj), cancellationToken);
+        await _outbox.ExecutePathAsync(filePath, cancellationToken);
         return false;
     }
 }
