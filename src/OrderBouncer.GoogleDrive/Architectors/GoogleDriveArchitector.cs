@@ -1,6 +1,8 @@
 using System;
 using System.Text.Json.Serialization;
+using OrderBouncer.Domain.DTOs.Base;
 using OrderBouncer.GoogleDrive.Constants;
+using OrderBouncer.GoogleDrive.DTOs;
 using OrderBouncer.GoogleDrive.Interfaces;
 using OrderBouncer.GoogleDrive.Interfaces.Architectors;
 
@@ -15,8 +17,15 @@ public class GoogleDriveArchitector : IGoogleDriveArchitector
     }
 
     //TODO: I can do this in more clever way but it is unnecessary rn. maybe later...
-    public async Task Execute(int orderId)
+    public async Task Execute(OrderDto dto, CancellationToken cancellationToken)
     {
+        foreach(var product in dto.Products){
+            foreach(PetDto ent in product.Pets){
+                ICollection<string> imagePaths = ent.ImagePaths; 
+                GoogleDriveEntityDto entityDto = new GoogleDriveEntityDto(ent.ImagePaths, FolderNames.TypeNames[ent.GetType()], ent.Note);
+            }
+        }
+        
         int accessoryCount = 2;
         int petCount = 3;
         int figureCount = 1;

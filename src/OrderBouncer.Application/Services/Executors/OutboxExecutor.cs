@@ -2,6 +2,7 @@ using System;
 using Microsoft.Extensions.Logging;
 using OrderBouncer.Application.Interfaces.Executors;
 using OrderBouncer.Application.Interfaces.OutboxPublisher;
+using OrderBouncer.Domain.DTOs.Base;
 
 namespace OrderBouncer.Application.Services.Executors;
 
@@ -14,6 +15,12 @@ public class OutboxExecutor : IOutboxExecutor
         _publishers = publishers;
         _logger = logger;
     }
+
+    public Task ExecuteAsync(OrderDto dto, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task ExecuteBytesAsync(byte[] fileContent, CancellationToken cancellationToken)
     {
         foreach (IOutboxPublisher publisher in _publishers){

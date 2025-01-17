@@ -2,10 +2,11 @@ namespace OrderBouncer.Domain.DTOs.Base;
 
 public record class OrderDto
 {
-    public ICollection<FigureDto> Figures;
-    public ICollection<AccessoryDto> Accessories;
+    public ICollection<ProductDto>? Products;
+    public string? Note;
     
-    public OrderDto(){
-
+    public OrderDto(ICollection<ProductDto>? products, string? note = null){
+        Products = products;
+        Note = note;
     }
 }

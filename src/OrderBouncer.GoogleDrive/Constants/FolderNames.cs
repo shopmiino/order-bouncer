@@ -1,4 +1,5 @@
 using System;
+using OrderBouncer.Domain.DTOs.Base;
 
 namespace OrderBouncer.GoogleDrive.Constants;
 
@@ -10,5 +11,11 @@ internal static class FolderNames
         {FolderNamesEnum.Pet, "Evcil Hayvan"},
         {FolderNamesEnum.Figure, "Figür"},
         {FolderNamesEnum.Id, "ID"},
+    };
+    internal static readonly Dictionary<Type, FolderNamesEnum> TypeNames = new(){
+        {typeof(PetDto), FolderNamesEnum.Pet},
+        {typeof(AccessoryDto), FolderNamesEnum.Accessory},
+        {typeof(KeychainDto), FolderNamesEnum.Keychain},
+        {typeof(FigureDto), FolderNamesEnum.Figure},
     };
 }

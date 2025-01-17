@@ -1,5 +1,6 @@
 using System;
 using OrderBouncer.Application.Interfaces.OutboxPublisher;
+using OrderBouncer.Domain.DTOs.Base;
 using OrderBouncer.Domain.Outbox;
 using OrderBouncer.GoogleDrive.Interfaces;
 using OrderBouncer.GoogleDrive.Interfaces.Architectors;
@@ -17,6 +18,11 @@ public class GoogleDriveOutboxPublisher : IOutboxPublisher
     }
     public PublisherTargetSystem TargetSystem => PublisherTargetSystem.GoogleDrive;
 
+    public async Task PublishAsync(OrderDto dto, CancellationToken cancellationToken)
+    {
+        await _architector.Execute(dto, cancellationToken);
+    }
+
     public Task PublishBytesAsync(byte[] fileContent, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
@@ -26,9 +32,5 @@ public class GoogleDriveOutboxPublisher : IOutboxPublisher
     {
         //string id = await _repository.CreateFolder("denemeic");
         //await _repository.UploadFile(filePath, id);
-        await _architector.Execute(1001);
-        await _architector.Execute(1002);
-        await _architector.Execute(1003);
-        await _architector.Execute(1004);
     }
 }
