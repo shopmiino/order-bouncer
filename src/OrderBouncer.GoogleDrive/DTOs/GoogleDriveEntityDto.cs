@@ -8,8 +8,9 @@ public record class GoogleDriveEntityDto
     public ICollection<string>? ImagePaths;
     public string? Note;
     public FolderNamesEnum FolderName;
+    public string? ParentFolderId;
 
-    public GoogleDriveEntityDto(ICollection<string>? imagePaths, FolderNamesEnum folderNames, string? note = null){
+    public GoogleDriveEntityDto(ICollection<string>? imagePaths, FolderNamesEnum folderNames,string? parentFolderId = null, string? note = null){
         ImagePaths = imagePaths;
         Note = note;
         FolderName = folderNames;

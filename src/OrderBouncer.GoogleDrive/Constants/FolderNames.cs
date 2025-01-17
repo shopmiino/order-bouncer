@@ -11,6 +11,7 @@ internal static class FolderNames
         {FolderNamesEnum.Pet, "Evcil Hayvan"},
         {FolderNamesEnum.Figure, "Figür"},
         {FolderNamesEnum.Id, "ID"},
+        {FolderNamesEnum.Images, "Fotoğraf"}
     };
     internal static readonly Dictionary<Type, FolderNamesEnum> TypeNames = new(){
         {typeof(PetDto), FolderNamesEnum.Pet},
