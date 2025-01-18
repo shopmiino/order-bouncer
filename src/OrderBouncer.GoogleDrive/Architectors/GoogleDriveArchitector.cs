@@ -72,7 +72,7 @@ public class GoogleDriveArchitector : IGoogleDriveArchitector
         return itemFolderIds;
     }
 
-    //TODO create two methods, manyForOne is operates many subFolders for one parent, oneForMany is operates one subfolder for many parents
+    //TODO create two methods, manyForOne operates many subFolders for one parent, oneForMany operates one subfolder for many parents
     private async Task<ICollection<string>> GenerateSubFolders<T>(FolderNamesEnum name, ICollection<T> collection, ICollection<string> parentIds){
         ICollection<string> itemSubFolderIds = [];
 
@@ -89,6 +89,15 @@ public class GoogleDriveArchitector : IGoogleDriveArchitector
             string itemFolderId = await _repository.CreateFolder(folderName, parentIds.)
         }   
     }
+
+    private async Task ManyForOne<T>(FolderNamesEnum name, ICollection<T> collection, string parentId){
+
+    }
+
+    private async Task OneForMany<T>(FolderNamesEnum name, ICollection<T> collection, ICollection<string> parents){
+
+    }
+
 
     private Func<int, string> NamingMethod(FolderNamesEnum name){
         switch(name){
