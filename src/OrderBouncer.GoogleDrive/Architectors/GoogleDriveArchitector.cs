@@ -90,11 +90,22 @@ public class GoogleDriveArchitector : IGoogleDriveArchitector
         }   
     }
 
-    private async Task ManyForOne<T>(FolderNamesEnum name, ICollection<T> collection, string parentId){
+    private async Task ManyForOne<T>(FolderNamesEnum name, ICollection<T> collection, string parentId) where T : BaseDto{
+        ICollection<string> folderIds = [];
+
+        Func<int, string> naming = NamingMethod(name);
+
+        for(int i = 0; i < collection.Count; i++){
+            string folderName = naming(i);
+            string folderId = await _repository.CreateFolder(folderName, parentId);
+            //upload file to that folder;
+            
+            folderIds.Add(folderId);
+        }
 
     }
 
-    private async Task OneForMany<T>(FolderNamesEnum name, ICollection<T> collection, ICollection<string> parents){
+    private async Task OneForMany<T>(FolderNamesEnum name, ICollection<T> collection, ICollection<string> parents) where T : BaseDto{
 
     }
 

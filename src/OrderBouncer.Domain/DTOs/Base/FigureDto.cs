@@ -1,14 +1,10 @@
 namespace OrderBouncer.Domain.DTOs.Base;
 
-public record class FigureDto
+public record class FigureDto : BaseDto
 {
-    public ICollection<string>? ImagePaths;
     public ICollection<AccessoryDto>? Accessories;
-    public string? Note;
 
-    public FigureDto(ICollection<string>? imagePaths, ICollection<AccessoryDto> accessoryDtos, string? note){
-        ImagePaths = imagePaths;
+    public FigureDto(ICollection<AccessoryDto> accessoryDtos, ICollection<string>? imagePaths, string? note) : base(imagePaths, note){
         Accessories = accessoryDtos;
-        Note = note;
     }
 }

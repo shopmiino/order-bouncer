@@ -1,11 +1,7 @@
 namespace OrderBouncer.Domain.DTOs.Base;
 
-public record class KeychainDto
+public record class KeychainDto : BaseDto
 {
-    public ICollection<string>? ImagePaths;
-    public string? Note;
-    public KeychainDto(ICollection<string> imagePaths, string? note = null){
-        ImagePaths = imagePaths;
-        Note = note;
+    public KeychainDto(ICollection<string>? imagePaths = null, string? note = null) : base (imagePaths, note){
     }
 }
