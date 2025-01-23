@@ -6,10 +6,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OrderBouncer.Application.Interfaces.OutboxPublisher;
 using OrderBouncer.GoogleDrive.Architectors;
+using OrderBouncer.GoogleDrive.DTOs.UseCases;
 using OrderBouncer.GoogleDrive.Interfaces;
 using OrderBouncer.GoogleDrive.Interfaces.Architectors;
+using OrderBouncer.GoogleDrive.Interfaces.UseCases;
 using OrderBouncer.GoogleDrive.Repositories;
 using OrderBouncer.GoogleDrive.Services;
+using OrderBouncer.GoogleDrive.UseCases;
 
 namespace OrderBouncer.GoogleDrive;
 
@@ -38,6 +41,8 @@ public static class GoogleDrive
         
         services.AddScoped<IGoogleDriveRepositoryHelper, GoogleDriveRepositoryHelper>();
         services.AddScoped<IGoogleDriveRepository, GoogleDriveRepository>();
+
+        services.AddScoped<IUseCase<ManyToOneRequestDto<>>, ManyToOneUseCase<>>();
         return services;
     }
 }

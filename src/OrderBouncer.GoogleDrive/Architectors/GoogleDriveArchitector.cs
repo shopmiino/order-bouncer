@@ -90,21 +90,41 @@ public class GoogleDriveArchitector : IGoogleDriveArchitector
         }   
     }
 
+    /// <summary>
+    /// Many subfolders for one parent folder
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="name">Folder Naming</param>
+    /// <param name="collection"></param>
+    /// <param name="parentId"></param>
+    /// <returns></returns>
     private async Task ManyForOne<T>(FolderNamesEnum name, ICollection<T> collection, string parentId) where T : BaseDto{
         ICollection<string> folderIds = [];
 
         Func<int, string> naming = NamingMethod(name);
-
-        for(int i = 0; i < collection.Count; i++){
+        int i = 0;
+        foreach(T item in collection){
             string folderName = naming(i);
             string folderId = await _repository.CreateFolder(folderName, parentId);
             //upload file to that folder;
+            foreach(string path in item.ImagePaths){
+                await _repository.UploadFile(path, folderId);
+            }
             
             folderIds.Add(folderId);
-        }
 
+            i++;
+        }
     }
 
+    /// <summary>
+    /// One subfolder for each parent
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="name">Folder Naming</param>
+    /// <param name="collection"></param>
+    /// <param name="parents"></param>
+    /// <returns></returns>
     private async Task OneForMany<T>(FolderNamesEnum name, ICollection<T> collection, ICollection<string> parents) where T : BaseDto{
 
     }
