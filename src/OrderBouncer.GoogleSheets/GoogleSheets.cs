@@ -16,12 +16,12 @@ public static class GoogleSheets
         services.AddSingleton<SheetsService>(provider => {
             IConfiguration configuration = provider.GetRequiredService<IConfiguration>();
 
-            string[] Scopes = [SheetsService.Scope.Spreadsheets];
+            //string[] Scopes = [SheetsService.Scope.Spreadsheets];
             GoogleCredential credential;
             string accountKeyFilePath = configuration["Settings:Google:AccountKeyFilePath"] ?? string.Empty;
 
             using (Stream stream = new FileStream(accountKeyFilePath, FileMode.Open, FileAccess.Read)){
-                credential = GoogleCredential.FromStream(stream).CreateScoped(Scopes);
+                credential = GoogleCredential.FromStream(stream).CreateScoped(SheetsService.ScopeConstants.Spreadsheets);
             }
 
             return new SheetsService(new BaseClientService.Initializer{

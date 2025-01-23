@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OrderBouncer.Application.DTOs;
@@ -20,7 +21,7 @@ namespace OrderBouncer.Web.Controllers.v1
         }
 
         [HttpPost]
-        public async Task<IActionResult> Created([FromBody]string orderJsonModel){
+        public async Task<IActionResult> Created([FromBody]JsonDocument orderJsonModel){
             //TODO: implement Cancellation Token 
             await _orderCreated.ExecuteAsync(orderJsonModel, new CancellationToken());
             //Order created
