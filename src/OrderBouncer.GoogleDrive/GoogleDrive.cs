@@ -46,7 +46,7 @@ public static class GoogleDrive
 
         services.AddScoped<INamingHelperService, NamingHelperService>();
 
-        //Open generic for those usecases
+        //Open generic for usecases below
         services.AddScoped(typeof(IOneToOneUseCase<>), typeof(OneToOneUseCase<>));
         services.AddScoped(typeof(IOneToManyUseCase<>), typeof(OneToManyUseCase<>));
         services.AddScoped(typeof(IManyToOneUseCase<>), typeof(ManyToOneUseCase<>));
