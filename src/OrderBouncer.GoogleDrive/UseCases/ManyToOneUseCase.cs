@@ -1,7 +1,6 @@
 using System;
 using OrderBouncer.Domain.DTOs.Base;
 using OrderBouncer.GoogleDrive.Constants;
-using OrderBouncer.GoogleDrive.DTOs.UseCases;
 using OrderBouncer.GoogleDrive.Interfaces;
 using OrderBouncer.GoogleDrive.Interfaces.Helpers;
 using OrderBouncer.GoogleDrive.Interfaces.UseCases;
@@ -20,24 +19,33 @@ public class ManyToOneUseCase<T> : IManyToOneUseCase<T> where T : BaseDto
         _nameService = nameService;
         _repository = repository;
     }
-    public async Task ExecuteAsync(FolderNamesEnum name, ICollection<T> collection, string parentId)
+    public async Task<ICollection<string>> ExecuteAsync(FolderNamesEnum name, ICollection<T> collection, string parentId, CreationModes mode = CreationModes.Folder)
     {
-        //ICollection<string> folderIds = [];
+        ICollection<string> folderIds = [];
 
         Func<int, string> namingMethod = _nameService.NamingMethod(name);
+         
+        string changedParentId = string.Empty;
+
+        if(GoogleDriveExtensions.IsFileCreation(mode)){
+            changedParentId = parentId;
+        }
 
         int i = 0;
         foreach (T item in collection)
         {
             string folderName = namingMethod(i);
-            string folderId = await _repository.CreateFolder(folderName, parentId);
-            
-            if(item.ImagePaths is not null)
-                await _repository.BatchUploadFile(item.ImagePaths, folderId);
 
-            //folderIds.Add(folderId);
+            if(!GoogleDriveExtensions.IsFileCreation(mode))
+                changedParentId = await _repository.CreateFolder(folderName, parentId);
+            
+            if(item.ImagePaths is not null && !GoogleDriveExtensions.IsFolderCreation(mode))
+                await _repository.BatchUploadFile(item.ImagePaths, changedParentId);
+
+            folderIds.Add(changedParentId);
 
             i++;
         }
+        return folderIds;
     }
 }

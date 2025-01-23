@@ -7,5 +7,6 @@ public enum FolderNamesEnum
     Figure,
     Keychain,
     Id,
-    Images
+    Images,
+    Product
 }

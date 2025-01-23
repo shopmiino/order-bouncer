@@ -1,4 +1,6 @@
 using System;
+using OrderBouncer.Domain.DTOs.Base;
+using OrderBouncer.GoogleDrive.Constants;
 
 namespace OrderBouncer.GoogleDrive;
 
@@ -20,5 +22,18 @@ public static class GoogleDriveExtensions
             ".zip" => "application/zip",
             _ => "application/octet-stream",
         };
+    }
+
+    public static bool IsFileCreation(CreationModes mode){
+        return mode == CreationModes.File;
+    }
+    public static bool IsFolderCreation(CreationModes mode){
+        return mode == CreationModes.Folder;
+    }
+    public static bool IsFolderAndFileCreation(CreationModes mode){
+        return mode == CreationModes.FolderAndFile;
+    }
+    public static bool HasManyProducts(ICollection<ProductDto> collection){
+        return collection.Count > 1;
     }
 }
