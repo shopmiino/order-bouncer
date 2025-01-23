@@ -9,9 +9,11 @@ using OrderBouncer.GoogleDrive.Architectors;
 using OrderBouncer.GoogleDrive.DTOs.UseCases;
 using OrderBouncer.GoogleDrive.Interfaces;
 using OrderBouncer.GoogleDrive.Interfaces.Architectors;
+using OrderBouncer.GoogleDrive.Interfaces.Helpers;
 using OrderBouncer.GoogleDrive.Interfaces.UseCases;
 using OrderBouncer.GoogleDrive.Repositories;
 using OrderBouncer.GoogleDrive.Services;
+using OrderBouncer.GoogleDrive.Services.Helpers;
 using OrderBouncer.GoogleDrive.UseCases;
 
 namespace OrderBouncer.GoogleDrive;
@@ -42,7 +44,13 @@ public static class GoogleDrive
         services.AddScoped<IGoogleDriveRepositoryHelper, GoogleDriveRepositoryHelper>();
         services.AddScoped<IGoogleDriveRepository, GoogleDriveRepository>();
 
-        services.AddScoped<IUseCase<ManyToOneRequestDto<>>, ManyToOneUseCase<>>();
+        services.AddScoped<INamingHelperService, NamingHelperService>();
+
+        //Open generic for usecases below
+        services.AddScoped(typeof(IOneToOneUseCase<>), typeof(OneToOneUseCase<>));
+        services.AddScoped(typeof(IOneToManyUseCase<>), typeof(OneToManyUseCase<>));
+        services.AddScoped(typeof(IManyToOneUseCase<>), typeof(ManyToOneUseCase<>));
+        services.AddScoped(typeof(IManyToManyUseCase<>), typeof(ManyToManyUseCase<>));
         return services;
     }
 }

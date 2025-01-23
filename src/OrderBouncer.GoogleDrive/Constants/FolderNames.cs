@@ -11,12 +11,14 @@ internal static class FolderNames
         {FolderNamesEnum.Pet, "Evcil Hayvan"},
         {FolderNamesEnum.Figure, "Figür"},
         {FolderNamesEnum.Id, "ID"},
-        {FolderNamesEnum.Images, "Fotoğraf"}
+        {FolderNamesEnum.Images, "Fotoğraf"},
+        {FolderNamesEnum.Product, "Ürün"}
     };
     internal static readonly Dictionary<Type, FolderNamesEnum> TypeNames = new(){
         {typeof(PetDto), FolderNamesEnum.Pet},
         {typeof(AccessoryDto), FolderNamesEnum.Accessory},
         {typeof(KeychainDto), FolderNamesEnum.Keychain},
         {typeof(FigureDto), FolderNamesEnum.Figure},
+        {typeof(ProductDto), FolderNamesEnum.Product},
     };
 }

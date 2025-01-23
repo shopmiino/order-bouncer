@@ -1,14 +1,51 @@
 using System;
 using OrderBouncer.Domain.DTOs.Base;
-using OrderBouncer.GoogleDrive.DTOs.UseCases;
+using OrderBouncer.GoogleDrive.Constants;
+using OrderBouncer.GoogleDrive.Interfaces;
+using OrderBouncer.GoogleDrive.Interfaces.Helpers;
 using OrderBouncer.GoogleDrive.Interfaces.UseCases;
 
 namespace OrderBouncer.GoogleDrive.UseCases;
 
-public class ManyToOneUseCase<T> : IUseCase<ManyToOneRequestDto<T>> where T : BaseDto
+/// <summary>
+/// Many subfolders for one parent folder
+/// </summary>
+/// <typeparam name="T"></typeparam>
+public class ManyToOneUseCase<T> : IManyToOneUseCase<T> where T : BaseDto
 {
-    public Task ExecuteAsync(ManyToOneRequestDto<T> dto)
+    private readonly INamingHelperService _nameService;
+    private readonly IGoogleDriveRepository _repository;
+    public ManyToOneUseCase(INamingHelperService nameService, IGoogleDriveRepository repository){
+        _nameService = nameService;
+        _repository = repository;
+    }
+    public async Task<ICollection<string>> ExecuteAsync(FolderNamesEnum name, ICollection<T> collection, string parentId, CreationModes mode = CreationModes.Folder)
     {
-        throw new NotImplementedException();
+        ICollection<string> folderIds = [];
+
+        Func<int, string> namingMethod = _nameService.NamingMethod(name);
+         
+        string changedParentId = string.Empty;
+
+        if(GoogleDriveExtensions.IsFileCreation(mode)){
+            changedParentId = parentId;
+        }
+
+        int i = 0;
+        foreach (T item in collection)
+        {
+            string folderName = namingMethod(i);
+
+            if(!GoogleDriveExtensions.IsFileCreation(mode))
+                changedParentId = await _repository.CreateFolder(folderName, parentId);
+            
+            if(item.ImagePaths is not null && !GoogleDriveExtensions.IsFolderCreation(mode))
+                await _repository.BatchUploadFile(item.ImagePaths, changedParentId);
+
+            folderIds.Add(changedParentId);
+
+            i++;
+        }
+        return folderIds;
     }
 }

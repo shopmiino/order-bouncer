@@ -16,9 +16,16 @@ public class OutboxExecutor : IOutboxExecutor
         _logger = logger;
     }
 
-    public Task ExecuteAsync(OrderDto dto, CancellationToken cancellationToken)
+    public async Task ExecuteAsync(OrderDto dto, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        foreach (IOutboxPublisher publisher in _publishers){
+            try {
+                _logger.LogInformation("Trying to execute {0} publisher", publisher.TargetSystem);
+                await publisher.PublishAsync(dto, cancellationToken);
+            } catch (Exception ex) {
+                _logger.LogError("An error occured while publishing {0}, Message: {1}", publisher.TargetSystem, ex.Message);
+            }
+        }
     }
 
     public async Task ExecuteBytesAsync(byte[] fileContent, CancellationToken cancellationToken)
