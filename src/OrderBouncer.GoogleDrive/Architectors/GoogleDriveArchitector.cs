@@ -5,21 +5,24 @@ using OrderBouncer.GoogleDrive.Constants;
 using OrderBouncer.GoogleDrive.DTOs;
 using OrderBouncer.GoogleDrive.Interfaces;
 using OrderBouncer.GoogleDrive.Interfaces.Architectors;
+using OrderBouncer.GoogleDrive.Interfaces.Helpers;
 
 namespace OrderBouncer.GoogleDrive.Architectors;
 
 public class GoogleDriveArchitector : IGoogleDriveArchitector
 {
     private readonly IGoogleDriveRepository _repository;
-    public GoogleDriveArchitector(IGoogleDriveRepository repository)
+    private readonly INamingHelperService _namingHelper;
+    public GoogleDriveArchitector(IGoogleDriveRepository repository, INamingHelperService namingHelper)
     {  
         _repository = repository;
+        _namingHelper = namingHelper;
     }
 
     //TODO: I can do this in more clever way but it is unnecessary rn. maybe later...
-    public async Task Execute(OrderDto dto, CancellationToken cancellationToken)
+    public async Task ExecuteAsync(OrderDto dto, CancellationToken cancellationToken)
     {
-        string generalFolderId = await _repository.CreateFolder(dto.ShopifyOrderID);
+        string generalFolderId = await _repository.CreateFolder(dto.ShopifyOrderID); //1007
 
         foreach(var product in dto.Products){
             await GenerateGeneric<PetDto>(product.Pets, generalFolderId);
@@ -44,7 +47,7 @@ public class GoogleDriveArchitector : IGoogleDriveArchitector
 
         FolderNamesEnum name = FolderNames.TypeNames[typeof(T)];
         int count = GetCount(coll);
-        string folderName = GenerateFolderName(name, count);  //e.g. Evcil Hayvanlar (2 Tane)
+        string folderName = _namingHelper.GenerateFolderName(name, count);  //e.g. Evcil Hayvanlar (2 Tane)
         string entityFolderId = await _repository.CreateFolder(folderName, parentId);
 
         ICollection<string> itemFoldersIds = await GenerateItemFolders<T>(coll, entityFolderId); //Folder names follows 1, 2, 3, 4... 
@@ -53,7 +56,7 @@ public class GoogleDriveArchitector : IGoogleDriveArchitector
     private async Task GenerateFolders(GoogleDriveEntityDto dto){
         int count = GetCount(dto.ImagePaths);
         
-        string folderName = GenerateFolderName(dto.FolderName, count); 
+        string folderName = _namingHelper.GenerateFolderName(dto.FolderName, count); 
 
         string accessoryFolderId = await _repository.CreateFolder(folderName, dto.ParentFolderId);
         GoogleDriveFolderDto folderDto = await GenerateSubFolders(accessoryFolderId, count);
@@ -82,7 +85,7 @@ public class GoogleDriveArchitector : IGoogleDriveArchitector
 
         int count = name == FolderNamesEnum.Id ? collection.Count : parentIds.Count;
 
-        Func<int, string> chosenNamingMethod = NamingMethod(name);
+        Func<int, string> chosenNamingMethod = _namingHelper.NamingMethod(name);
 
         for(int i = 0; i < count; i++){
             string folderName = chosenNamingMethod(i);
@@ -90,54 +93,6 @@ public class GoogleDriveArchitector : IGoogleDriveArchitector
         }   
     }
 
-    /// <summary>
-    /// Many subfolders for one parent folder
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="name">Folder Naming</param>
-    /// <param name="collection"></param>
-    /// <param name="parentId"></param>
-    /// <returns></returns>
-    private async Task ManyForOne<T>(FolderNamesEnum name, ICollection<T> collection, string parentId) where T : BaseDto{
-        ICollection<string> folderIds = [];
-
-        Func<int, string> naming = NamingMethod(name);
-        int i = 0;
-        foreach(T item in collection){
-            string folderName = naming(i);
-            string folderId = await _repository.CreateFolder(folderName, parentId);
-            //upload file to that folder;
-            foreach(string path in item.ImagePaths){
-                await _repository.UploadFile(path, folderId);
-            }
-            
-            folderIds.Add(folderId);
-
-            i++;
-        }
-    }
-
-    /// <summary>
-    /// One subfolder for each parent
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="name">Folder Naming</param>
-    /// <param name="collection"></param>
-    /// <param name="parents"></param>
-    /// <returns></returns>
-    private async Task OneForMany<T>(FolderNamesEnum name, ICollection<T> collection, ICollection<string> parents) where T : BaseDto{
-
-    }
-
-
-    private Func<int, string> NamingMethod(FolderNamesEnum name){
-        switch(name){
-            case FolderNamesEnum.Id:
-                return index => (index + 1).ToString();
-            default:
-                return _ => FolderNames.Names[name];
-        }
-    }
     private async Task<GoogleDriveFolderDto> GenerateSubFolders(string parentFolderId, int itemCount){
         List<string> itemFolderIds = [];
         List<string> imageIds = [];
@@ -154,10 +109,6 @@ public class GoogleDriveArchitector : IGoogleDriveArchitector
         return new (itemFolderIds, imageIds);
     }
 
-    private string GenerateFolderName(FolderNamesEnum name, int count){
-        string countName = count <= 0 ? "(Yok)" : $"({count} Tane)";
-        return $"{FolderNames.Names[name]} {countName}";
-    }
     private int GetCount<T>(ICollection<T>? paths){
         return paths is null ? 0 : paths.Count;
     }

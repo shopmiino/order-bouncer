@@ -1,12 +1,13 @@
 using System;
+using OrderBouncer.Domain.DTOs.Base;
 using OrderBouncer.GoogleDrive.DTOs.UseCases;
 using OrderBouncer.GoogleDrive.Interfaces.UseCases;
 
 namespace OrderBouncer.GoogleDrive.UseCases;
 
-public class OneToOneUseCase : IUseCase<OneToOneRequestDto>
+public class OneToOneUseCase<T> : IOneToOneUseCase<T> where T : BaseDto
 {
-    public Task ExecuteAsync(OneToOneRequestDto dto)
+    public Task ExecuteAsync()
     {
         throw new NotImplementedException();
     }

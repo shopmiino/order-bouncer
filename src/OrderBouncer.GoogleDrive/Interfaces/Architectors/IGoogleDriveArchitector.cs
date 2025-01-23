@@ -5,5 +5,5 @@ namespace OrderBouncer.GoogleDrive.Interfaces.Architectors;
 
 public interface IGoogleDriveArchitector
 {
-    public Task Execute(OrderDto dto, CancellationToken cancellationToken);
+    public Task ExecuteAsync(OrderDto dto, CancellationToken cancellationToken);
 }
