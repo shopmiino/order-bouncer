@@ -1,8 +1,10 @@
 using System;
+using System.Runtime.CompilerServices;
 using OrderBouncer.Domain.DTOs.Base;
 
-namespace OrderBouncer.GoogleDrive.Constants;
+[assembly: InternalsVisibleTo("OrderBouncer.GoogleDrive.Tests")]
 
+namespace OrderBouncer.GoogleDrive.Constants;
 internal static class FolderNames
 {
     internal static readonly Dictionary<FolderNamesEnum, string> Names = new(){
