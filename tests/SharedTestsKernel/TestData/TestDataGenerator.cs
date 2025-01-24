@@ -29,4 +29,9 @@ public static class TestDataGenerator
     public static Faker<KeychainDto> KeyChainDtoFaker => new Faker<KeychainDto>()
         .RuleFor(b => b.ImagePaths, f => [.. Enumerable.Range(1,8).Select(_ => f.Random.Guid().ToString())])
         .RuleFor(b => b.Note, f => f.Lorem.Paragraph());
+
+    public static Faker<OrderDto> OrderDtoFaker => new Faker<OrderDto>()
+        .RuleFor(o => o.Products, f => ProductDtoFaker.Generate(1))
+        .RuleFor(o => o.Note, f => f.Lorem.Paragraph())
+        .RuleFor(o => o.ShopifyOrderID, f => f.Random.Int(1000,1100).ToString());
 }
