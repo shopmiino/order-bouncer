@@ -6,10 +6,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OrderBouncer.Application.Interfaces.OutboxPublisher;
 using OrderBouncer.GoogleDrive.Architectors;
-using OrderBouncer.GoogleDrive.DTOs.UseCases;
 using OrderBouncer.GoogleDrive.Interfaces;
 using OrderBouncer.GoogleDrive.Interfaces.Architectors;
 using OrderBouncer.GoogleDrive.Interfaces.Helpers;
+using OrderBouncer.GoogleDrive.Interfaces.Services;
 using OrderBouncer.GoogleDrive.Interfaces.UseCases;
 using OrderBouncer.GoogleDrive.Repositories;
 using OrderBouncer.GoogleDrive.Services;
@@ -51,6 +51,11 @@ public static class GoogleDrive
         services.AddScoped(typeof(IOneToManyUseCase<>), typeof(OneToManyUseCase<>));
         services.AddScoped(typeof(IManyToOneUseCase<>), typeof(ManyToOneUseCase<>));
         services.AddScoped(typeof(IManyToManyUseCase<>), typeof(ManyToManyUseCase<>));
+
+        services.AddScoped<IGoogleDriveArchitector, GoogleDriveArchitector>();
+        services.AddScoped<IArchitectorHelperService, ArchitectorHelperService>();
+
+        services.AddScoped<IGoogleDriveEngine, GoogleDriveEngine>();
         return services;
     }
 }
