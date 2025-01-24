@@ -2,7 +2,6 @@ using System;
 using System.Text.Json.Serialization;
 using OrderBouncer.Domain.DTOs.Base;
 using OrderBouncer.GoogleDrive.Constants;
-using OrderBouncer.GoogleDrive.DTOs;
 using OrderBouncer.GoogleDrive.Interfaces;
 using OrderBouncer.GoogleDrive.Interfaces.Architectors;
 using OrderBouncer.GoogleDrive.Interfaces.Helpers;
