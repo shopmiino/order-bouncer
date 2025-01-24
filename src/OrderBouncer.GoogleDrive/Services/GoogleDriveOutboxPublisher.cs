@@ -23,15 +23,4 @@ public class GoogleDriveOutboxPublisher : IOutboxPublisher
     {
         await _engine.UploadOrder(dto, cancellationToken);
     }
-
-    public Task PublishBytesAsync(byte[] fileContent, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task PublishPathAsync(string filePath, CancellationToken cancellationToken)
-    {
-        //string id = await _repository.CreateFolder("denemeic");
-        //await _repository.UploadFile(filePath, id);
-    }
 }
