@@ -33,6 +33,7 @@
     <Folder Include="Customizations\Services\" />
     <Folder Include="Customizations\TestData\" />
     <Folder Include="Customizations\UseCases\" />
+    <Folder Include="Fixtures/Extensions/" />
     <Folder Include="UnitTests\Repositories\" />
     <Folder Include="UnitTests\Services\" />
     <Folder Include="UnitTests\UseCases\" />
