@@ -2,7 +2,7 @@ using System;
 
 namespace OrderBouncer.GoogleDrive.Tests.Fixtures.UseCases;
 
-public class ManyToManyUseCaseFixture
+public class UseCaseFixture
 {
 
 }
