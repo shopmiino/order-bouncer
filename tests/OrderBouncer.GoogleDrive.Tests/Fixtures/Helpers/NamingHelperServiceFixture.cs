@@ -1,6 +1,6 @@
 using System;
 
-namespace OrderBouncer.GoogleDrive.Tests.Fixtures;
+namespace OrderBouncer.GoogleDrive.Tests.Fixtures.Helpers;
 
 public class NamingHelperServiceFixture
 {
