@@ -28,13 +28,13 @@ public class ArchitectorHelperService : IArchitectorHelperService
         switch (type)
         {
             case FolderNamesEnum.Accessory:
-                return prod => prod.Accessories as ICollection<BaseDto>;
+                return prod => prod.Accessories?.Cast<BaseDto>().ToList();
             case FolderNamesEnum.Pet:
-                return prod => prod.Pets as ICollection<BaseDto>;
+                return prod => prod.Pets?.Cast<BaseDto>().ToList();
             case FolderNamesEnum.Figure:
-                return prod => prod.Figures as ICollection<BaseDto>;
+                return prod => prod.Figures?.Cast<BaseDto>().ToList();
             case FolderNamesEnum.Keychain:
-                return prod => prod.Keychains as ICollection<BaseDto>;
+                return prod => prod.Keychains?.Cast<BaseDto>().ToList();
             default:
                 return _ => throw new ArgumentException("Error while setting collection for products");
         }
@@ -43,7 +43,8 @@ public class ArchitectorHelperService : IArchitectorHelperService
     public async Task Generate<T>(ICollection<T>? collection, FolderNamesEnum type, string parentId) where T : ProductDto
     {
         if(collection is null) return;
-
+        if(collection.Count <= 0) return;
+        
         Func<ProductDto, ICollection<BaseDto>?> coll = CollectionInitializer(type);
         int productCount = GetCount(collection);
 

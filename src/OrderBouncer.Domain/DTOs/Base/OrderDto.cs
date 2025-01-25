@@ -6,6 +6,7 @@ public record class OrderDto
     public ICollection<ProductDto>? Products;
     public string? Note;
     
+    public OrderDto(){}
     public OrderDto(string shopifyOrderId, ICollection<ProductDto>? products, string? note = null){
         ShopifyOrderID = shopifyOrderId;
         Products = products;
