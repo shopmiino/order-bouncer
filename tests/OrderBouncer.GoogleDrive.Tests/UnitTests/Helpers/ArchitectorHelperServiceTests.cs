@@ -1,10 +1,12 @@
 using System;
 using AutoFixture;
 using OrderBouncer.Domain.DTOs.Base;
+using OrderBouncer.GoogleDrive.Constants;
 using OrderBouncer.GoogleDrive.Interfaces;
 using OrderBouncer.GoogleDrive.Interfaces.Helpers;
 using OrderBouncer.GoogleDrive.Interfaces.UseCases;
 using OrderBouncer.GoogleDrive.Tests.Fixtures;
+using OrderBouncer.GoogleDrive.Tests.Fixtures.Helpers;
 
 namespace OrderBouncer.GoogleDrive.Tests.UnitTests.Helpers;
 
@@ -29,5 +31,14 @@ public class ArchitectorHelperServiceTests
         
     
         // Assert
+    }
+
+    [Theory]
+    [InlineData(FolderNamesEnum.Accessory)]
+    [InlineData(FolderNamesEnum.Pet)]
+    [InlineData(FolderNamesEnum.Keychain)]
+    [InlineData(FolderNamesEnum.Figure)]
+    public void CollectionInitializer_ValidFolderNamesEnum_ReturnsNonNullICollectionBaseDto(FolderNamesEnum name){
+        
     }
 }
