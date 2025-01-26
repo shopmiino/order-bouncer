@@ -146,4 +146,41 @@ public class ArchitectorHelperServiceTests
         mockManyToMany.Verify(x => x.ExecuteAsync(It.IsAny<FolderNamesEnum>(), baseColl, It.IsAny<IList<string>>(), It.IsAny<CreationModes>()), Times.Exactly(1));  
     }
 
+    [Theory]
+    [InlineData(FolderNamesEnum.Product)]
+    [InlineData(FolderNamesEnum.Images)]
+    [InlineData(FolderNamesEnum.Id)]
+    public async Task Generate_InvalidEnums_ThrowsArgument(FolderNamesEnum name){
+        Faker faker = new();
+
+        ProductDto productDto = TestDataGenerator.ProductDtoFaker.Generate();
+        ICollection<ProductDto> productDtos = [productDto];
+
+        await Assert.ThrowsAsync<ArgumentException>(async () => await _actualService.Generate<ProductDto>(productDtos, name, faker.Random.Guid().ToString()));
+    }
+
+    [Fact]
+    public async Task GenerateGeneric_NegativeCount_ThrowsArgument(){
+        Faker faker = new();
+
+        await Assert.ThrowsAsync<ArgumentException>(async () => await _actualService.GenerateGeneric(faker.Random.Int(-5, -1), FolderNamesEnum.Pet, faker.Random.Guid().ToString()));
+    }
+
+    [Theory]
+    [InlineData(FolderNamesEnum.Accessory)]
+    public async Task GenerateGeneric_ValidEnums_ReturnsStringAsync(FolderNamesEnum name){
+        Faker faker = new();
+
+        var result = await _actualService.GenerateGeneric(faker.Random.Int(1, 10), name, faker.Random.Guid().ToString());
+
+        Assert.IsType<string>(result);
+    }
+
+    [Theory]
+    [InlineData(FolderNamesEnum.Product)]
+    public async Task GenerateGeneric_InvalidEnums_ThrowsArgument(FolderNamesEnum name){
+        Faker faker = new();
+
+        await Assert.ThrowsAsync<ArgumentException>(async () => await _actualService.GenerateGeneric(faker.Random.Int(1, 10), name, faker.Random.Guid().ToString()));
+    }
 }

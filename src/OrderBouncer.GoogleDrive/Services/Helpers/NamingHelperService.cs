@@ -18,6 +18,8 @@ public class NamingHelperService : INamingHelperService
     }
 
     public string GenerateFolderName(FolderNamesEnum name, int count){
+        if(name == FolderNamesEnum.Product) throw new ArgumentException("Invalid Enum type for generating folder names");
+        
         string countName = count <= 0 ? "(Yok)" : $"({count} Tane)";
         return $"{FolderNames.Names[name]} {countName}";
     }

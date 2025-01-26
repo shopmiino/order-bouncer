@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderBouncer.GoogleDrive.Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedTestsKernel", "tests\SharedTestsKernel\SharedTestsKernel.csproj", "{5D336390-30FA-43F7-94BC-030F0A7509DF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderBouncer.GoogleSheets.Tests", "tests\OrderBouncer.GoogleSheets.Tests\OrderBouncer.GoogleSheets.Tests.csproj", "{B79904BF-D1FC-401E-A6C6-57D113EB2267}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +69,10 @@ Global
 		{5D336390-30FA-43F7-94BC-030F0A7509DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5D336390-30FA-43F7-94BC-030F0A7509DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5D336390-30FA-43F7-94BC-030F0A7509DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B79904BF-D1FC-401E-A6C6-57D113EB2267}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B79904BF-D1FC-401E-A6C6-57D113EB2267}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B79904BF-D1FC-401E-A6C6-57D113EB2267}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B79904BF-D1FC-401E-A6C6-57D113EB2267}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -81,5 +87,6 @@ Global
 		{A4BFDF28-3A6C-43D6-B69F-05C0D8273F46} = {55ABFE5C-2170-4662-82BD-4177EE8DC643}
 		{A792824C-CA40-4CFC-8A4F-758449CCE9A9} = {89FC9541-9BA0-4F7A-9E63-796844BBF25F}
 		{5D336390-30FA-43F7-94BC-030F0A7509DF} = {89FC9541-9BA0-4F7A-9E63-796844BBF25F}
+		{B79904BF-D1FC-401E-A6C6-57D113EB2267} = {89FC9541-9BA0-4F7A-9E63-796844BBF25F}
 	EndGlobalSection
 EndGlobal

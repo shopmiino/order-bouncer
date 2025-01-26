@@ -66,6 +66,9 @@ public class ArchitectorHelperService : IArchitectorHelperService
 
     public async Task<string> GenerateGeneric(int count, FolderNamesEnum name, string? parentId = null)
     {
+        if(count < 0) throw new ArgumentException("Count can not be less than zero");
+        if(name == FolderNamesEnum.Product) throw new ArgumentException("Can not create folder for Product");
+
         string folderName = _namingHelper.GenerateFolderName(name, count);  //e.g. Evcil Hayvanlar (2 Tane)
         string entityFolderId = await _repository.CreateFolder(folderName, parentId);
 
