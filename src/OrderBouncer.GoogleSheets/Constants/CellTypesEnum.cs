@@ -8,5 +8,6 @@ public enum CellTypesEnum
     Boolean,
     Empty,
     Date,
+    Diagram,
     
 }

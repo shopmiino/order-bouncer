@@ -2,6 +2,7 @@ namespace OrderBouncer.GoogleSheets.DTOs;
 
 public record class OrderRowDto
 {
+    public CellDto Diagram {get;}
     public CellDto Date { get; }
     public CellDto OrderCode { get; }
     public CellDto SkinColor { get; }
@@ -25,7 +26,7 @@ public record class OrderRowDto
     public CellDto LatestShipmentDate { get; }
     public CellDto ShipmentStatus { get; }
 
-    public OrderRowDto(CellDto date, CellDto orderCode, CellDto skinColor, CellDto hairColor, CellDto gender, CellDto keychainType, CellDto headModel, CellDto bodyModel, CellDto headPrint, CellDto bodyPrint, CellDto printReceived, CellDto sticker, CellDto extraNotes, CellDto urgent, CellDto accessory, CellDto accessoryPrint, CellDto pet, CellDto petPrint, CellDto keychain, CellDto keychainPrint, CellDto latestShipmentDate, CellDto shipmentStatus){
+    public OrderRowDto(CellDto diagram, CellDto date, CellDto orderCode, CellDto skinColor, CellDto hairColor, CellDto gender, CellDto keychainType, CellDto headModel, CellDto bodyModel, CellDto headPrint, CellDto bodyPrint, CellDto printReceived, CellDto sticker, CellDto extraNotes, CellDto urgent, CellDto accessory, CellDto accessoryPrint, CellDto pet, CellDto petPrint, CellDto keychain, CellDto keychainPrint, CellDto latestShipmentDate, CellDto shipmentStatus){
         Date = date;
         OrderCode = orderCode;
         SkinColor = skinColor;
@@ -48,5 +49,6 @@ public record class OrderRowDto
         KeychainPrint = keychainPrint;
         LatestShipmentDate = latestShipmentDate;
         ShipmentStatus = shipmentStatus;
+        Diagram = diagram;
     }
 }
