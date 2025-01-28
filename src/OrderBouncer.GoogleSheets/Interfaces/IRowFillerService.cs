@@ -1,11 +1,10 @@
 using System;
-using OrderBouncer.Domain.DTOs.Base;
 using OrderBouncer.GoogleSheets.DTOs;
 using OrderBouncer.GoogleSheets.Entities;
 
 namespace OrderBouncer.GoogleSheets.Interfaces;
 
-public interface IRowDataService
+public interface IRowFillerService
 {
-    public Task<IList<FlattenRowDto>> Flatten(OrderDto dto);
+    public OrderRow FillWithFlatten(FlattenRowDto dto, OrderRow baseRow);
 }

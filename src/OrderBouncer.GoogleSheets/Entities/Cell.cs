@@ -34,16 +34,23 @@ public class Cell
     }
 
     public Cell MarkAsDiagram(DiagramTypesEnum diagram){
+        Name = "Diagram";
         CellType = CellTypesEnum.Diagram;
         DiagramType = diagram;
         return this;
     }
 
     public Cell MarkAsDate(DateTime date){
+        Name = "Date";
         CellType = CellTypesEnum.Date;
         InnerText = date.ToString();
         return this;
     }
 
-    
+    public Cell MarkAsOrderCode(string code){
+        Name = "OrderCode";
+        CellType = CellTypesEnum.OrderCode;
+        InnerText = code;
+        return this;
+    }
 }

@@ -7,5 +7,7 @@ public enum ColorsEnum
     Blue,
     Yellow,
     White,
-    Black
+    Black,
+    Gray,
+    LightGray,
 }

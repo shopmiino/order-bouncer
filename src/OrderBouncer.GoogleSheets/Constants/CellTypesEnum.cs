@@ -9,5 +9,6 @@ public enum CellTypesEnum
     Empty,
     Date,
     Diagram,
+    OrderCode,
     
 }

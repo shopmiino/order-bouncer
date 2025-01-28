@@ -16,6 +16,8 @@ internal static class ColorsMappings
         {ColorsEnum.Yellow, new(ColorsEnum.Yellow.ToString(), 1f, 1f, 1f, 1f)},
         {ColorsEnum.White, new(ColorsEnum.White.ToString(), 1f, 1f, 1f, 1f)},
         {ColorsEnum.Black, new(ColorsEnum.Black.ToString(), 0f, 0f, 0f, 0f)},
+        {ColorsEnum.Gray, new(ColorsEnum.Gray.ToString(), 0f, 0f, 0f, 0f)},
+        {ColorsEnum.LightGray, new(ColorsEnum.LightGray.ToString(), 0f, 0f, 0f, 0f)},
     };
     public static Google.Apis.Sheets.v4.Data.Color GetSheetsColor(ColorsEnum color){
         Color temp = Colors[color];
