@@ -6,5 +6,6 @@ public enum EntityTypeEnum
     Pet,
     Figure,
     Accessory,
-    Order
+    Order,
+    Keychain
 }
