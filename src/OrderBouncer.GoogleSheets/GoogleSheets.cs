@@ -32,6 +32,8 @@ public static class GoogleSheets
         
         services.AddScoped<IOutboxPublisher, GoogleSheetsOutboxPublisher>();
         services.AddScoped<IGoogleSheetsRepository, GoogleSheetsRepository>();
+        
+        services.AddTransient<IRowFactory, RowFactory>();
         return services;
     }
 }

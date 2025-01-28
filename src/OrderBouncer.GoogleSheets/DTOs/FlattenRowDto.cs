@@ -10,6 +10,7 @@ public record class FlattenRowDto
     public bool HasAccessory {get;}
     public bool HasPet {get;}
     public bool HasKeychain {get;}
+    public bool HasFigure {get;}
 
     public FlattenRowDto(string orderCode, DateTime date, RowTypeEnum rowType = RowTypeEnum.Figure, bool hasAccessory = false, bool hasPet = false, bool hasKeychain = false){
         OrderCode = orderCode;
