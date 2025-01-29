@@ -1,8 +1,8 @@
 using System;
 using OrderBouncer.GoogleSheets.Constants;
-using OrderBouncer.GoogleSheets.Interfaces;
+using OrderBouncer.GoogleSheets.Interfaces.Helpers;
 
-namespace OrderBouncer.GoogleSheets.Services;
+namespace OrderBouncer.GoogleSheets.Services.Helpers;
 
 public class RowFillerHelperService : IRowFillerHelperService
 {

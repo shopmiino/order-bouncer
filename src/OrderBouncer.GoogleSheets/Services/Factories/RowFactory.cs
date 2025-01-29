@@ -2,9 +2,10 @@ using System;
 using OrderBouncer.GoogleSheets.Constants;
 using OrderBouncer.GoogleSheets.DTOs;
 using OrderBouncer.GoogleSheets.Entities;
-using OrderBouncer.GoogleSheets.Interfaces;
+using OrderBouncer.GoogleSheets.Interfaces.Factories;
+using OrderBouncer.GoogleSheets.Interfaces.Services;
 
-namespace OrderBouncer.GoogleSheets.Services;
+namespace OrderBouncer.GoogleSheets.Services.Factories;
 
 public class RowFactory : IRowFactory
 {

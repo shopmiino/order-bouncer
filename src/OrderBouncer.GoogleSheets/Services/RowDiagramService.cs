@@ -1,6 +1,6 @@
 using System;
 using OrderBouncer.GoogleSheets.Entities;
-using OrderBouncer.GoogleSheets.Interfaces;
+using OrderBouncer.GoogleSheets.Interfaces.Services;
 
 namespace OrderBouncer.GoogleSheets.Services;
 

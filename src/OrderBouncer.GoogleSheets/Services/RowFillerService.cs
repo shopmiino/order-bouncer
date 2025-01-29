@@ -1,8 +1,8 @@
 using System;
-using OrderBouncer.GoogleSheets.Constants;
 using OrderBouncer.GoogleSheets.DTOs;
 using OrderBouncer.GoogleSheets.Entities;
-using OrderBouncer.GoogleSheets.Interfaces;
+using OrderBouncer.GoogleSheets.Interfaces.Helpers;
+using OrderBouncer.GoogleSheets.Interfaces.Services;
 using OrderBouncer.GoogleSheets.Models;
 
 namespace OrderBouncer.GoogleSheets.Services;
@@ -14,6 +14,11 @@ public class RowFillerService : IRowFillerService
     public RowFillerService(IRowFillerHelperService helper)
     {
         _helper = helper;
+    }
+
+    public FlattenRowDto FillFlattenWithElements(RowElements elements, FlattenRowDto flatten)
+    {
+        throw new NotImplementedException();
     }
 
     public OrderRow FillWithFlatten(FlattenRowDto dto, OrderRow baseRow)
@@ -35,9 +40,5 @@ public class RowFillerService : IRowFillerService
         baseRow.SetOrderCode(orderCodeCell);
 
         return baseRow;
-    }
-
-    public FlattenRowDto FillFlattenWithElements(RowElements elements){
-        
     }
 }

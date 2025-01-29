@@ -1,7 +1,11 @@
 using System;
+using System.Reflection;
+using Google.Apis.Sheets.v4.Data;
 using OrderBouncer.Domain.DTOs.Base;
 using OrderBouncer.GoogleSheets.DTOs;
+using OrderBouncer.GoogleSheets.Entities;
 using OrderBouncer.GoogleSheets.Interfaces;
+using OrderBouncer.GoogleSheets.Interfaces.Helpers;
 using OrderBouncer.GoogleSheets.Interfaces.Services;
 using OrderBouncer.GoogleSheets.Models;
 
@@ -10,9 +14,23 @@ namespace OrderBouncer.GoogleSheets.Services;
 public class RowConverterService : IRowConverterService
 {
     private readonly IRowFillerService _filler;
-    public RowConverterService(IRowFillerService filler){
+    private readonly IRowConverterHelperService _helper;
+    public RowConverterService(IRowFillerService filler, IRowConverterHelperService helper){
         _filler = filler;
+        _helper = helper;
     }
+
+    public IList<CellData> ConvertToCellDatas(OrderRow row)
+    {
+        List<CellData> cellDatas = [];
+        
+        foreach(Cell cell in row.GetCellsInOrder()){
+            cellDatas.Add(_helper.CellToSpreadSheetCell(cell));
+        }
+        
+        return cellDatas;
+    }
+
     public ICollection<FlattenRowDto> ConvertToFlatten(Stack<RowElements> elements, OrderDto orderDto)
     {
         string code = orderDto.ShopifyOrderID;

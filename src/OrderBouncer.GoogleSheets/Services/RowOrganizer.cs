@@ -1,9 +1,8 @@
 using System;
 using OrderBouncer.Domain.DTOs.Base;
-using OrderBouncer.GoogleSheets.DTOs;
-using OrderBouncer.GoogleSheets.Interfaces;
+using OrderBouncer.GoogleSheets.Interfaces.Helpers;
+using OrderBouncer.GoogleSheets.Interfaces.Services;
 using OrderBouncer.GoogleSheets.Models;
-using SharedKernel.Enums;
 
 namespace OrderBouncer.GoogleSheets.Services;
 
