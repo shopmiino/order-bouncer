@@ -1,6 +1,7 @@
 using System;
 using OrderBouncer.Domain.DTOs.Base;
 using OrderBouncer.GoogleSheets.Interfaces;
+using OrderBouncer.GoogleSheets.Models;
 using SharedKernel.Enums;
 
 namespace OrderBouncer.GoogleSheets.Services;
@@ -26,5 +27,31 @@ public class RowOrganizerHelper : IRowOrganizerHelper
         keyValuePairs.Add(EntityTypeEnum.Figure, GetCount(pDto.Figures));
 
         return keyValuePairs;
+    }
+
+    public RowElements GetElementsHasAtLeastOne(Dictionary<EntityTypeEnum, int> kvps)
+    {
+        var enums = kvps.Where(k => k.Value >= 1).Select(k => k.Key).ToArray();
+
+        foreach(EntityTypeEnum entityType in enums){
+            kvps[entityType] -= 1;
+        }
+
+        return new RowElements{Elements = enums, Count = 1};
+    }
+
+    public KeyValuePair<EntityTypeEnum, int>? GetHighestCountElement(Dictionary<EntityTypeEnum, int> kvps)
+    {
+        kvps.Where(k => k.Value >= 1).Max(a => a.Value);
+
+        KeyValuePair<EntityTypeEnum, int>? kvp = null;
+
+        try{
+            kvp = kvps.Where(k => k.Value >= 1).MaxBy(a => a.Value);
+        } catch (Exception ex){
+
+        }
+
+        return kvp;
     }
 }
