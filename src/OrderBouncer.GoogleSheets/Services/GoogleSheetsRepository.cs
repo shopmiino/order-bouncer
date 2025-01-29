@@ -20,7 +20,7 @@ public class GoogleSheetsRepository : IGoogleSheetsRepository
         ValueRange valueRange = new ValueRange{
             Values = [rowElements]
         };
-
+        
         var request = _sheets.Spreadsheets.Values.Append(valueRange, _configuration["Settings:Google:Sheets:OrderTrackSpreadSheetId"], range);
         request.ValueInputOption = SpreadsheetsResource.ValuesResource.AppendRequest.ValueInputOptionEnum.RAW;
         await request.ExecuteAsync();
