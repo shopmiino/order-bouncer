@@ -3,6 +3,7 @@ using OrderBouncer.Domain.DTOs.Base;
 using OrderBouncer.GoogleSheets.DTOs;
 using OrderBouncer.GoogleSheets.Entities;
 using OrderBouncer.GoogleSheets.Interfaces;
+using OrderBouncer.GoogleSheets.Models;
 
 namespace OrderBouncer.GoogleSheets.Services;
 
@@ -22,7 +23,10 @@ public class GoogleSheetsEngine : IGoogleSheetsEngine
     {
         IList<OrderRow> orderRows = [];
 
-        ICollection<FlattenRowDto> flattenRows = await _organizer.Organize(dto, cancellationToken);
+        ICollection<FlattenRowDto> flattenRows = _organizer.Organize(dto, cancellationToken);
+        Stack<RowElements> organizedElements = _organizer.Organize(dto, cancellationToken);
+
+        
 
         foreach(FlattenRowDto flat in flattenRows){
             OrderRow orderRow = _rowFactory.Create().From(flat).Build(); 

@@ -33,11 +33,19 @@ public class RowOrganizerHelper : IRowOrganizerHelper
     {
         var enums = kvps.Where(k => k.Value >= 1).Select(k => k.Key).ToArray();
 
-        foreach(EntityTypeEnum entityType in enums){
-            kvps[entityType] -= 1;
+        return new RowElements{Elements = enums, Count = 1};
+    }
+
+    public bool RemoveOneFromEach(Dictionary<EntityTypeEnum, int> kvps){
+        bool changed = false;
+        foreach(var kvp in kvps){
+            if(kvp.Value < 1) continue;
+
+            kvps[kvp.Key] -= 1;
+            changed = true;
         }
 
-        return new RowElements{Elements = enums, Count = 1};
+        return changed;
     }
 
     public KeyValuePair<EntityTypeEnum, int>? GetHighestCountElement(Dictionary<EntityTypeEnum, int> kvps)

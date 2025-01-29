@@ -11,6 +11,6 @@ public interface IRowOrganizerHelper
 
     public Dictionary<EntityTypeEnum, int> GetElementCounts(OrderDto dto);
     public RowElements GetElementsHasAtLeastOne(Dictionary<EntityTypeEnum, int> kvps);
-
+    public bool RemoveOneFromEach(Dictionary<EntityTypeEnum, int> kvps);
     public KeyValuePair<EntityTypeEnum,int>? GetHighestCountElement(Dictionary<EntityTypeEnum, int> kvps);
 }

@@ -3,6 +3,7 @@ using OrderBouncer.GoogleSheets.Constants;
 using OrderBouncer.GoogleSheets.DTOs;
 using OrderBouncer.GoogleSheets.Entities;
 using OrderBouncer.GoogleSheets.Interfaces;
+using OrderBouncer.GoogleSheets.Models;
 
 namespace OrderBouncer.GoogleSheets.Services;
 
@@ -34,5 +35,9 @@ public class RowFillerService : IRowFillerService
         baseRow.SetOrderCode(orderCodeCell);
 
         return baseRow;
+    }
+
+    public FlattenRowDto FillFlattenWithElements(RowElements elements){
+        
     }
 }

@@ -10,24 +10,31 @@ namespace OrderBouncer.GoogleSheets.Services;
 public class RowOrganizer : IRowOrganizerService
 {
     private readonly IRowOrganizerHelper _helper;
-    
-    private Stack<RowElements> _rowElements;
-    public RowOrganizer(IRowOrganizerHelper helper){
+
+    public RowOrganizer(IRowOrganizerHelper helper)
+    {
         _helper = helper;
     }
-    public Task<ICollection<FlattenRowDto>> Organize(OrderDto dto, CancellationToken cancellationToken)
+    public Stack<RowElements> Organize(OrderDto dto, CancellationToken cancellationToken)
     {
+        Stack<RowElements> rowElements = [];
+
         var kvps = _helper.GetElementCounts(dto);
         var highestKvp = _helper.GetHighestCountElement(kvps);
 
-        if(highestKvp is null) return null;
+        if (highestKvp is null) return null;
 
-        for(int i = 0; i < highestKvp.Value.Value; i++){
-            _rowElements.Push(_helper.GetElementsHasAtLeastOne(kvps));
+
+        for (int i = 0; i < highestKvp.Value.Value; i++)
+        {
+            RowElements atLeastHasOne = _helper.GetElementsHasAtLeastOne(kvps);
+            _helper.RemoveOneFromEach(kvps);
+
+            rowElements.Push(atLeastHasOne);
         }
 
-        
-        
+
+        return rowElements;
     }
 
 }
