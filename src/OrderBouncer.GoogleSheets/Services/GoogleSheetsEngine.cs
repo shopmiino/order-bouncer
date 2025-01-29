@@ -37,7 +37,7 @@ public class GoogleSheetsEngine : IGoogleSheetsEngine
             orderRows.Add(orderRow);
         }
 
-        orderRows = await _diagram.MarkRowDiagrams(orderRows);
+        orderRows = _diagram.MarkRowDiagrams(orderRows);
         foreach(OrderRow row in orderRows){
             await _repo.AddRowV2(row);
         }
