@@ -2,6 +2,7 @@ using System;
 using System.Reflection;
 using Google.Apis.Sheets.v4.Data;
 using OrderBouncer.Domain.DTOs.Base;
+using OrderBouncer.GoogleSheets.Constants;
 using OrderBouncer.GoogleSheets.DTOs;
 using OrderBouncer.GoogleSheets.Entities;
 using OrderBouncer.GoogleSheets.Interfaces;
@@ -37,8 +38,9 @@ public class RowConverterService : IRowConverterService
         DateTime date = orderDto.Date ?? DateTime.Now;
         
         ICollection<FlattenRowDto> flattens = [];
+        int elementCount = elements.Count;
 
-        for(int i = 0; i < elements.Count; i++){
+        for(int i = 0; i < elementCount; i++){
             var element = elements.Pop();
             var flatten = _filler.FillFlattenWithElements(element, new(code, date));
 

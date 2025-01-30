@@ -9,11 +9,11 @@ namespace OrderBouncer.GoogleSheets.Services.Factories;
 
 public class RowFactory : IRowFactory
 {
-    private readonly IRowFillerService _converter;
+    private readonly IRowFillerService _filler;
 
-    public RowFactory(IRowFillerService converter)
+    public RowFactory(IRowFillerService filler)
     {
-        _converter = converter;
+        _filler = filler;
     }
 
     private FlattenRowDto? _internalFlattenRow = null;
@@ -30,7 +30,7 @@ public class RowFactory : IRowFactory
             throw new InvalidOperationException("Can not create an instance from null, internal reference row is null. Probably you forgot to call Create() method in top of the chain");
         }
 
-        return _converter.FillWithFlatten(_internalFlattenRow, _internalRow);
+        return _filler.FillWithFlatten(_internalFlattenRow, _internalRow);
     }
 
 

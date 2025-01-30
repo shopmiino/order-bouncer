@@ -25,16 +25,14 @@
   <ItemGroup>
     <Folder Include="Extensions\" />
     <Folder Include="Fixtures\Factories\" />
-    <Folder Include="Fixtures\Helpers\" />
     <Folder Include="Fixtures\Repositories\" />
     <Folder Include="UnitTests\Factories\" />
-    <Folder Include="UnitTests\Helpers\" />
     <Folder Include="UnitTests\Repositories\" />
-    <Folder Include="UnitTests\Services\" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\OrderBouncer.GoogleSheets\OrderBouncer.GoogleSheets.csproj" />
+    <ProjectReference Include="..\SharedTestsKernel\SharedTestsKernel.csproj" />
   </ItemGroup>
 
 </Project>

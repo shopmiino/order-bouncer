@@ -32,18 +32,14 @@ public class GoogleSheetsRepository : IGoogleSheetsRepository
         await request.ExecuteAsync();
     }
 
-    public async Task AddRowV2(OrderRow orderRow, string? Range = null)
+    public async Task AddRowV2(IList<RowData> rowDatas, string? Range = null)
     {
-        RowData rowData = new RowData{
-            Values = _converter.ConvertToCellDatas(orderRow),
-        };
-
         BatchUpdateSpreadsheetRequest request = new(){
             Requests = new List<Request>{
                 new Request{
                     AppendCells = new AppendCellsRequest{
                         SheetId = Convert.ToInt32(_configuration["Settings:Google:Sheets:OrderTrackSpreadSheetGid"]),
-                        Rows = [rowData],
+                        Rows = rowDatas,
                         Fields = "userEnteredValue,userEnteredFormat.backgroundColor"
                     }
                 }

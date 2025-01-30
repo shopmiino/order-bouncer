@@ -50,7 +50,7 @@ public class RowOrganizerHelper : IRowOrganizerHelper
 
     public KeyValuePair<EntityTypeEnum, int>? GetHighestCountElement(Dictionary<EntityTypeEnum, int> kvps)
     {
-        kvps.Where(k => k.Value >= 1).Max(a => a.Value);
+        //kvps.Where(k => k.Value >= 1).Max(a => a.Value);
 
         KeyValuePair<EntityTypeEnum, int>? kvp = null;
 

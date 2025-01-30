@@ -1,4 +1,5 @@
 using System;
+using Google.Apis.Sheets.v4.Data;
 using OrderBouncer.Domain.DTOs.Base;
 using OrderBouncer.GoogleSheets.DTOs;
 using OrderBouncer.GoogleSheets.Entities;
@@ -37,9 +38,20 @@ public class GoogleSheetsEngine : IGoogleSheetsEngine
             orderRows.Add(orderRow);
         }
 
+
+        orderRows = [.. orderRows.Reverse()];
         orderRows = _diagram.MarkRowDiagrams(orderRows);
+        
+        List<RowData> rowDatas = [];
+
         foreach(OrderRow row in orderRows){
-            await _repo.AddRowV2(row);
+            RowData rowData = new RowData{
+                Values = _converter.ConvertToCellDatas(row),
+            };
+
+            rowDatas.Add(rowData);
         }
+
+        await _repo.AddRowV2(rowDatas);
     }
 }

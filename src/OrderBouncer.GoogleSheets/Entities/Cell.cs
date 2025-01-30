@@ -37,13 +37,14 @@ public class Cell
         Name = "Diagram";
         CellType = CellTypesEnum.Diagram;
         DiagramType = diagram;
+        InnerText = DiagramMappings.GetDiagramString(diagram);
         return this;
     }
 
     public Cell MarkAsDate(DateTime date){
         Name = "Date";
         CellType = CellTypesEnum.Date;
-        InnerText = date.ToString();
+        InnerText = date.ToString("dd/MM/yyyy");
         return this;
     }
 
@@ -51,6 +52,11 @@ public class Cell
         Name = "OrderCode";
         CellType = CellTypesEnum.OrderCode;
         InnerText = code;
+        return this;
+    }
+
+    public Cell SetStandardColor(ColorsEnum color){
+        StandardColor = color;
         return this;
     }
 }

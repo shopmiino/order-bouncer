@@ -25,9 +25,9 @@ public class RowFillerService : IRowFillerService
         bool hasPet = elements.Elements.Contains(EntityTypeEnum.Pet);
         bool hasFigure = elements.Elements.Contains(EntityTypeEnum.Figure);
 
-        RowTypeEnum rowType = hasFigure ? RowTypeEnum.Figure : hasKeychain ? RowTypeEnum.Keychain : RowTypeEnum.Default;
+        RowTypeEnum rowType = hasKeychain ? hasFigure ? RowTypeEnum.Figure : RowTypeEnum.Keychain : RowTypeEnum.Default;
         
-        return new FlattenRowDto(flatten.OrderCode, flatten.Date, rowType, hasAccessory, hasPet, hasKeychain);
+        return new FlattenRowDto(flatten.OrderCode, flatten.Date, rowType, hasAccessory, hasPet, hasKeychain, hasFigure);
     }
 
     public OrderRow FillWithFlatten(FlattenRowDto dto, OrderRow baseRow)
@@ -47,6 +47,12 @@ public class RowFillerService : IRowFillerService
         baseRow.SetKeychain(keychainCell);
         baseRow.SetDate(dateCell);
         baseRow.SetOrderCode(orderCodeCell);
+
+        baseRow.ShipmentStatus.SetStandardColor(ColorsEnum.Red);
+
+        //some fucked up logic, god bless future myself when I see that
+        ColorsEnum keychainTypeColor = dto.HasKeychain ? dto.HasFigure ? ColorsEnum.Blue : ColorsEnum.Green : ColorsEnum.White;
+        baseRow.KeychainType.SetStandardColor(keychainTypeColor);
 
         return baseRow;
     }

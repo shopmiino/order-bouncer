@@ -11,10 +11,15 @@ public class RowDiagramService : IRowDiagramService
         int rowCount = rows.Count;
         int middleCount = rowCount - 2;
 
+        if(rowCount == 1){
+            rows[0].Diagram.MarkAsDiagram(Constants.DiagramTypesEnum.Single);
+            return rows;
+        }
+
         rows[0].Diagram.MarkAsDiagram(Constants.DiagramTypesEnum.Opening);
 
 
-        for (int i = 1; i < middleCount; i++)
+        for (int i = 1; i <= middleCount; i++)
         {
             rows[i].Diagram.MarkAsDiagram(Constants.DiagramTypesEnum.Straight);
         }
