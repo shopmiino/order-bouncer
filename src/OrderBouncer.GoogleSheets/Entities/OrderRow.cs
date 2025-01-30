@@ -102,6 +102,16 @@ public class OrderRow
         return this;
     }
 
+    public OrderRow SetLatestShipmentDate(Cell cell){
+        if (cell.CellType != CellTypesEnum.Date || cell.InnerText is null)
+        {
+            throw new InvalidOperationException("Can not set Latest Shipment Date Cell with non-Date Cell");
+        }
+
+        LatestShipmentDate = cell;
+        return this;
+    }
+
     public OrderRow SetOrderCode(Cell cell)
     {
         if (cell.CellType != CellTypesEnum.OrderCode || cell.InnerText is null)

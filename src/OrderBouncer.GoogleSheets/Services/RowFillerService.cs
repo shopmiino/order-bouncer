@@ -39,6 +39,9 @@ public class RowFillerService : IRowFillerService
         Cell dateCell = new("");
         dateCell.MarkAsDate(dto.Date);
 
+        Cell latestShipmentDateCell = new("");
+        latestShipmentDateCell.MarkAsDate(dto.Date.AddDays(10));
+
         Cell orderCodeCell = new("");
         orderCodeCell.MarkAsOrderCode(dto.OrderCode);
 
@@ -47,6 +50,41 @@ public class RowFillerService : IRowFillerService
         baseRow.SetKeychain(keychainCell);
         baseRow.SetDate(dateCell);
         baseRow.SetOrderCode(orderCodeCell);
+        baseRow.SetLatestShipmentDate(latestShipmentDateCell);
+
+        //standard colors of cells
+        
+        baseRow.PrintReceived.SetStandardColor(ColorsEnum.Red);
+        baseRow.Sticker.SetStandardColor(ColorsEnum.Red);
+
+        if(dto.HasAccessory){
+            baseRow.AccessoryPrint.SetStandardColor(ColorsEnum.Red);
+        }
+
+        if(dto.HasPet){
+            baseRow.PetPrint.SetStandardColor(ColorsEnum.Red);
+        }
+
+        if(dto.HasKeychain && dto.HasFigure){                          //Order has keychain and figure
+            baseRow.HeadModel.SetStandardColor(ColorsEnum.Red);
+            baseRow.BodyModel.SetStandardColor(ColorsEnum.Red);
+            baseRow.HeadPrint.SetStandardColor(ColorsEnum.Red);
+            baseRow.BodyPrint.SetStandardColor(ColorsEnum.Red);
+
+            baseRow.KeychainPrint.SetStandardColor(ColorsEnum.Red);
+
+        } else if(!dto.HasKeychain && dto.HasFigure){                  //Order just has figure
+            baseRow.HeadModel.SetStandardColor(ColorsEnum.Red);
+            baseRow.BodyModel.SetStandardColor(ColorsEnum.Red);
+            baseRow.HeadPrint.SetStandardColor(ColorsEnum.Red);
+            baseRow.BodyPrint.SetStandardColor(ColorsEnum.Red);
+
+        } else if(dto.HasKeychain && !dto.HasFigure){                  //Order just has keychain
+            baseRow.HeadModel.SetStandardColor(ColorsEnum.Red);
+            baseRow.HeadPrint.SetStandardColor(ColorsEnum.Red);
+
+            baseRow.KeychainPrint.SetStandardColor(ColorsEnum.Red);
+        }
 
         baseRow.ShipmentStatus.SetStandardColor(ColorsEnum.Red);
 
