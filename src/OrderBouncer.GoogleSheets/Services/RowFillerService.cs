@@ -1,9 +1,11 @@
 using System;
+using OrderBouncer.GoogleSheets.Constants;
 using OrderBouncer.GoogleSheets.DTOs;
 using OrderBouncer.GoogleSheets.Entities;
 using OrderBouncer.GoogleSheets.Interfaces.Helpers;
 using OrderBouncer.GoogleSheets.Interfaces.Services;
 using OrderBouncer.GoogleSheets.Models;
+using SharedKernel.Enums;
 
 namespace OrderBouncer.GoogleSheets.Services;
 
@@ -18,7 +20,14 @@ public class RowFillerService : IRowFillerService
 
     public FlattenRowDto FillFlattenWithElements(RowElements elements, FlattenRowDto flatten)
     {
-        throw new NotImplementedException();
+        bool hasAccessory = elements.Elements.Contains(EntityTypeEnum.Accessory);
+        bool hasKeychain = elements.Elements.Contains(EntityTypeEnum.Keychain);
+        bool hasPet = elements.Elements.Contains(EntityTypeEnum.Pet);
+        bool hasFigure = elements.Elements.Contains(EntityTypeEnum.Figure);
+
+        RowTypeEnum rowType = hasFigure ? RowTypeEnum.Figure : hasKeychain ? RowTypeEnum.Keychain : RowTypeEnum.Default;
+        
+        return new FlattenRowDto(flatten.OrderCode, flatten.Date, rowType, hasAccessory, hasPet, hasKeychain);
     }
 
     public OrderRow FillWithFlatten(FlattenRowDto dto, OrderRow baseRow)

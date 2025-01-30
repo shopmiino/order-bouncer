@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OrderBouncer.Application.DTOs;
 using OrderBouncer.Application.Interfaces.UseCases;
+using OrderBouncer.Domain.DTOs.Base;
 using OrderBouncer.Domain.Models;
 
 namespace OrderBouncer.Web.Controllers.v1
@@ -20,13 +21,13 @@ namespace OrderBouncer.Web.Controllers.v1
         }
 
         [HttpPost]
-        public async Task<IActionResult> Created([FromBody]JsonDocument orderJsonModel){
+        public async Task<IActionResult> Created([FromBody]OrderDto orderDto){
             //TODO: implement Cancellation Token 
-            await _orderCreated.ExecuteAsync(orderJsonModel, new CancellationToken());
+            await _orderCreated.ExecuteAsync(orderDto, new CancellationToken());
             //Order created
             //JsonNode ile bu stingden verileri extract et
             //Add to database and upload to google drive
-            return Ok(orderJsonModel);
+            return Ok(orderDto);
         }
 
     }
