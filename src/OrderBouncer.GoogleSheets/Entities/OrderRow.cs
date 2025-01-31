@@ -56,29 +56,34 @@ public class OrderRow
         Diagram = diagram;
     }
 
-    public OrderRow SetAccessory(Cell cell){
+    public OrderRow SetAccessory(Cell cell)
+    {
         CheckIsSpecialType(cell);
-        
+
         Accessory = cell;
         return this;
     }
 
-    public OrderRow SetPet(Cell cell){
+    public OrderRow SetPet(Cell cell)
+    {
         CheckIsSpecialType(cell);
 
         Pet = cell;
         return this;
     }
 
-    public OrderRow SetKeychain(Cell cell){
+    public OrderRow SetKeychain(Cell cell)
+    {
         CheckIsSpecialType(cell);
 
         Keychain = cell;
         return this;
     }
 
-    public OrderRow SetDiagram(Cell cell){
-        if(cell.DiagramType is null || cell.CellType != CellTypesEnum.Diagram){
+    public OrderRow SetDiagram(Cell cell)
+    {
+        if (cell.DiagramType is null || cell.CellType != CellTypesEnum.Diagram)
+        {
             throw new InvalidOperationException("Can not set Diagram Cell with non-Diagram Cell");
         }
 
@@ -86,8 +91,10 @@ public class OrderRow
         return this;
     }
 
-    public OrderRow SetDate(Cell cell){
-        if(cell.CellType != CellTypesEnum.Date || cell.InnerText is null){
+    public OrderRow SetDate(Cell cell)
+    {
+        if (cell.CellType != CellTypesEnum.Date || cell.InnerText is null)
+        {
             throw new InvalidOperationException("Can not set Date Cell with non-Date Cell");
         }
 
@@ -95,8 +102,20 @@ public class OrderRow
         return this;
     }
 
-    public OrderRow SetOrderCode(Cell cell){
-        if(cell.CellType != CellTypesEnum.OrderCode || cell.InnerText is null){
+    public OrderRow SetLatestShipmentDate(Cell cell){
+        if (cell.CellType != CellTypesEnum.Date || cell.InnerText is null)
+        {
+            throw new InvalidOperationException("Can not set Latest Shipment Date Cell with non-Date Cell");
+        }
+
+        LatestShipmentDate = cell;
+        return this;
+    }
+
+    public OrderRow SetOrderCode(Cell cell)
+    {
+        if (cell.CellType != CellTypesEnum.OrderCode || cell.InnerText is null)
+        {
             throw new InvalidOperationException("Can not set OrderCode Cell with non-OrderCode Cell");
         }
 
@@ -104,10 +123,41 @@ public class OrderRow
         return this;
     }
 
-    private void CheckIsSpecialType(Cell cell){
+    public IReadOnlyList<Cell> GetCellsInOrder()
+    {
+        return [
+                Diagram,
+                Date,
+                OrderCode,
+                SkinColor,
+                HairColor,
+                Gender,
+                KeychainType,
+                HeadModel,
+                BodyModel,
+                HeadPrint,
+                BodyPrint,
+                PrintReceived,
+                Sticker,
+                ExtraNotes,
+                Urgent,
+                Accessory,
+                AccessoryPrint,
+                Pet,
+                PetPrint,
+                Keychain,
+                KeychainPrint,
+                LatestShipmentDate,
+                ShipmentStatus
+            ];
+    }
+
+    private void CheckIsSpecialType(Cell cell)
+    {
         bool anyCellTypes = cell.CellType == CellTypesEnum.Date || cell.CellType == CellTypesEnum.Diagram || cell.CellType == CellTypesEnum.OrderCode;
-         
-        if(anyCellTypes){
+
+        if (anyCellTypes)
+        {
             throw new InvalidOperationException("The cell you are trying to attach is special type cell which is not valid for this operation");
         }
     }

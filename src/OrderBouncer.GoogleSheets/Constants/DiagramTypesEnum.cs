@@ -4,5 +4,6 @@ public enum DiagramTypesEnum
 {
     Opening,
     Straight,
-    Closing
+    Closing,
+    Single
 }

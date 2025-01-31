@@ -3,7 +3,7 @@ using OrderBouncer.Domain.DTOs.Base;
 using OrderBouncer.GoogleSheets.Models;
 using SharedKernel.Enums;
 
-namespace OrderBouncer.GoogleSheets.Interfaces;
+namespace OrderBouncer.GoogleSheets.Interfaces.Helpers;
 
 public interface IRowOrganizerHelper
 {

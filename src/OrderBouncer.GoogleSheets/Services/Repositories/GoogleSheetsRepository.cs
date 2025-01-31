@@ -1,20 +1,26 @@
 using System;
-using OrderBouncer.GoogleSheets.Interfaces;
 using Google.Apis.Sheets.v4.Data;
 using Google.Apis.Sheets.v4;
 using Microsoft.Extensions.Configuration;
+using OrderBouncer.GoogleSheets.Interfaces.Repositories;
+using OrderBouncer.GoogleSheets.DTOs;
+using OrderBouncer.GoogleSheets.Entities;
+using OrderBouncer.GoogleSheets.Interfaces.Services;
 
-namespace OrderBouncer.GoogleSheets.Services;
+namespace OrderBouncer.GoogleSheets.Services.Repositories;
 
 public class GoogleSheetsRepository : IGoogleSheetsRepository
 {
     private readonly SheetsService _sheets;
     private readonly IConfiguration _configuration;
+    private readonly IRowConverterService _converter;
 
-    public GoogleSheetsRepository(SheetsService sheetsService, IConfiguration configuration){
+    public GoogleSheetsRepository(SheetsService sheetsService, IConfiguration configuration, IRowConverterService converter){
         _sheets = sheetsService;
         _configuration = configuration;
+        _converter = converter;
     }
+
     public async Task AddRow(string[] rowElements, string range)
     {
         ValueRange valueRange = new ValueRange{
@@ -24,6 +30,23 @@ public class GoogleSheetsRepository : IGoogleSheetsRepository
         var request = _sheets.Spreadsheets.Values.Append(valueRange, _configuration["Settings:Google:Sheets:OrderTrackSpreadSheetId"], range);
         request.ValueInputOption = SpreadsheetsResource.ValuesResource.AppendRequest.ValueInputOptionEnum.RAW;
         await request.ExecuteAsync();
+    }
+
+    public async Task AddRowV2(IList<RowData> rowDatas, string? Range = null)
+    {
+        BatchUpdateSpreadsheetRequest request = new(){
+            Requests = new List<Request>{
+                new Request{
+                    AppendCells = new AppendCellsRequest{
+                        SheetId = Convert.ToInt32(_configuration["Settings:Google:Sheets:OrderTrackSpreadSheetGid"]),
+                        Rows = rowDatas,
+                        Fields = "userEnteredValue,userEnteredFormat.backgroundColor"
+                    }
+                }
+            }
+        };
+
+        await _sheets.Spreadsheets.BatchUpdate(request, _configuration["Settings:Google:Sheets:OrderTrackSpreadSheetId"]).ExecuteAsync();
     }
 
     public Task DeleteRow(int row)

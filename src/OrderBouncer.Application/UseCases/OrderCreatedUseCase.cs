@@ -8,6 +8,7 @@ using OrderBouncer.Application.Interfaces.Executors;
 using OrderBouncer.Application.Interfaces.Mappings;
 using OrderBouncer.Application.Interfaces.UseCases;
 using OrderBouncer.Domain.Aggregates;
+using OrderBouncer.Domain.DTOs.Base;
 
 namespace OrderBouncer.Application.UseCases;
 
@@ -21,8 +22,9 @@ public class OrderCreatedUseCase : IOrderCreatedUseCase
         _outbox = outbox;
         _logger = logger;
     }
-    public async Task<bool> ExecuteAsync(JsonDocument json, CancellationToken cancellationToken)
+    public async Task<bool> ExecuteAsync(OrderDto orderDto, CancellationToken cancellationToken)
     {   
+        /*
         JsonElement element = json.RootElement.GetProperty("photo");
         string imageData = element.GetProperty("data").GetString();
 
@@ -36,6 +38,8 @@ public class OrderCreatedUseCase : IOrderCreatedUseCase
         await File.WriteAllBytesAsync(filePath, data);
 
         _logger.LogInformation("Executing Json: {0}", fileName);
+        */
+
         //JsonNode? node = JsonNode.Parse(json);
         //_logger.LogDebug("Node tried to parse the json, sample {0}", node["mesaj"]);
 
@@ -47,8 +51,8 @@ public class OrderCreatedUseCase : IOrderCreatedUseCase
         //DriveUploadDto dto = new ();
         
         //Save to db
-        
-        await _outbox.ExecutePathAsync(filePath, cancellationToken);
+        await _outbox.ExecuteAsync(orderDto, cancellationToken);
+        //await _outbox.ExecutePathAsync(filePath, cancellationToken);
         return false;
     }
 }

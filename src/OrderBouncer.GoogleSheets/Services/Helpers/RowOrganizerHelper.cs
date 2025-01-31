@@ -1,10 +1,10 @@
 using System;
 using OrderBouncer.Domain.DTOs.Base;
-using OrderBouncer.GoogleSheets.Interfaces;
+using OrderBouncer.GoogleSheets.Interfaces.Helpers;
 using OrderBouncer.GoogleSheets.Models;
 using SharedKernel.Enums;
 
-namespace OrderBouncer.GoogleSheets.Services;
+namespace OrderBouncer.GoogleSheets.Services.Helpers;
 
 public class RowOrganizerHelper : IRowOrganizerHelper
 {
@@ -50,7 +50,7 @@ public class RowOrganizerHelper : IRowOrganizerHelper
 
     public KeyValuePair<EntityTypeEnum, int>? GetHighestCountElement(Dictionary<EntityTypeEnum, int> kvps)
     {
-        kvps.Where(k => k.Value >= 1).Max(a => a.Value);
+        //kvps.Where(k => k.Value >= 1).Max(a => a.Value);
 
         KeyValuePair<EntityTypeEnum, int>? kvp = null;
 

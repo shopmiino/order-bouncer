@@ -3,7 +3,7 @@ using OrderBouncer.GoogleSheets.DTOs;
 using OrderBouncer.GoogleSheets.Entities;
 using OrderBouncer.GoogleSheets.Models;
 
-namespace OrderBouncer.GoogleSheets.Interfaces;
+namespace OrderBouncer.GoogleSheets.Interfaces.Services;
 
 public interface IRowFillerService
 {

@@ -18,10 +18,4 @@
     <ProjectReference Include="..\OrderBouncer.Application\OrderBouncer.Application.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Interfaces/Factories/" />
-    <Folder Include="Interfaces/Helpers/" />
-    <Folder Include="Interfaces/Repositories/" />
-  </ItemGroup>
-
 </Project>
