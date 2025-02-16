@@ -13,7 +13,7 @@ builder.Host.ConfigureSerilog();
 builder.Services.AddGoogleSheets();
 
 //Application Layer
-builder.Services.AddApplication();
+builder.Services.AddApplication(builder.Configuration);
 
 builder.Services.AddControllers();
 
@@ -21,5 +21,7 @@ var app = builder.Build();
 
 app.MapGet("/", () => "Hello World!");
 app.MapControllers();
+
+app.ConfigureHangfireDashboard();
 
 app.Run();
