@@ -23,7 +23,7 @@ public class CreateRequestProcessorWorker : BackgroundService
         await foreach (OrderDto request in _bufferService.Reader.ReadAllAsync(stoppingToken)){
             if(stoppingToken.IsCancellationRequested) break;
 
-            _backgroundJobClient.Enqueue<ICreateRequestProcessorService>(service => service.ProcessAsync(request));
+            _backgroundJobClient.Enqueue<ICreateRequestProcessorService>(service => service.ProcessAsync(request, stoppingToken));
         }
     }
 

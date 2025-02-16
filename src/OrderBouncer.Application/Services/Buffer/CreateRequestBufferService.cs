@@ -12,7 +12,7 @@ public class CreateRequestBufferService : ICreateRequestBufferService
     public CreateRequestBufferService(){
         _channel = Channel.CreateBounded<OrderDto>(new BoundedChannelOptions(1000)
         {
-            SingleReader = false,
+            SingleReader = true,
             SingleWriter = false,
             FullMode = BoundedChannelFullMode.Wait,
         });

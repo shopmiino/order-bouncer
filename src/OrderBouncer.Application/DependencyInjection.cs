@@ -83,9 +83,14 @@ public static class DependencyInjection
     }
 
     public static IServiceCollection ConfigureHangfire(this IServiceCollection services, IConfiguration configuration){
-        services.AddHangfire(config => config.UseSQLiteStorage(configuration.GetConnectionString("Hangfire")));
-        
-        services.AddHangfireServer();
+        string? connString = configuration["Hangfire:SQLiteStorage"];
+        if (connString is null) throw new ArgumentNullException("SQLite connection string is null");
+
+        services.AddHangfire(config => config.UseSQLiteStorage(connString));
+
+        services.AddHangfireServer(options => {
+            options.WorkerCount = 1;
+        });
         services.AddHostedService<CreateRequestProcessorWorker>();
 
         services.AddTransient<ICreateRequestProcessorService, CreateRequestProcessorService>();
