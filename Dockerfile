@@ -1,7 +1,8 @@
+# Use official .NET 8 SDK for building the application
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
 
-# Copy solution and restore dependencies
+# Copy solution file and restore dependencies
 COPY OrderBouncer.sln ./
 COPY src/OrderBouncer.Web/OrderBouncer.Web.csproj src/OrderBouncer.Web/
 COPY src/OrderBouncer.Application/OrderBouncer.Application.csproj src/OrderBouncer.Application/
@@ -11,11 +12,21 @@ COPY src/OrderBouncer.GoogleSheets/OrderBouncer.GoogleSheets.csproj src/OrderBou
 COPY src/OrderBouncer.GoogleDrive/OrderBouncer.GoogleDrive.csproj src/OrderBouncer.GoogleDrive/
 COPY src/OrderBouncer.Api/OrderBouncer.Api.csproj src/OrderBouncer.Api/
 COPY src/SharedKernel/SharedKernel.csproj src/SharedKernel/
+COPY tests/OrderBouncer.GoogleDrive.Tests/OrderBouncer.GoogleDrive.Tests.csproj tests/OrderBouncer.GoogleDrive.Tests/
+COPY tests/OrderBouncer.GoogleSheets.Tests/OrderBouncer.GoogleSheets.Tests.csproj tests/OrderBouncer.GoogleSheets.Tests/
+COPY tests/SharedTestsKernel/SharedTestsKernel.csproj tests/SharedTestsKernel/
 
 RUN dotnet restore
 
 # Copy everything and build the application
 COPY . ./
+
+# Run tests before publishing the application
+RUN dotnet test tests/OrderBouncer.GoogleDrive.Tests/OrderBouncer.GoogleDrive.Tests.csproj --no-restore --verbosity normal
+RUN dotnet test tests/OrderBouncer.GoogleSheets.Tests/OrderBouncer.GoogleSheets.Tests.csproj --no-restore --verbosity normal
+RUN dotnet test tests/SharedTestsKernel/SharedTestsKernel.csproj --no-restore --verbosity normal
+
+# Publish the application after successful tests
 RUN dotnet publish src/OrderBouncer.Web/OrderBouncer.Web.csproj -c Release -o /publish --no-restore
 
 # Use the .NET 8 runtime image
