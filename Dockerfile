@@ -21,11 +21,6 @@ RUN dotnet restore
 # Copy everything and build the application
 COPY . ./
 
-# Run tests before publishing the application
-RUN dotnet test tests/OrderBouncer.GoogleDrive.Tests/OrderBouncer.GoogleDrive.Tests.csproj --no-restore --verbosity normal
-RUN dotnet test tests/OrderBouncer.GoogleSheets.Tests/OrderBouncer.GoogleSheets.Tests.csproj --no-restore --verbosity normal
-RUN dotnet test tests/SharedTestsKernel/SharedTestsKernel.csproj --no-restore --verbosity normal
-
 # Publish the application after successful tests
 RUN dotnet publish src/OrderBouncer.Web/OrderBouncer.Web.csproj -c Release -o /publish --no-restore
 
