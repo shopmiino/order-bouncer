@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using Microsoft.Extensions.Logging;
 using OrderBouncer.Application.DTOs;
+using OrderBouncer.Application.Interfaces.Buffer;
 using OrderBouncer.Application.Interfaces.Executors;
 using OrderBouncer.Application.Interfaces.Mappings;
 using OrderBouncer.Application.Interfaces.UseCases;
@@ -15,43 +16,22 @@ namespace OrderBouncer.Application.UseCases;
 public class OrderCreatedUseCase : IOrderCreatedUseCase
 {
     private readonly IJsonMapping<Order> _orderMapping;
+    private readonly ICreateRequestBufferService _buffer;
     private readonly IOutboxExecutor _outbox;
     private readonly ILogger<OrderCreatedUseCase> _logger;
-    public OrderCreatedUseCase(IJsonMapping<Order> orderMapping, IOutboxExecutor outbox, ILogger<OrderCreatedUseCase> logger){
+    public OrderCreatedUseCase(IJsonMapping<Order> orderMapping, IOutboxExecutor outbox, ILogger<OrderCreatedUseCase> logger, ICreateRequestBufferService buffer){
         _orderMapping = orderMapping;
         _outbox = outbox;
         _logger = logger;
+        _buffer = buffer;
     }
-    public async Task<bool> ExecuteAsync(OrderDto orderDto, CancellationToken cancellationToken)
+    public async Task<bool> ExecuteAsync(OrderCreatedShopifyRequestDto requestDto, CancellationToken cancellationToken)
     {   
-        /*
-        JsonElement element = json.RootElement.GetProperty("photo");
-        string imageData = element.GetProperty("data").GetString();
-
-        string base64Data = imageData.Substring(imageData.IndexOf(",") + 1);
+        OrderDto orderDto = new(){};
         
-        byte[] data = Convert.FromBase64String(base64Data);
-        string fileName = element.GetProperty("fileName").GetString();
-        string fileFormat = element.GetProperty("mimeType").GetString();
-        
-        string filePath = fileName + fileFormat;
-        await File.WriteAllBytesAsync(filePath, data);
+        await _buffer.EnqueueAsync(orderDto,cancellationToken);
 
-        _logger.LogInformation("Executing Json: {0}", fileName);
-        */
-
-        //JsonNode? node = JsonNode.Parse(json);
-        //_logger.LogDebug("Node tried to parse the json, sample {0}", node["mesaj"]);
-
-        //if(node is null){
-        //    _logger.LogDebug("{0} node is null", nameof(OrderCreatedUseCase));
-        //    return false;
-        //}
-        //Order? order = await _orderMapping.Map(node);
-        //DriveUploadDto dto = new ();
-        
-        //Save to db
-        await _outbox.ExecuteAsync(orderDto, cancellationToken);
+        //await _outbox.ExecuteAsync(orderDto, cancellationToken);
         //await _outbox.ExecutePathAsync(filePath, cancellationToken);
         return false;
     }

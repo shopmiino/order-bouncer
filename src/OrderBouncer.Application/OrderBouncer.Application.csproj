@@ -9,6 +9,7 @@
   <ItemGroup>
     <Folder Include="Interfaces\Api\" />
     <Folder Include="Interfaces\MinIO\" />
+    <Folder Include="Services\Converters\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -16,6 +17,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Hangfire" Version="1.8.17" />
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.8.17" />
+    <PackageReference Include="Hangfire.SQLite" Version="1.4.2" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.2" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0" />
   </ItemGroup>
 
