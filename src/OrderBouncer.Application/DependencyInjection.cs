@@ -4,7 +4,9 @@ using Hangfire.SQLite;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OrderBouncer.Application.DTOs;
 using OrderBouncer.Application.Interfaces.Buffer;
+using OrderBouncer.Application.Interfaces.Converters;
 using OrderBouncer.Application.Interfaces.Executors;
 using OrderBouncer.Application.Interfaces.Extractors;
 using OrderBouncer.Application.Interfaces.Mappings;
@@ -12,6 +14,7 @@ using OrderBouncer.Application.Interfaces.Processors;
 using OrderBouncer.Application.Interfaces.UseCases;
 using OrderBouncer.Application.Services.Background;
 using OrderBouncer.Application.Services.Buffer;
+using OrderBouncer.Application.Services.Converters;
 using OrderBouncer.Application.Services.Executors;
 using OrderBouncer.Application.Services.Extractors;
 using OrderBouncer.Application.Services.Extractors.Profiles;
@@ -20,6 +23,7 @@ using OrderBouncer.Application.Services.Processors;
 using OrderBouncer.Application.UseCases;
 using OrderBouncer.Domain.Aggregates;
 using OrderBouncer.Domain.DTOs;
+using OrderBouncer.Domain.DTOs.Base;
 using OrderBouncer.Domain.Entities;
 using OrderBouncer.Domain.Factories;
 using OrderBouncer.Domain.Interfaces.Factories;
@@ -38,6 +42,8 @@ public static class DependencyInjection
 
         services.ConfigureBufferServices()
                 .ConfigureHangfire(configuration);
+
+        services.AddScoped<IRequestConverterService<OrderCreatedShopifyRequestDto,OrderDto>,OrderCreatedRequestToOrderDtoConverterService>();
 
         return services;
     }
