@@ -3,6 +3,7 @@
 ##
 ## Get latest from `dotnet new gitignore`
 **/obj
+**/tmp
 # dotenv files
 .env
 /src/OrderBouncer.Web/Secret
