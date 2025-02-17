@@ -25,35 +25,10 @@ public class OrderCreatedUseCase : IOrderCreatedUseCase
         _logger = logger;
         _buffer = buffer;
     }
-    public async Task<bool> ExecuteAsync(OrderDto orderDto, CancellationToken cancellationToken)
+    public async Task<bool> ExecuteAsync(OrderCreatedShopifyRequestDto requestDto, CancellationToken cancellationToken)
     {   
-        /*
-        JsonElement element = json.RootElement.GetProperty("photo");
-        string imageData = element.GetProperty("data").GetString();
-
-        string base64Data = imageData.Substring(imageData.IndexOf(",") + 1);
+        OrderDto orderDto = new(){};
         
-        byte[] data = Convert.FromBase64String(base64Data);
-        string fileName = element.GetProperty("fileName").GetString();
-        string fileFormat = element.GetProperty("mimeType").GetString();
-        
-        string filePath = fileName + fileFormat;
-        await File.WriteAllBytesAsync(filePath, data);
-
-        _logger.LogInformation("Executing Json: {0}", fileName);
-        */
-
-        //JsonNode? node = JsonNode.Parse(json);
-        //_logger.LogDebug("Node tried to parse the json, sample {0}", node["mesaj"]);
-
-        //if(node is null){
-        //    _logger.LogDebug("{0} node is null", nameof(OrderCreatedUseCase));
-        //    return false;
-        //}
-        //Order? order = await _orderMapping.Map(node);
-        //DriveUploadDto dto = new ();
-        
-        //Save to db
         await _buffer.EnqueueAsync(orderDto,cancellationToken);
 
         //await _outbox.ExecuteAsync(orderDto, cancellationToken);
