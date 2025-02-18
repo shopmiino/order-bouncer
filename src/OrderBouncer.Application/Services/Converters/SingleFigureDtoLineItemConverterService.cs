@@ -14,6 +14,10 @@ public class SingleFigureDtoLineItemConverterService : ILineItemsConverterServic
     {
         SingleFigureVariant variant = VariantMappings.SingleFigureVariantMappings[lineItem.VariantId];
 
+        if(variant.HasExtraAccessory){
+            lineItem.Properties[0]
+        }
+
         FigureDto figureDto = new();
         return figureDto;
     }
