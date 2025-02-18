@@ -8,17 +8,12 @@ using OrderBouncer.Application.DTOs;
 using OrderBouncer.Application.Interfaces.Buffer;
 using OrderBouncer.Application.Interfaces.Converters;
 using OrderBouncer.Application.Interfaces.Executors;
-using OrderBouncer.Application.Interfaces.Extractors;
-using OrderBouncer.Application.Interfaces.Mappings;
 using OrderBouncer.Application.Interfaces.Processors;
 using OrderBouncer.Application.Interfaces.UseCases;
 using OrderBouncer.Application.Services.Background;
 using OrderBouncer.Application.Services.Buffer;
 using OrderBouncer.Application.Services.Converters;
 using OrderBouncer.Application.Services.Executors;
-using OrderBouncer.Application.Services.Extractors;
-using OrderBouncer.Application.Services.Extractors.Profiles;
-using OrderBouncer.Application.Services.Mappings;
 using OrderBouncer.Application.Services.Processors;
 using OrderBouncer.Application.UseCases;
 using OrderBouncer.Domain.Aggregates;
@@ -32,69 +27,43 @@ namespace OrderBouncer.Application;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration){
+    public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
+    {
         services.AddScoped<IOutboxExecutor, OutboxExecutor>();
         services.AddScoped<IOrderCreatedUseCase, OrderCreatedUseCase>();
 
-        services.AddJsonMappings()
-                .AddJsonExtractors()
-                .AddEntityFactories();
+        services.AddEntityFactories();
 
         services.ConfigureBufferServices()
                 .ConfigureHangfire(configuration);
 
-        services.AddScoped<IRequestConverterService<OrderCreatedShopifyRequestDto,OrderDto>,OrderCreatedRequestToOrderDtoConverterService>();
+        services.AddScoped<IRequestConverterService<OrderCreatedShopifyRequestDto, OrderDto>, OrderCreatedRequestToOrderDtoConverterService>();
 
         return services;
     }
 
-    public static IServiceCollection AddJsonMappings(this IServiceCollection services){
-        services.AddScoped<IJsonMapping<Order>, OrderJsonMapping>();
-
-        services.AddScoped<IJsonMapping<ProductEntity>, ProductJsonMapping>();
-        services.AddScoped<IJsonMapping<FigureEntity>, FigureJsonMapping>();
-        services.AddScoped<IJsonMapping<AccessoryEntity>, AccessoryJsonMapping>();
-        services.AddScoped<IJsonMapping<PetEntity>, PetJsonMapping>();
-        services.AddScoped<IJsonMapping<ImageEntity>, ImageJsonMapping>();
-        services.AddScoped<IJsonMapping<NoteEntity>, NoteJsonMapping>();
-
-    
-        return services;
-    }
-
-    public static IServiceCollection AddJsonExtractors(this IServiceCollection services){
-        services.AddScoped<IJsonExtractor, JsonExtractor>();
-
-        services.AddScoped<IJsonExtractorProfile, PetExtractorProfile>();
-        services.AddScoped<IJsonExtractorProfile, NoteExtractorProfile>();
-        services.AddScoped<IJsonExtractorProfile, ImageExtractorProfile>();
-        services.AddScoped<IJsonExtractorProfile, OrderExtractorProfile>();
-        services.AddScoped<IJsonExtractorProfile, FigureExtractorProfile>();
-        services.AddScoped<IJsonExtractorProfile, ProductExtractorProfile>();
-        services.AddScoped<IJsonExtractorProfile, AccessoryExtractorProfile>();
+    public static IServiceCollection AddEntityFactories(this IServiceCollection services)
+    {
+        services.AddScoped<IFactory<OrderCreateDto, Order>, OrderFactory>();
+        services.AddScoped<IFactory<AccessoryCreateDto, AccessoryEntity>, AccessoryFactory>();
+        services.AddScoped<IFactory<FigureCreateDto, FigureEntity>, FigureFactory>();
+        services.AddScoped<IFactory<ImageCreateDto, ImageEntity>, ImageFactory>();
+        services.AddScoped<IFactory<NoteCreateDto, NoteEntity>, NoteFactory>();
+        services.AddScoped<IFactory<PetCreateDto, PetEntity>, PetFactory>();
+        services.AddScoped<IFactory<ProductCreateDto, ProductEntity>, ProductFactory>();
 
         return services;
     }
 
-    public static IServiceCollection AddEntityFactories(this IServiceCollection services){
-        services.AddScoped<IEntityFactory<OrderCreateDto, Order>,OrderFactory>();
-        services.AddScoped<IEntityFactory<AccessoryCreateDto, AccessoryEntity>, AccessoryFactory>();
-        services.AddScoped<IEntityFactory<FigureCreateDto, FigureEntity>, FigureFactory>();
-        services.AddScoped<IEntityFactory<ImageCreateDto, ImageEntity>, ImageFactory>();
-        services.AddScoped<IEntityFactory<NoteCreateDto, NoteEntity>, NoteFactory>();
-        services.AddScoped<IEntityFactory<PetCreateDto, PetEntity>, PetFactory>();
-        services.AddScoped<IEntityFactory<ProductCreateDto, ProductEntity>, ProductFactory>();
-
-        return services;
-    }
-
-    public static IServiceCollection ConfigureHangfire(this IServiceCollection services, IConfiguration configuration){
+    public static IServiceCollection ConfigureHangfire(this IServiceCollection services, IConfiguration configuration)
+    {
         string? connString = configuration["Hangfire:SQLiteStorage"];
         if (connString is null) throw new ArgumentNullException("SQLite connection string is null");
 
         services.AddHangfire(config => config.UseSQLiteStorage(connString));
 
-        services.AddHangfireServer(options => {
+        services.AddHangfireServer(options =>
+        {
             options.WorkerCount = 1;
         });
         services.AddHostedService<CreateRequestProcessorWorker>();
@@ -104,13 +73,15 @@ public static class DependencyInjection
         return services;
     }
 
-    public static IServiceCollection ConfigureBufferServices(this IServiceCollection services){
+    public static IServiceCollection ConfigureBufferServices(this IServiceCollection services)
+    {
         services.AddSingleton<ICreateRequestBufferService, CreateRequestBufferService>();
 
         return services;
     }
 
-    public static WebApplication ConfigureHangfireDashboard(this WebApplication app){
+    public static WebApplication ConfigureHangfireDashboard(this WebApplication app)
+    {
         app.UseHangfireDashboard();
 
         return app;

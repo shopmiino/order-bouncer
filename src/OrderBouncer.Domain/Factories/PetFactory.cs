@@ -5,7 +5,7 @@ using OrderBouncer.Domain.Interfaces.Factories;
 
 namespace OrderBouncer.Domain.Factories;
 
-public class PetFactory : IEntityFactory<PetCreateDto, PetEntity>
+public class PetFactory : IFactory<PetCreateDto, PetEntity>
 {
     public PetEntity Create(PetCreateDto? dto)
     {

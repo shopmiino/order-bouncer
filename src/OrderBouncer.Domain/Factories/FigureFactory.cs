@@ -5,7 +5,7 @@ using OrderBouncer.Domain.Interfaces.Factories;
 
 namespace OrderBouncer.Domain.Factories;
 
-public class FigureFactory : IEntityFactory<FigureCreateDto, FigureEntity>
+public class FigureFactory : IFactory<FigureCreateDto, FigureEntity>
 {
     public FigureEntity Create(FigureCreateDto? dto)
     {

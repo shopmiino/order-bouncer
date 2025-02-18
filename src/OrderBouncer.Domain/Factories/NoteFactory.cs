@@ -5,7 +5,7 @@ using OrderBouncer.Domain.Interfaces.Factories;
 
 namespace OrderBouncer.Domain.Factories;
 
-public class NoteFactory : IEntityFactory<NoteCreateDto, NoteEntity>
+public class NoteFactory : IFactory<NoteCreateDto, NoteEntity>
 {
     public NoteEntity Create(NoteCreateDto? dto)
     {

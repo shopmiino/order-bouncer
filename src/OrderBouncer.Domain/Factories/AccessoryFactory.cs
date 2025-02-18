@@ -5,7 +5,7 @@ using OrderBouncer.Domain.Interfaces.Factories;
 
 namespace OrderBouncer.Domain.Factories;
 
-public class AccessoryFactory : IEntityFactory<AccessoryCreateDto, AccessoryEntity>
+public class AccessoryFactory : IFactory<AccessoryCreateDto, AccessoryEntity>
 {
     public AccessoryEntity Create(AccessoryCreateDto? dto)
     {
