@@ -16,9 +16,20 @@ public class OrderCreatedRequestToOrderDtoConverterService : IRequestConverterSe
     }
     public async Task<OrderDto> Convert(OrderCreatedShopifyRequestDto input)
     {
+        ICollection<FigureDto> figures = [];
+        ICollection<AccessoryDto> accessories = [];
+        ICollection<KeychainDto> keychains = [];
+        ICollection<PetDto> pets = [];
+
+
         foreach(var item in _settings.ProductIdTable){
             input.LineItems.Where(p => p.ProductId == item.ShopifyID);
             item.ShopifyID
+        }
+
+        foreach(var lineItem in input.LineItems){
+            var selection = _settings.ProductIdTable.Single(p => p.ShopifyID == lineItem.ProductId);    
+            selection
         }
 
         FigureDto figureDto = new();
@@ -32,4 +43,8 @@ public class OrderCreatedRequestToOrderDtoConverterService : IRequestConverterSe
         
         return orderDto;
     }
+
+    private Func<int, ICollection<T>> Select<T>(){
+        
+    } 
 }
