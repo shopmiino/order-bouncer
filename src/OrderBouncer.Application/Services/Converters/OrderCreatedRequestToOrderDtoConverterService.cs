@@ -25,19 +25,7 @@ public class OrderCreatedRequestToOrderDtoConverterService : IRequestConverterSe
     }
     public async Task<OrderDto> Convert(OrderCreatedShopifyRequestDto input)
     {
-        ICollection<FigureDto> figures = [];
-        ICollection<AccessoryDto> accessories = [];
-        ICollection<KeychainDto> keychains = [];
-        ICollection<PetDto> pets = [];
-
         ProductDto productDto = await _linesProcessor.Process(input.LineItems);
-        
-
-        FigureDto figureDto = new();
-        AccessoryDto accessoryDto = new();
-        KeychainDto keychainDto = new();
-        PetDto petDto = new();
-
         //ProductDto productDto = new([figureDto], [accessoryDto], [keychainDto], [petDto]);
 
         OrderDto orderDto = new(input.Name, [productDto], input.Note, input.CreatedAt.UtcDateTime);

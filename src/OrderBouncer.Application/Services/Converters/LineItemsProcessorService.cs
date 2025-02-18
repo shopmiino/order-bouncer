@@ -13,38 +13,24 @@ namespace OrderBouncer.Application.Services.Converters;
 public class LineItemsProcessorService : ILineItemsProcessorService
 {
     private readonly ShopifySettings _settings;
-    private readonly ILineItemsConverterService<FigureDto> _singleFigureConverter;
+    private readonly ILineItemsProcessorHelperService _helper;
 
-    public LineItemsProcessorService(IOptions<ShopifySettings> options, ILineItemsConverterService<FigureDto> singleFigureConverter){
+    public LineItemsProcessorService(IOptions<ShopifySettings> options, ILineItemsProcessorHelperService helper){
         _settings = options.Value;
-        _singleFigureConverter = singleFigureConverter;
+        _helper = helper;
     }
     public async ValueTask<ProductDto> Process(LineItem[] lineItems)
     {
+        //there should be LineItems based ProductDto Factory. We have to calculate which properties are gonna be null
+       ProductDto productDto = new();
+
        foreach(var lineItem in lineItems){
             var selection = _settings.ProductIdTable.Single(p => p.ShopifyID == lineItem.ProductId);
             Type type = ProductMappings.ProductDtoPairs[(ShopifyProductsEnum)selection.InternalID];
             
-            switch((ShopifyProductsEnum)selection.InternalID){
-                case ShopifyProductsEnum.Miino_Pop:
-                    FigureDto figureDto = _singleFigureConverter.Convert(lineItem);
-                    break;
-                case ShopifyProductsEnum.Cift_Miino_Popu:
-                    
-                    break;
-                case ShopifyProductsEnum.Miino_Pop_Anahtarlik:
-
-                    break;
-                case ShopifyProductsEnum.Miino_Pop_Evcil_Hayvan:
-
-                    break;
-                case ShopifyProductsEnum.Miino_Pop_Aksesuar:
-
-                    break;
-            }
+            _helper.FilterAndAdd((ShopifyProductsEnum)selection.InternalID, lineItem, ref productDto);
        }
 
-       ProductDto productDto = new();
        return productDto;
     }
 }
