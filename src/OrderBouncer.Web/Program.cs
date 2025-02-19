@@ -1,5 +1,6 @@
 using OrderBouncer.Web;
 using OrderBouncer.GoogleDrive;
+using OrderBouncer.Infrastructure;
 using OrderBouncer.GoogleSheets;
 using OrderBouncer.Application;
 using Hangfire;
@@ -17,12 +18,21 @@ builder.Services.AddGoogleSheets();
 //Application Layer
 builder.Services.AddApplication(builder.Configuration);
 
+var tempProvider = builder.Services.BuildServiceProvider();
+var loggerFactory = tempProvider.GetRequiredService<ILoggerFactory>();
+var logger = loggerFactory.CreateLogger("ImageHttpClient");
+
+builder.Services.AddInfrastructure()
+    .AddImageHttpClient(logger);
+
+
 builder.Services.AddControllers();
 
 var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
 builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
 
 builder.Services.Configure<ShopifySettings>(builder.Configuration.GetSection("Shopify"));
+builder.Services.Configure<ExtractorSettings>(builder.Configuration.GetSection("PropertyExtractor"));
 
 var app = builder.Build();
 
