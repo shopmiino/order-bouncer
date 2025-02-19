@@ -15,43 +15,55 @@ public class SingleFigureDtoLineItemConverterService : ILineItemsConverterServic
 {
     private readonly ILineItemPropertyExtractor _extractor;
     private readonly IImageSaverService _imageSaver;
-    public SingleFigureDtoLineItemConverterService(ILineItemPropertyExtractor extractor, IImageSaverService imageSaver)
+    private readonly ILineItemConverterHelperService _helper;
+    public SingleFigureDtoLineItemConverterService(ILineItemPropertyExtractor extractor, IImageSaverService imageSaver, ILineItemConverterHelperService helper)
     {
         _extractor = extractor;
         _imageSaver = imageSaver;
+        _helper = helper;
     }
 
+    //TODO: I need to lookup for pet, if they add pet to the order, what I shoul do to include it.
     public async Task<FigureDto> Convert(LineItem lineItem)
     {
         SingleFigureVariant variant = VariantMappings.SingleFigureVariantMappings[lineItem.VariantId];
 
         var groupedImages = _extractor.GroupImages(lineItem.Properties);
+        if(groupedImages is null){
+            throw new ArgumentNullException("No Grouped Images here, element is null");
+        }
+
         ICollection<string> imagePaths = [];
+
         AccessoryDto? accessoryDto = null;
+        int startPos = 0;
+
+        NoteAttribute[]? figureNotes = _extractor.GetFigureNotes(lineItem.Properties);
 
         if (variant.HasExtraAccessory)
         {
+            startPos++;
+
+            NoteAttribute[]? accessoryNotes = _extractor.GetAccessoryNotes(lineItem.Properties);
             ICollection<string>? accessoryImages = [];
 
-            foreach (var item in groupedImages[0])
-            {
-                string path = await _imageSaver.Save(item.Value, item.Name);
-                accessoryImages.Add(path);
-            }
+            if(groupedImages[0] is null || groupedImages[0].Length == 0) goto NoAccessoryImage;
 
-            accessoryDto = new(imagePaths: accessoryImages);
+            accessoryImages = await _helper.BatchImageSaveAndAdd(groupedImages[0], accessoryImages);
+
+            accessoryDto = new(imagePaths: accessoryImages, note: accessoryNotes?[0].Value);
+
+        }
+        NoAccessoryImage:
+
+        for(int i = startPos; i < groupedImages.Count; i++){
+            imagePaths = await _helper.BatchImageSaveAndAdd(groupedImages[i], imagePaths);
         }
 
-        FigureDto? figureDto = null;
-
-        if (accessoryDto is not null)
-        {
-            figureDto = new(accessoryDtos: [accessoryDto], imagePaths: imagePaths);
-        }
-        else
-        {
-            figureDto = new(imagePaths: imagePaths);
-        }
+        FigureDto figureDto = new(
+            accessoryDtos: accessoryDto is null ? null : [accessoryDto],
+            imagePaths: imagePaths
+        );
 
         return figureDto;
     }

@@ -9,27 +9,45 @@ namespace OrderBouncer.Application.Services.Extractor;
 public class LineItemPropertyExtractor : ILineItemPropertyExtractor
 {
     private readonly ExtractorSettings _settings;
+    private readonly ILineItemPropertyExtractorHelper _helper;
 
-    public LineItemPropertyExtractor(IOptions<ExtractorSettings> options){
+    public LineItemPropertyExtractor(IOptions<ExtractorSettings> options, ILineItemPropertyExtractorHelper helper){
         _settings = options.Value;
+        _helper = helper;
     }
 
-    public NoteAttribute[] GetAccessoryNotes(NoteAttribute[] properties)
+    public NoteAttribute[]? GetAccessoryNotes(NoteAttribute[] properties)
     {
-        throw new NotImplementedException();
+        return GetNotes(properties, "Accessory");
     }
 
-    public NoteAttribute[] GetFigureNotes(NoteAttribute[] properties)
+    public NoteAttribute[]? GetFigureNotes(NoteAttribute[] properties)
     {
-        throw new NotImplementedException();
+        return GetNotes(properties, "Figure");
     }
 
-    public NoteAttribute[] GetPetNotes(NoteAttribute[] properties)
+    public NoteAttribute[]? GetKeychainNotes(NoteAttribute[] properties)
     {
-        throw new NotImplementedException();
+        return GetNotes(properties, "Keychain");
     }
 
-    public IList<NoteAttribute[]> GroupImages(NoteAttribute[] properties)
+    public NoteAttribute[]? GetPetNotes(NoteAttribute[] properties)
+    {
+        return GetNotes(properties, "Pet");
+    }
+
+    private NoteAttribute[]? GetNotes(NoteAttribute[] props, string conditionName){
+        string? condition = _helper.GetSingleCondition(props, conditionName);
+        if(condition is null) return null;
+
+        var notes = _helper.GetContains(props, condition);
+
+        if(notes is null) return null;
+
+        return [.. notes];
+    }
+
+    public IList<NoteAttribute[]>? GroupImages(NoteAttribute[] properties)
     {
         IEnumerable<NoteAttribute> imageProperties = properties.Where(p => p.Name.StartsWith(_settings.ImageString));
         List<NoteAttribute[]> imagePropertyGroup = [];
@@ -52,13 +70,23 @@ public class LineItemPropertyExtractor : ILineItemPropertyExtractor
         return imagePropertyGroup;
     }
 
-    public IList<NoteAttribute[]> GroupNotes(NoteAttribute[] properties)
+    public IList<NoteAttribute[]>? GroupNotes(NoteAttribute[] properties)
     {
         IEnumerable<NoteAttribute> noteProperties = properties.Where(p => p.Name.Contains(_settings.NoteString));
         int conditionCount = _settings.NoteConditions.Count();
 
         List<NoteAttribute[]> notePropertyGroup = [];
+        foreach(var condition in _settings.NoteConditions){
+            Func<NoteAttribute, bool> predicate = p => p.Name.Contains(condition.Value); 
 
+            bool hasElement = noteProperties.Any(predicate);
+            if(!hasElement) continue;
+
+            IEnumerable<NoteAttribute> notes = noteProperties.Where(predicate);
+
+            notePropertyGroup.Add([.. notes]);
+        }
         
+        return notePropertyGroup;
     }
 }
