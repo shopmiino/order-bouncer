@@ -15,7 +15,7 @@ public class LineItemExtrasConverterService : ILineItemExtrasConverterService
         _helper = helper;
     }
     
-    public async Task<BaseDto> ConvertExtra(LineItem lineItem, IList<NoteAttribute[]> props, Func<NoteAttribute[], NoteAttribute[]?> noteGetter, int position = 0)
+    public async Task<BaseDto> ConvertExtra(LineItem lineItem, IList<NoteAttribute[]> props, Func<NoteAttribute[], NoteAttribute[]?> noteGetter, int position = 0, int notePosition = 0)
     {
         NoteAttribute[]? notes = noteGetter(lineItem.Properties);
         //NoteAttribute[]? notes = _extractor.GetPetNotes(lineItem.Properties);

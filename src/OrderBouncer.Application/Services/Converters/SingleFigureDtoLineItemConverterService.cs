@@ -85,5 +85,5 @@ public class SingleFigureDtoLineItemConverterService : ILineItemsConverterServic
     public Task<(FigureDto, ICollection<PetDto>?, ICollection<AccessoryDto>?)> ConvertWithMultipleExtras(LineItem lineItem)
     {
         throw new NotImplementedException();
-    }
+        }
 }

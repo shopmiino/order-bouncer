@@ -6,5 +6,5 @@ namespace OrderBouncer.Application.Interfaces.Converters;
 
 public interface ILineItemExtrasConverterService
 {
-    public Task<BaseDto> ConvertExtra(LineItem lineItem, IList<NoteAttribute[]> props, Func<NoteAttribute[], NoteAttribute[]?> noteGetter, int position = 0);
+    public Task<BaseDto> ConvertExtra(LineItem lineItem, IList<NoteAttribute[]> props, Func<NoteAttribute[], NoteAttribute[]?> noteGetter, int position = 0, int notePosition = 0);
 }

@@ -41,7 +41,7 @@ public class CoupleFigureDtoLineItemConverterService : ILineItemsConverterServic
         throw new NotImplementedException();
     }
 
-    public Task<(FigureDto[], ICollection<PetDto>?, ICollection<AccessoryDto>?)> ConvertWithMultipleExtras(LineItem lineItem)
+    public async Task<(FigureDto[], ICollection<PetDto>?, ICollection<AccessoryDto>?)> ConvertWithMultipleExtras(LineItem lineItem)
     {
         CoupleFigureVariant variant = VariantMappings.CoupleFigureVariantMappings[lineItem.VariantId];
                 
@@ -61,6 +61,9 @@ public class CoupleFigureDtoLineItemConverterService : ILineItemsConverterServic
         //2nd miino Accessory notes
         //2nd miino Figure notes
 
+        FigureDto? firstFigure = null;
+        FigureDto? secondFigure = null;
+
         ICollection<string> firstImagePaths = [];
         ICollection<string> secondImagePaths = [];
 
@@ -72,5 +75,50 @@ public class CoupleFigureDtoLineItemConverterService : ILineItemsConverterServic
         NoteAttribute[]? figureNotes = _extractor.GetFigureNotes(lineItem.Properties);
         NoteAttribute[]? nameNotes = _extractor.GetNameNotes(lineItem.Properties);
 
+        int startPos = 0;
+
+        if(variant.HasExtraPet){
+            petDto = (PetDto)await _extrasConverter.ConvertExtra(lineItem, groupedImages, _extractor.GetPetNotes, startPos);
+            if(petDto.ImagePaths is not null) startPos++;
+        }
+
+        if(variant.HasExtraAccessoryForFirst){
+            firstAccessoryDto = (AccessoryDto)await _extrasConverter.ConvertExtra(lineItem, groupedImages, _extractor.GetAccessoryNotes, startPos);
+            if(firstAccessoryDto.ImagePaths is not null) startPos++;
+        }
+
+        //first figure's photos
+        for(int i = 0; i<2; i++){
+            //first iteration for head images, second iteration for body images
+            firstImagePaths = await _helper.BatchImageSaveAndAdd(groupedImages[startPos], firstImagePaths);
+            startPos++;
+        }
+
+        if(variant.HasExtraAccessoryForSecond){
+            secondAccessoryDto = (AccessoryDto)await _extrasConverter.ConvertExtra(lineItem, groupedImages, _extractor.GetAccessoryNotes, startPos, 1);
+            if(secondAccessoryDto.ImagePaths is not null) startPos++;
+        }
+
+        //second figure's photos
+        for(int i = 0; i<2; i++){
+            secondImagePaths = await _helper.BatchImageSaveAndAdd(groupedImages[startPos], secondImagePaths);
+            startPos++;
+        }
+
+        firstFigure = new(
+            imagePaths: firstImagePaths,
+            accessoryDtos: firstAccessoryDto is null ? null : [firstAccessoryDto],
+            note: figureNotes?[0].Value,
+            name: nameNotes?[0].Value
+        );
+
+        secondFigure = new(
+            imagePaths: secondImagePaths,
+            accessoryDtos: secondAccessoryDto is null ? null : [secondAccessoryDto],
+            note: figureNotes?[1].Value,
+            name: nameNotes?[1].Value
+        );
+
+        return ([firstFigure, secondFigure], petDto is null ? null : [petDto], null);
     }
 }
