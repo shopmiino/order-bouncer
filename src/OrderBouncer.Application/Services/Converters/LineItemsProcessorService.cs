@@ -28,7 +28,7 @@ public class LineItemsProcessorService : ILineItemsProcessorService
             var selection = _settings.ProductIdTable.Single(p => p.ShopifyID == lineItem.ProductId);
             Type type = ProductMappings.ProductDtoPairs[(ShopifyProductsEnum)selection.InternalID];
             
-            _helper.FilterAndAdd((ShopifyProductsEnum)selection.InternalID, lineItem, ref productDto);
+            productDto = await _helper.FilterAndAdd((ShopifyProductsEnum)selection.InternalID, lineItem, productDto);
        }
 
        return productDto;

@@ -36,6 +36,11 @@ public class LineItemPropertyExtractor : ILineItemPropertyExtractor
         return GetNotes(properties, "Pet");
     }
 
+    public NoteAttribute[]? GetNameNotes(NoteAttribute[] properties)
+    {
+        return GetNotes(properties, "Name");
+    }
+
     private NoteAttribute[]? GetNotes(NoteAttribute[] props, string conditionName){
         string? condition = _helper.GetSingleCondition(props, conditionName);
         if(condition is null) return null;

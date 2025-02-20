@@ -15,16 +15,26 @@ public class SingleFigureDtoLineItemConverterService : ILineItemsConverterServic
 {
     private readonly ILineItemPropertyExtractor _extractor;
     private readonly IImageSaverService _imageSaver;
+    private readonly ILineItemExtrasConverterService _extrasConverter;
     private readonly ILineItemConverterHelperService _helper;
-    public SingleFigureDtoLineItemConverterService(ILineItemPropertyExtractor extractor, IImageSaverService imageSaver, ILineItemConverterHelperService helper)
+    
+    public SingleFigureDtoLineItemConverterService(ILineItemPropertyExtractor extractor, IImageSaverService imageSaver, ILineItemConverterHelperService helper, ILineItemExtrasConverterService extrasConverter)
     {
         _extractor = extractor;
         _imageSaver = imageSaver;
         _helper = helper;
+        _extrasConverter = extrasConverter;
     }
 
-    //TODO: I need to lookup for pet, if they add pet to the order, what I shoul do to include it.
-    public async Task<FigureDto> Convert(LineItem lineItem)
+    public async Task<FigureDto> Convert(LineItem lineItem){
+        return new();
+    }
+    public async Task<(FigureDto, AccessoryDto?)> ConvertWithExtraAccessory(LineItem lineItem)
+    {
+        throw new NotImplementedException();
+    }
+    
+    public async Task<(FigureDto, PetDto?)> ConvertWithExtraPet(LineItem lineItem)
     {
         SingleFigureVariant variant = VariantMappings.SingleFigureVariantMappings[lineItem.VariantId];
 
@@ -36,25 +46,22 @@ public class SingleFigureDtoLineItemConverterService : ILineItemsConverterServic
         ICollection<string> imagePaths = [];
 
         AccessoryDto? accessoryDto = null;
+        PetDto? petDto = null;
         int startPos = 0;
 
         NoteAttribute[]? figureNotes = _extractor.GetFigureNotes(lineItem.Properties);
+        NoteAttribute[]? nameNotes = _extractor.GetNameNotes(lineItem.Properties);
+
+        if(variant.HasExtraPet){
+            petDto = (PetDto)await _extrasConverter.ConvertExtra(lineItem, groupedImages, _extractor.GetPetNotes, startPos);
+            if(petDto.ImagePaths is not null) startPos++;
+        }
 
         if (variant.HasExtraAccessory)
         {
-            startPos++;
-
-            NoteAttribute[]? accessoryNotes = _extractor.GetAccessoryNotes(lineItem.Properties);
-            ICollection<string>? accessoryImages = [];
-
-            if(groupedImages[0] is null || groupedImages[0].Length == 0) goto NoAccessoryImage;
-
-            accessoryImages = await _helper.BatchImageSaveAndAdd(groupedImages[0], accessoryImages);
-
-            accessoryDto = new(imagePaths: accessoryImages, note: accessoryNotes?[0].Value);
-
+            accessoryDto = (AccessoryDto)await _extrasConverter.ConvertExtra(lineItem, groupedImages, _extractor.GetAccessoryNotes, startPos);
+            if(accessoryDto.ImagePaths is not null) startPos++;
         }
-        NoAccessoryImage:
 
         for(int i = startPos; i < groupedImages.Count; i++){
             imagePaths = await _helper.BatchImageSaveAndAdd(groupedImages[i], imagePaths);
@@ -62,9 +69,21 @@ public class SingleFigureDtoLineItemConverterService : ILineItemsConverterServic
 
         FigureDto figureDto = new(
             accessoryDtos: accessoryDto is null ? null : [accessoryDto],
-            imagePaths: imagePaths
+            imagePaths: imagePaths,
+            note: figureNotes?[0].Value,
+            name: nameNotes?[0].Value
         );
 
-        return figureDto;
+        return (figureDto, petDto);
+    }
+
+    public Task<(FigureDto, PetDto?, AccessoryDto?)> ConvertWithExtras(LineItem lineItem)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<(FigureDto, ICollection<PetDto>?, ICollection<AccessoryDto>?)> ConvertWithMultipleExtras(LineItem lineItem)
+    {
+        throw new NotImplementedException();
     }
 }

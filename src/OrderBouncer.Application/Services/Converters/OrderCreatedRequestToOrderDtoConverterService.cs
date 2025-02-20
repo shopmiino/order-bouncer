@@ -14,10 +14,7 @@ namespace OrderBouncer.Application.Services.Converters;
 public class OrderCreatedRequestToOrderDtoConverterService : IRequestConverterService<OrderCreatedShopifyRequestDto, OrderDto>
 {
     private readonly ShopifySettings _settings;
-    private readonly IFactory<LineItem, FigureDto> _singleFigureFactory;
     private readonly ILineItemsProcessorService _linesProcessor;
-
-    private Dictionary<ShopifyProductsEnum, Type> _productMapping = [];
 
     public OrderCreatedRequestToOrderDtoConverterService(IOptions<ShopifySettings> options, ILineItemsProcessorService linesProcessor){
         _settings = options.Value;
@@ -26,7 +23,6 @@ public class OrderCreatedRequestToOrderDtoConverterService : IRequestConverterSe
     public async Task<OrderDto> Convert(OrderCreatedShopifyRequestDto input)
     {
         ProductDto productDto = await _linesProcessor.Process(input.LineItems);
-        //ProductDto productDto = new([figureDto], [accessoryDto], [keychainDto], [petDto]);
 
         OrderDto orderDto = new(input.Name, [productDto], input.Note, input.CreatedAt.UtcDateTime);
         

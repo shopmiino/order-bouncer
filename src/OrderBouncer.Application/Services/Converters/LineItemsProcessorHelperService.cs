@@ -25,7 +25,7 @@ public class LineItemsProcessorHelperService : ILineItemsProcessorHelperService
         _accessoryConverter = accessoryConverter;
     }
 
-    public void FilterAndAdd(ShopifyProductsEnum productEnum, LineItem lineItem, ref ProductDto productDto)
+    public async Task<ProductDto> FilterAndAdd(ShopifyProductsEnum productEnum, LineItem lineItem, ProductDto productDto)
     {
         string NullErrorString(string collectionName)
         {
@@ -39,8 +39,10 @@ public class LineItemsProcessorHelperService : ILineItemsProcessorHelperService
                 {
                     throw new ArgumentNullException(NullErrorString(nameof(productDto.Figures)));
                 }
+                (FigureDto figureDto, PetDto? petDto) result = await _singleFigureConverter.ConvertWithExtraPet(lineItem);
+                productDto.Figures.Add(result.figureDto);
 
-                productDto.Figures.Add(_singleFigureConverter.Convert(lineItem));
+                if(result.petDto is not null) productDto.Pets.Add(result.petDto);
                 break;
             case ShopifyProductsEnum.Cift_Miino_Popu:
                 if (productDto.Figures is null)
@@ -54,7 +56,7 @@ public class LineItemsProcessorHelperService : ILineItemsProcessorHelperService
                     throw new ArgumentNullException(NullErrorString(nameof(productDto.Keychains)));
                 }
                 
-                productDto.Keychains.Add(_keychainConverter.Convert(lineItem));
+                productDto.Keychains.Add(await _keychainConverter.Convert(lineItem));
                 break;
             case ShopifyProductsEnum.Miino_Pop_Evcil_Hayvan:
                 if (productDto.Pets is null)
@@ -62,7 +64,7 @@ public class LineItemsProcessorHelperService : ILineItemsProcessorHelperService
                     throw new ArgumentNullException(NullErrorString(nameof(productDto.Pets)));
                 }
 
-                productDto.Pets.Add(_petConverter.Convert(lineItem));
+                productDto.Pets.Add(await _petConverter.Convert(lineItem));
                 break;
             case ShopifyProductsEnum.Miino_Pop_Aksesuar:
                 if (productDto.Accessories is null)
@@ -70,8 +72,10 @@ public class LineItemsProcessorHelperService : ILineItemsProcessorHelperService
                     throw new ArgumentNullException(NullErrorString(nameof(productDto.Accessories)));
                 }
 
-                productDto.Accessories.Add(_accessoryConverter.Convert(lineItem));
+                productDto.Accessories.Add(await _accessoryConverter.Convert(lineItem));
                 break;
         }
+
+        return productDto;
     }
 }

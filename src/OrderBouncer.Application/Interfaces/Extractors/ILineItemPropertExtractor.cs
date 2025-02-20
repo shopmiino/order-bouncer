@@ -12,5 +12,6 @@ public interface ILineItemPropertyExtractor
     public NoteAttribute[]? GetAccessoryNotes(NoteAttribute[] properties);
     public NoteAttribute[]? GetPetNotes(NoteAttribute[] properties);
     public NoteAttribute[]? GetKeychainNotes(NoteAttribute[] properties);
+    public NoteAttribute[]? GetNameNotes(NoteAttribute[] properties);
 
 }
