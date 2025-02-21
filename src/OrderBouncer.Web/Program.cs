@@ -15,13 +15,13 @@ builder.Services.AddGoogleDrive();
 builder.Services.AddGoogleSheets();
 
 //Application Layer
-builder.Services.AddApplication(builder.Configuration);
+builder.Services.AddApplication();
 
 var tempProvider = builder.Services.BuildServiceProvider();
 var loggerFactory = tempProvider.GetRequiredService<ILoggerFactory>();
 var logger = loggerFactory.CreateLogger("ImageHttpClient");
 
-builder.Services.AddInfrastructure()
+builder.Services.AddInfrastructure(builder.Configuration)
     .AddImageHttpClient(logger);
 
 

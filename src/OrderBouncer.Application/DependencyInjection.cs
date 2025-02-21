@@ -1,7 +1,4 @@
 using System;
-using Hangfire;
-using Hangfire.SQLite;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OrderBouncer.Application.DTOs;
@@ -11,7 +8,6 @@ using OrderBouncer.Application.Interfaces.Executors;
 using OrderBouncer.Application.Interfaces.Extractors;
 using OrderBouncer.Application.Interfaces.Processors;
 using OrderBouncer.Application.Interfaces.UseCases;
-using OrderBouncer.Application.Services.Background;
 using OrderBouncer.Application.Services.Buffer;
 using OrderBouncer.Application.Services.Converters;
 using OrderBouncer.Application.Services.Executors;
@@ -24,13 +20,12 @@ namespace OrderBouncer.Application;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         services.AddScoped<IOutboxExecutor, OutboxExecutor>();
         services.AddScoped<IOrderCreatedUseCase, OrderCreatedUseCase>();
 
-        services.ConfigureBufferServices()
-                .ConfigureHangfire(configuration);
+        services.ConfigureBufferServices();
 
         services.ConfigureDtoConvertersAndUtilities()
                 .ConfigureDtoConverterHelpers();
@@ -40,36 +35,12 @@ public static class DependencyInjection
         return services;
     }
 
-    public static IServiceCollection ConfigureHangfire(this IServiceCollection services, IConfiguration configuration)
-    {
-        string? connString = configuration["Hangfire:SQLiteStorage"];
-        if (connString is null) throw new ArgumentNullException("SQLite connection string is null");
-
-        services.AddHangfire(config => config.UseSQLiteStorage(connString));
-
-        services.AddHangfireServer(options =>
-        {
-            options.WorkerCount = 1;
-        });
-        services.AddHostedService<CreateRequestProcessorWorker>();
-
-        services.AddTransient<ICreateRequestProcessorService, CreateRequestProcessorService>();
-
-        return services;
-    }
-
     public static IServiceCollection ConfigureBufferServices(this IServiceCollection services)
     {
         services.AddSingleton<ICreateRequestBufferService, CreateRequestBufferService>();
+        services.AddTransient<ICreateRequestProcessorService, CreateRequestProcessorService>();
 
         return services;
-    }
-
-    public static WebApplication ConfigureHangfireDashboard(this WebApplication app)
-    {
-        app.UseHangfireDashboard();
-
-        return app;
     }
 
     public static IServiceCollection ConfigureDtoConvertersAndUtilities(this IServiceCollection services){

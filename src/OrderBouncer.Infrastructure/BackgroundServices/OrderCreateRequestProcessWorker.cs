@@ -3,17 +3,16 @@ using Hangfire;
 using Microsoft.Extensions.Hosting;
 using OrderBouncer.Application.Interfaces.Buffer;
 using OrderBouncer.Application.Interfaces.Processors;
-using OrderBouncer.Application.Services.Processors;
 using OrderBouncer.Domain.DTOs.Base;
 
-namespace OrderBouncer.Application.Services.Background;
+namespace OrderBouncer.Infrastructure.BackgroundServices;
 
-public class CreateRequestProcessorWorker : BackgroundService
+public class OrderCreateRequestProcessWorker : BackgroundService
 {
     private readonly ICreateRequestBufferService _bufferService;
     private readonly IBackgroundJobClient _backgroundJobClient;
 
-    public CreateRequestProcessorWorker(ICreateRequestBufferService bufferService, IBackgroundJobClient backgroundJobClient){
+    public OrderCreateRequestProcessWorker(ICreateRequestBufferService bufferService, IBackgroundJobClient backgroundJobClient){
         _bufferService = bufferService;
         _backgroundJobClient = backgroundJobClient;
     }
