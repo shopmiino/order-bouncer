@@ -20,7 +20,7 @@ public class KeychainDtoLineItemConverterService : ILineItemsConverterService<Ke
     public async Task<KeychainDto> Convert(LineItem lineItem)
     {
         BaseDto baseDto = await _baseConverter.GenericConvert(lineItem, _extractor.GetKeychainNotes);
-        return (KeychainDto)baseDto;
+        return baseDto.ToKeychainDto();
     }
 
     public Task<(KeychainDto, AccessoryDto?)> ConvertWithExtraAccessory(LineItem lineItem)

@@ -19,7 +19,7 @@ public class PetDtoLineItemConverterService : ILineItemsConverterService<PetDto>
     public async Task<PetDto> Convert(LineItem lineItem)
     {
         BaseDto baseDto = await _baseConverter.GenericConvert(lineItem, _extractor.GetPetNotes);
-        return (PetDto)baseDto;
+        return baseDto.ToPetDto();
     }
 
     public Task<(PetDto, AccessoryDto?)> ConvertWithExtraAccessory(LineItem lineItem)

@@ -10,6 +10,7 @@ namespace OrderBouncer.Application.Services.Converters;
 public class LineItemsProcessorHelperService : ILineItemsProcessorHelperService
 {
     private readonly ILineItemsConverterService<FigureDto> _singleFigureConverter;
+    private readonly ILineItemsConverterService<FigureDto[]> _coupleFigureConverter;
     private readonly ILineItemsConverterService<KeychainDto> _keychainConverter;
     private readonly ILineItemsConverterService<PetDto> _petConverter;
     private readonly ILineItemsConverterService<AccessoryDto> _accessoryConverter;
@@ -17,12 +18,14 @@ public class LineItemsProcessorHelperService : ILineItemsProcessorHelperService
         ILineItemsConverterService<FigureDto> singleFigureConverter,
         ILineItemsConverterService<KeychainDto> keychainConverter,
         ILineItemsConverterService<PetDto> petConverter,
-        ILineItemsConverterService<AccessoryDto> accessoryConverter)
+        ILineItemsConverterService<AccessoryDto> accessoryConverter,
+        ILineItemsConverterService<FigureDto[]> coupleFigureConverter)
     {
         _singleFigureConverter = singleFigureConverter;
         _keychainConverter = keychainConverter;
         _petConverter = petConverter;
         _accessoryConverter = accessoryConverter;
+        _coupleFigureConverter = coupleFigureConverter;
     }
 
     public async Task<ProductDto> FilterAndAdd(ShopifyProductsEnum productEnum, LineItem lineItem, ProductDto productDto)
@@ -48,6 +51,17 @@ public class LineItemsProcessorHelperService : ILineItemsProcessorHelperService
                 if (productDto.Figures is null)
                 {
                     throw new ArgumentNullException(NullErrorString(nameof(productDto.Figures)));
+                }
+
+                (FigureDto[] figures, ICollection<PetDto>? pets, ICollection<AccessoryDto>? accessories) coupleResult = await _coupleFigureConverter.ConvertWithMultipleExtras(lineItem);
+
+                productDto.Figures.Add(coupleResult.figures[0]);
+                productDto.Figures.Add(coupleResult.figures[1]);
+
+                if(coupleResult.pets is not null){
+                    foreach(var pet in coupleResult.pets){
+                        productDto.Pets.Add(pet);
+                    }
                 }
                 break;
             case ShopifyProductsEnum.Miino_Pop_Anahtarlik:

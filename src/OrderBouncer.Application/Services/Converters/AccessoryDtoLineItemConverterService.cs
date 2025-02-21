@@ -18,7 +18,7 @@ public class AccessoryDtoLineItemConverterService : ILineItemsConverterService<A
     public async Task<AccessoryDto> Convert(LineItem lineItem)
     {
         BaseDto baseDto = await _baseConverter.GenericConvert(lineItem, _extractor.GetAccessoryNotes);
-        return (AccessoryDto)baseDto;
+        return baseDto.ToAccessoryDto();
     }
 
     public Task<(AccessoryDto, AccessoryDto?)> ConvertWithExtraAccessory(LineItem lineItem)

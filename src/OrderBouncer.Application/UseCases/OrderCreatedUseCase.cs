@@ -2,6 +2,7 @@ using System;
 using Microsoft.Extensions.Logging;
 using OrderBouncer.Application.DTOs;
 using OrderBouncer.Application.Interfaces.Buffer;
+using OrderBouncer.Application.Interfaces.Converters;
 using OrderBouncer.Application.Interfaces.UseCases;
 using OrderBouncer.Domain.DTOs.Base;
 
@@ -11,18 +12,18 @@ public class OrderCreatedUseCase : IOrderCreatedUseCase
 {
     private readonly ICreateRequestBufferService _buffer;
     private readonly ILogger<OrderCreatedUseCase> _logger;
-    public OrderCreatedUseCase(ILogger<OrderCreatedUseCase> logger, ICreateRequestBufferService buffer){
+    private readonly IRequestConverterService<OrderCreatedShopifyRequestDto, OrderDto> _requestConverter;
+    public OrderCreatedUseCase(ILogger<OrderCreatedUseCase> logger, ICreateRequestBufferService buffer, IRequestConverterService<OrderCreatedShopifyRequestDto, OrderDto> requestConverter){
         _logger = logger;
         _buffer = buffer;
+        _requestConverter = requestConverter;
     }
     public async Task<bool> ExecuteAsync(OrderCreatedShopifyRequestDto requestDto, CancellationToken cancellationToken)
     {   
-        OrderDto orderDto = new(){};
+        OrderDto orderDto = await _requestConverter.Convert(requestDto);
         
         await _buffer.EnqueueAsync(orderDto,cancellationToken);
 
-        //await _outbox.ExecuteAsync(orderDto, cancellationToken);
-        //await _outbox.ExecutePathAsync(filePath, cancellationToken);
         return false;
     }
 }

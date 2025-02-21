@@ -1,4 +1,5 @@
 using System;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using OrderBouncer.Application.DTOs;
 using OrderBouncer.Application.Interfaces.Extractors;
@@ -10,10 +11,12 @@ public class LineItemPropertyExtractor : ILineItemPropertyExtractor
 {
     private readonly ExtractorSettings _settings;
     private readonly ILineItemPropertyExtractorHelper _helper;
+    private readonly ILogger<LineItemPropertyExtractor> _logger;
 
-    public LineItemPropertyExtractor(IOptions<ExtractorSettings> options, ILineItemPropertyExtractorHelper helper){
+    public LineItemPropertyExtractor(IOptions<ExtractorSettings> options, ILineItemPropertyExtractorHelper helper, ILogger<LineItemPropertyExtractor> logger){
         _settings = options.Value;
         _helper = helper;
+        _logger = logger;
     }
 
     public NoteAttribute[]? GetAccessoryNotes(NoteAttribute[] properties)
@@ -42,8 +45,9 @@ public class LineItemPropertyExtractor : ILineItemPropertyExtractor
     }
 
     private NoteAttribute[]? GetNotes(NoteAttribute[] props, string conditionName){
-        string? condition = _helper.GetSingleCondition(props, conditionName);
+        string? condition = _helper.GetSingleCondition(_settings.NoteConditions, conditionName);
         if(condition is null) return null;
+        _logger.LogInformation("Condition retrieved with ConditionName: {0} and ConditionValue: {1}", conditionName, condition);
 
         var notes = _helper.GetContains(props, condition);
 
@@ -66,10 +70,10 @@ public class LineItemPropertyExtractor : ILineItemPropertyExtractor
             if (position == 0)
             {
                 currentElement++;
-                imagePropertyGroup[currentElement] = [];
+                imagePropertyGroup.Add([]);
             }
 
-            imagePropertyGroup[currentElement][position] = new() { Name = parts.Last(), Value = image.Value };
+            imagePropertyGroup[currentElement].Append(new() { Name = parts.Last(), Value = image.Value });
         }
 
         return imagePropertyGroup;

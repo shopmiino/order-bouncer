@@ -36,7 +36,11 @@ public class SingleFigureDtoLineItemConverterService : ILineItemsConverterServic
     
     public async Task<(FigureDto, PetDto?)> ConvertWithExtraPet(LineItem lineItem)
     {
-        SingleFigureVariant variant = VariantMappings.SingleFigureVariantMappings[lineItem.VariantId];
+        if(lineItem.VariantId is null) throw new ArgumentNullException("VariantId is null");
+
+        SingleFigureVariant variant = VariantMappings.SingleFigureVariantMappings[lineItem.VariantId.Value];
+
+        if(lineItem.Properties is null) throw new ArgumentNullException("Properties are null");
 
         var groupedImages = _extractor.GroupImages(lineItem.Properties);
         if(groupedImages is null){
@@ -53,13 +57,17 @@ public class SingleFigureDtoLineItemConverterService : ILineItemsConverterServic
         NoteAttribute[]? nameNotes = _extractor.GetNameNotes(lineItem.Properties);
 
         if(variant.HasExtraPet){
-            petDto = (PetDto)await _extrasConverter.ConvertExtra(lineItem, groupedImages, _extractor.GetPetNotes, startPos);
+            BaseDto baseDto = await _extrasConverter.ConvertExtra(lineItem, groupedImages, _extractor.GetPetNotes, startPos);
+            petDto = baseDto.ToPetDto();
+
             if(petDto.ImagePaths is not null) startPos++;
         }
 
         if (variant.HasExtraAccessory)
         {
-            accessoryDto = (AccessoryDto)await _extrasConverter.ConvertExtra(lineItem, groupedImages, _extractor.GetAccessoryNotes, startPos);
+            BaseDto baseDto = await _extrasConverter.ConvertExtra(lineItem, groupedImages, _extractor.GetAccessoryNotes, startPos);
+            accessoryDto = baseDto.ToAccessoryDto();
+
             if(accessoryDto.ImagePaths is not null) startPos++;
         }
 

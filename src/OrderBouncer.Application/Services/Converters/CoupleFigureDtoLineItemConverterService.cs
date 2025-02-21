@@ -3,7 +3,6 @@ using OrderBouncer.Application.Constants;
 using OrderBouncer.Application.DTOs;
 using OrderBouncer.Application.Interfaces.Converters;
 using OrderBouncer.Application.Interfaces.Extractors;
-using OrderBouncer.Application.Interfaces.HttpClients;
 using OrderBouncer.Domain.DTOs.Base;
 using OrderBouncer.Domain.Variants;
 
@@ -43,11 +42,18 @@ public class CoupleFigureDtoLineItemConverterService : ILineItemsConverterServic
 
     public async Task<(FigureDto[], ICollection<PetDto>?, ICollection<AccessoryDto>?)> ConvertWithMultipleExtras(LineItem lineItem)
     {
-        CoupleFigureVariant variant = VariantMappings.CoupleFigureVariantMappings[lineItem.VariantId];
-                
+        if(lineItem.VariantId is null) throw new ArgumentNullException("VariantId is null");
+
+        CoupleFigureVariant variant = VariantMappings.CoupleFigureVariantMappings[lineItem.VariantId.Value];
+        
+        if(lineItem.Properties is null) throw new ArgumentNullException("Properties are null");
+
         var groupedImages = _extractor.GroupImages(lineItem.Properties);
         if(groupedImages is null){
             throw new ArgumentNullException("No Grouped Images here, element is null");
+        }
+        if(groupedImages.Count <= 0){
+            throw new ArgumentNullException("No Grouped Images here, element is empty");
         }
         
         //pet photos
@@ -78,13 +84,18 @@ public class CoupleFigureDtoLineItemConverterService : ILineItemsConverterServic
         int startPos = 0;
 
         if(variant.HasExtraPet){
-            petDto = (PetDto)await _extrasConverter.ConvertExtra(lineItem, groupedImages, _extractor.GetPetNotes, startPos);
+
+            BaseDto baseDto = await _extrasConverter.ConvertExtra(lineItem, groupedImages, _extractor.GetPetNotes, startPos);
+            petDto = baseDto.ToPetDto();
+
             if(petDto.ImagePaths is not null) startPos++;
         }
 
         if(variant.HasExtraAccessoryForFirst){
-            firstAccessoryDto = (AccessoryDto)await _extrasConverter.ConvertExtra(lineItem, groupedImages, _extractor.GetAccessoryNotes, startPos);
-            if(firstAccessoryDto.ImagePaths is not null) startPos++;
+            BaseDto baseDto = await _extrasConverter.ConvertExtra(lineItem, groupedImages, _extractor.GetAccessoryNotes, startPos);
+            firstAccessoryDto = baseDto.ToAccessoryDto();
+
+            //if(firstAccessoryDto.ImagePaths is not null) startPos++;
         }
 
         //first figure's photos
@@ -95,8 +106,10 @@ public class CoupleFigureDtoLineItemConverterService : ILineItemsConverterServic
         }
 
         if(variant.HasExtraAccessoryForSecond){
-            secondAccessoryDto = (AccessoryDto)await _extrasConverter.ConvertExtra(lineItem, groupedImages, _extractor.GetAccessoryNotes, startPos, 1);
-            if(secondAccessoryDto.ImagePaths is not null) startPos++;
+            BaseDto baseDto = await _extrasConverter.ConvertExtra(lineItem, groupedImages, _extractor.GetAccessoryNotes, startPos, 1);
+            secondAccessoryDto = baseDto.ToAccessoryDto();
+
+            //if(secondAccessoryDto.ImagePaths is not null) startPos++;
         }
 
         //second figure's photos
