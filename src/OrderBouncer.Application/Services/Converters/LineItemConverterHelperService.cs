@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using OrderBouncer.Application.DTOs;
 using OrderBouncer.Application.Interfaces.Converters;
 using OrderBouncer.Application.Interfaces.HttpClients;
@@ -15,12 +16,18 @@ public class LineItemConverterHelperService : ILineItemConverterHelperService
 
     public async Task<ICollection<string>> BatchImageSaveAndAdd(NoteAttribute[] props, ICollection<string> imagePaths)
     {
-        foreach (var item in props)
-        {
-            string path = await _imageSaver.Save(item.Value, item.Name);
-            imagePaths.Add(path);
-        }
+        var tempList = imagePaths.ToList();
 
-        return imagePaths;
+        var tasks = props.Select(async p => {
+                string extension = p.Value.Split(".").Last();
+                string path = await _imageSaver.Save(p.Value, p.Name, extension);
+                return path;
+        });
+        
+        string[] results = await Task.WhenAll(tasks);
+
+        tempList.AddRange(results);
+
+        return tempList;
     }
 }

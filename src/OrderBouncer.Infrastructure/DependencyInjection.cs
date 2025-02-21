@@ -1,7 +1,11 @@
 using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using OrderBouncer.Application.Interfaces.HttpClients;
+using OrderBouncer.Application.Interfaces.Infrastructure.Services;
 using OrderBouncer.Infrastructure.BackgroundServices;
+using OrderBouncer.Infrastructure.ExternalHttp;
+using OrderBouncer.Infrastructure.Services;
 
 namespace OrderBouncer.Infrastructure;
 
@@ -9,6 +13,10 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services){
         services.AddHostedService<OutboxProcessor>();
+
+        services.ConfigureHttpClientServices();
+
+        services.AddScoped<IFileCleanupService, FileCleanupService>();
 
         return services;
     }
@@ -29,6 +37,12 @@ public static class DependencyInjection
         .AddPolicyHandler(ImageClientPolicies.GetCircuitBreakerPolicy(logger));
         
 
+        return services;
+    }
+
+    public static IServiceCollection ConfigureHttpClientServices(this IServiceCollection services){
+        services.AddScoped<IImageFetcherService, ImageFetcherService>();
+        services.AddScoped<IImageSaverService, ImageSaverService>();
         return services;
     }
 }
