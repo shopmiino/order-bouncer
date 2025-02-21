@@ -3,16 +3,15 @@ using OrderBouncer.GoogleDrive;
 using OrderBouncer.Infrastructure;
 using OrderBouncer.GoogleSheets;
 using OrderBouncer.Application;
-using Hangfire;
-using Hangfire.SQLite;
 using OrderBouncer.Application.Options;
+using OrderBouncer.Web.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Host.ConfigureSerilog();
 
-//builder.Services.AddGoogleDrive();
+builder.Services.AddGoogleDrive();
 builder.Services.AddGoogleSheets();
 
 //Application Layer
@@ -37,6 +36,8 @@ builder.Services.Configure<ExtractorSettings>(builder.Configuration.GetSection("
 var app = builder.Build();
 
 app.MapGet("/", () => "Hello World!");
+
+app.UseMiddleware<FileCleanupMiddleware>();
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
