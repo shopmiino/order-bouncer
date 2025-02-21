@@ -20,7 +20,9 @@ public class OrderCreatedUseCase : IOrderCreatedUseCase
     }
     public async Task<bool> ExecuteAsync(OrderCreatedShopifyRequestDto requestDto, CancellationToken cancellationToken)
     {   
+        _logger.LogInformation("Executing OrderCreatedUseCase");
         OrderDto orderDto = await _requestConverter.Convert(requestDto);
+        
         
         await _buffer.EnqueueAsync(orderDto,cancellationToken);
 

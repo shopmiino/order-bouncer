@@ -1,4 +1,5 @@
 using System;
+using Microsoft.Extensions.Logging;
 using OrderBouncer.Application.Constants;
 using OrderBouncer.Application.DTOs;
 using OrderBouncer.Application.Interfaces.Converters;
@@ -13,11 +14,13 @@ public class CoupleFigureDtoLineItemConverterService : ILineItemsConverterServic
     private readonly ILineItemPropertyExtractor _extractor;
     private readonly ILineItemExtrasConverterService _extrasConverter;
     private readonly ILineItemConverterHelperService _helper;
+    private readonly ILogger<CoupleFigureDtoLineItemConverterService> _logger;
 
-    public CoupleFigureDtoLineItemConverterService(ILineItemPropertyExtractor extractor, ILineItemExtrasConverterService extrasConverter, ILineItemConverterHelperService helper){
+    public CoupleFigureDtoLineItemConverterService(ILineItemPropertyExtractor extractor, ILineItemExtrasConverterService extrasConverter, ILineItemConverterHelperService helper, ILogger<CoupleFigureDtoLineItemConverterService> logger){
         _extractor = extractor;
         _extrasConverter = extrasConverter;
         _helper = helper;
+        _logger = logger;
     }
 
     public Task<FigureDto[]> Convert(LineItem lineItem)
@@ -40,6 +43,7 @@ public class CoupleFigureDtoLineItemConverterService : ILineItemsConverterServic
         throw new NotImplementedException();
     }
 
+    //TODO add detailed logging
     public async Task<(FigureDto[], ICollection<PetDto>?, ICollection<AccessoryDto>?)> ConvertWithMultipleExtras(LineItem lineItem)
     {
         if(lineItem.VariantId is null) throw new ArgumentNullException("VariantId is null");

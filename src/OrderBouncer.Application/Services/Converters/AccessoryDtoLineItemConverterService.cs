@@ -1,4 +1,5 @@
 using System;
+using Microsoft.Extensions.Logging;
 using OrderBouncer.Application.DTOs;
 using OrderBouncer.Application.Interfaces.Converters;
 using OrderBouncer.Application.Interfaces.Extractors;
@@ -10,13 +11,16 @@ public class AccessoryDtoLineItemConverterService : ILineItemsConverterService<A
 {
     private readonly ILineItemPropertyExtractor _extractor;
     private readonly ILineItemsBaseConverterService _baseConverter;
+    private readonly ILogger<AccessoryDtoLineItemConverterService> _logger;
 
-    public AccessoryDtoLineItemConverterService(ILineItemPropertyExtractor extractor, ILineItemsBaseConverterService baseConverter){
+    public AccessoryDtoLineItemConverterService(ILineItemPropertyExtractor extractor, ILineItemsBaseConverterService baseConverter, ILogger<AccessoryDtoLineItemConverterService> logger){
         _extractor = extractor;
         _baseConverter = baseConverter;
+        _logger = logger;
     }
     public async Task<AccessoryDto> Convert(LineItem lineItem)
     {
+        _logger.LogInformation("Converting lineItem to AccessoryDto");
         BaseDto baseDto = await _baseConverter.GenericConvert(lineItem, _extractor.GetAccessoryNotes);
         return baseDto.ToAccessoryDto();
     }

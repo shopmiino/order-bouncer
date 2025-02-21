@@ -13,6 +13,9 @@ public class LineItemPropertyExtractor : ILineItemPropertyExtractor
     private readonly ILineItemPropertyExtractorHelper _helper;
     private readonly ILogger<LineItemPropertyExtractor> _logger;
 
+    private const string IMAGE_NAME_SPLITTER = "-";
+    private const int IMAGE_POSITION_PLACE = 1;
+
     public LineItemPropertyExtractor(IOptions<ExtractorSettings> options, ILineItemPropertyExtractorHelper helper, ILogger<LineItemPropertyExtractor> logger){
         _settings = options.Value;
         _helper = helper;
@@ -58,22 +61,33 @@ public class LineItemPropertyExtractor : ILineItemPropertyExtractor
 
     public IList<NoteAttribute[]>? GroupImages(NoteAttribute[] properties)
     {
+        _logger.LogInformation("GroupImages is starting");
+
         IEnumerable<NoteAttribute> imageProperties = properties.Where(p => p.Name.StartsWith(_settings.ImageString));
         List<NoteAttribute[]> imagePropertyGroup = [];
 
         int currentElement = -1;
         foreach (NoteAttribute image in imageProperties)
         {
-            string[] parts = image.Name.Split("-");
-            int position = Convert.ToInt32(parts[1]); //0, 1, 2, 3, 4, ...
+            string[] parts = image.Name.Split(IMAGE_NAME_SPLITTER);
+            _logger.LogDebug("Parts splitted into {0} pieces with {1}", parts.Count(), IMAGE_NAME_SPLITTER);
 
+            int position = Convert.ToInt32(parts[IMAGE_POSITION_PLACE]); //0, 1, 2, 3, 4, ...
+            _logger.LogDebug("Looking into {0}. place for position", IMAGE_POSITION_PLACE);
+            _logger.LogDebug("Extracted position of current image is {0}", position);
+            
             if (position == 0)
             {
                 currentElement++;
+
+                _logger.LogDebug("Position is 0, new ImageProperty is adding and currentElement count increasing (now the currentElement is {0} and imageProperyGroup's count is {1})", currentElement, imagePropertyGroup.Count());
+
                 imagePropertyGroup.Add([]);
             }
+            string name = parts.Last();
+            _logger.LogDebug("Appending new NoteAttribute(Name: {0}, Value: {1}) to the imagePropertyGroup's {2}. element", name, image.Value, currentElement);
 
-            imagePropertyGroup[currentElement].Append(new() { Name = parts.Last(), Value = image.Value });
+            imagePropertyGroup[currentElement].Append(new() { Name = name, Value = image.Value });
         }
 
         return imagePropertyGroup;
@@ -81,18 +95,25 @@ public class LineItemPropertyExtractor : ILineItemPropertyExtractor
 
     public IList<NoteAttribute[]>? GroupNotes(NoteAttribute[] properties)
     {
+        _logger.LogInformation("GroupNotes is starting");
+
         IEnumerable<NoteAttribute> noteProperties = properties.Where(p => p.Name.Contains(_settings.NoteString));
         int conditionCount = _settings.NoteConditions.Count();
 
         List<NoteAttribute[]> notePropertyGroup = [];
         foreach(var condition in _settings.NoteConditions){
             Func<NoteAttribute, bool> predicate = p => p.Name.Contains(condition.Value); 
+            _logger.LogDebug("Looking for conditionName: {0} in NoteAttribute names", condition.Value);
 
             bool hasElement = noteProperties.Any(predicate);
-            if(!hasElement) continue;
+            if(!hasElement) {
+                _logger.LogDebug("No element found for this condition, continuing");
+                continue;
+            }
 
             IEnumerable<NoteAttribute> notes = noteProperties.Where(predicate);
 
+            _logger.LogDebug("Found {0} matching notes for this condition, adding to the notePropertyGroup", notes.Count());
             notePropertyGroup.Add([.. notes]);
         }
         
