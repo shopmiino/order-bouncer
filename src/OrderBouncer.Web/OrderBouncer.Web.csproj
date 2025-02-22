@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="tmp/images/" />
     <Folder Include="tmp\images\" />
   </ItemGroup>
 

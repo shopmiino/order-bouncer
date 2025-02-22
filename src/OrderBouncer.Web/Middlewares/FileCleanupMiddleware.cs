@@ -19,7 +19,7 @@ public class FileCleanupMiddleware
         await _next(context);
 
         _logger.LogDebug("Cleanup service is STARTING");
-        cleanupService.CleanupAsync();
+        //cleanupService.CleanupAsync();
         _logger.LogInformation("Cleanup service is FINISHED");
 
         _logger.LogDebug("Leaving the FileCleanupMiddleware");

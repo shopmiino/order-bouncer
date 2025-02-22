@@ -37,8 +37,8 @@ public class ImageSaverService : IImageSaverService
             _logger.LogWarning("Directory not exists in current savePath, creating new");
             Directory.CreateDirectory(savePath);
         }
-
-        string fullPath = Path.Combine(savePath, $"{fileName}.{fileExtension}");
+        string projectRoot = Directory.GetCurrentDirectory();
+        string fullPath = Path.Combine(projectRoot, savePath, $"{fileName}.{fileExtension}");
         _logger.LogDebug("Path combining complete, combined path: {0}", fullPath);
 
         try{
