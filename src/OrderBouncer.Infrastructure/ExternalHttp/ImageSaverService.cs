@@ -50,7 +50,7 @@ public class ImageSaverService : IImageSaverService
             _logger.LogDebug("Stream is successfully copied into FileStream and it wrote image into path: {0}", fullPath);
 
             _cleanupService.Register(fullPath);
-
+ 
             return fullPath;
 
         } catch(Exception ex){

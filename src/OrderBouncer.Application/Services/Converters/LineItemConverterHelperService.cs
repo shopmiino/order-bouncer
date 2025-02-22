@@ -19,20 +19,32 @@ public class LineItemConverterHelperService : ILineItemConverterHelperService
 
     public async Task<ICollection<string>> BatchImageSaveAndAdd(NoteAttribute[] props, ICollection<string> imagePaths)
     {
-        _logger.LogInformation("BarchImageSaveAndAdd is starting with imagePath count: {0}", imagePaths.Count());
+        _logger.LogInformation("BatchImageSaveAndAdd is starting with imagePath count: {0}, property count: {1}", imagePaths.Count(), props.Count());
+        char[] splitters = ['.','/'];
+
         var tempList = imagePaths.ToList();
+        ConcurrentBag<string> results = [];
 
+        await Parallel.ForEachAsync(props, async (p, _) => {
+            string[] splitted = p.Value.Split(splitters);
+            string extension = splitted[^1];
+            string name = splitted[^2]; 
+            _logger.LogDebug("Selected extension for {0}, {1}, is: {2} and the name is: {3}", p.Value, p.Name, extension, name);
 
+            string path = await _imageSaver.Save(p.Value, name, extension);
+            results.Add(path);
+        });
+        /*
         var tasks = props.Select(async p => {
                 string extension = p.Value.Split(".").Last();
                 _logger.LogDebug("Selected extension for {0}, {1}, is: {2}", p.Value, p.Name, extension);
 
                 string path = await _imageSaver.Save(p.Value, p.Name, extension);
                 return path;
-        });
-        
-        _logger.LogDebug("{0} tasks are grouped and starting to run in parallel with Task.WhenAll", tasks.Count());
-        string[] results = await Task.WhenAll(tasks);
+        }).ToList();
+        */
+        //_logger.LogDebug("{0} tasks are grouped and starting to run in parallel with Task.WhenAll", tasks.Count());
+        //string[] results = await Task.WhenAll(tasks);
 
         tempList.AddRange(results);
 

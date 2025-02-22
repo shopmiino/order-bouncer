@@ -64,7 +64,7 @@ public class LineItemPropertyExtractor : ILineItemPropertyExtractor
         _logger.LogInformation("GroupImages is starting");
 
         IEnumerable<NoteAttribute> imageProperties = properties.Where(p => p.Name.StartsWith(_settings.ImageString));
-        List<NoteAttribute[]> imagePropertyGroup = [];
+        List<List<NoteAttribute>> imagePropertyGroup = [];
 
         int currentElement = -1;
         foreach (NoteAttribute image in imageProperties)
@@ -79,18 +79,19 @@ public class LineItemPropertyExtractor : ILineItemPropertyExtractor
             if (position == 0)
             {
                 currentElement++;
+                imagePropertyGroup.Add([]);
 
                 _logger.LogDebug("Position is 0, new ImageProperty is adding and currentElement count increasing (now the currentElement is {0} and imageProperyGroup's count is {1})", currentElement, imagePropertyGroup.Count());
-
-                imagePropertyGroup.Add([]);
             }
-            string name = parts.Last();
-            _logger.LogDebug("Appending new NoteAttribute(Name: {0}, Value: {1}) to the imagePropertyGroup's {2}. element", name, image.Value, currentElement);
 
-            imagePropertyGroup[currentElement].Append(new() { Name = name, Value = image.Value });
+            string name = parts.Last();
+            _logger.LogDebug("Adding new NoteAttribute(Name: {0}, Value: {1}) to the imagePropertyGroup's {2}. element", name, image.Value, currentElement);
+            
+            NoteAttribute noteAttribute = new() { Name = name, Value = image.Value };
+            imagePropertyGroup[currentElement].Add(noteAttribute);
         }
 
-        return imagePropertyGroup;
+        return imagePropertyGroup.Select(p => p.ToArray()).ToList();
     }
 
     public IList<NoteAttribute[]>? GroupNotes(NoteAttribute[] properties)
