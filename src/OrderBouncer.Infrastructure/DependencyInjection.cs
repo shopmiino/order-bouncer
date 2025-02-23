@@ -50,7 +50,7 @@ public static class DependencyInjection
     }
     public static IServiceCollection AddImageHttpClient(this IServiceCollection services, ILogger logger){
         services.AddHttpClient("ImageClient", client => {
-            client.Timeout = TimeSpan.FromSeconds(10);
+            client.Timeout = TimeSpan.FromSeconds(30);
             client.DefaultRequestHeaders.ConnectionClose = false;
         })
         .ConfigurePrimaryHttpMessageHandler(()=>{
