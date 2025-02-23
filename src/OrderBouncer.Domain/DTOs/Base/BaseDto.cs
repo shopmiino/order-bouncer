@@ -11,3 +11,27 @@ public record class BaseDto
         Note = note;
     }
 }
+
+public static class BaseDtoExtensions{
+    public static PetDto ToPetDto(this BaseDto dto){
+        return new(
+            imagePaths: dto.ImagePaths,
+            note: dto.Note
+        );
+    }
+
+    public static AccessoryDto ToAccessoryDto(this BaseDto dto){
+        return new(
+            imagePaths: dto.ImagePaths,
+            note: dto.Note
+        );
+    }
+
+    public static KeychainDto ToKeychainDto(this BaseDto dto){
+        return new(
+            imagePaths: dto.ImagePaths,
+            note: dto.Note
+        );
+    }
+    
+}

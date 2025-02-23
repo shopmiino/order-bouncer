@@ -9,7 +9,7 @@
   <ItemGroup>
     <Folder Include="Interfaces\Api\" />
     <Folder Include="Interfaces\MinIO\" />
-    <Folder Include="Services\Converters\" />
+    <Folder Include="Services\Factories\" />
   </ItemGroup>
 
   <ItemGroup>

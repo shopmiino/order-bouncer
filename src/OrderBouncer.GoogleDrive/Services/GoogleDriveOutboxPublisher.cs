@@ -1,4 +1,5 @@
 using System;
+using OrderBouncer.Application.Interfaces.Infrastructure.Services;
 using OrderBouncer.Application.Interfaces.OutboxPublisher;
 using OrderBouncer.Domain.DTOs.Base;
 using OrderBouncer.Domain.Outbox;
@@ -10,11 +11,11 @@ namespace OrderBouncer.GoogleDrive.Services;
 
 public class GoogleDriveOutboxPublisher : IOutboxPublisher
 {
-    private readonly IGoogleDriveRepository _repository;
     private readonly IGoogleDriveEngine _engine;
+    private readonly IFileCleanupService _cleanupService;
 
-    public GoogleDriveOutboxPublisher(IGoogleDriveRepository repository, IGoogleDriveEngine engine){
-        _repository = repository;
+    public GoogleDriveOutboxPublisher(IFileCleanupService cleanupService, IGoogleDriveEngine engine){
+        _cleanupService = cleanupService;
         _engine = engine;
     }
     public PublisherTargetSystem TargetSystem => PublisherTargetSystem.GoogleDrive;
@@ -22,5 +23,6 @@ public class GoogleDriveOutboxPublisher : IOutboxPublisher
     public async Task PublishAsync(OrderDto dto, CancellationToken cancellationToken)
     {
         await _engine.UploadOrder(dto, cancellationToken);
+        _cleanupService.Cleanup(dto.ScopeId);
     }
 }

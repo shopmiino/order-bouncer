@@ -5,19 +5,17 @@ using OrderBouncer.Application.DTOs;
 using OrderBouncer.Application.Interfaces.UseCases;
 using OrderBouncer.Domain.DTOs.Base;
 using OrderBouncer.Domain.Models;
+using Polly.CircuitBreaker;
 
 namespace OrderBouncer.Web.Controllers.v1
 {
     public class OrdersController : CustomBase
     {
         private readonly IOrderCreatedUseCase _orderCreated;
-        public OrdersController(IOrderCreatedUseCase orderCreated){
+        private readonly ILogger<OrdersController> _logger;
+        public OrdersController(IOrderCreatedUseCase orderCreated, ILogger<OrdersController> logger){
             _orderCreated = orderCreated;
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetOrders(GetOrdersDto orders){
-            return Ok(orders);
+            _logger = logger;
         }
 
         [HttpPost]
@@ -31,9 +29,19 @@ namespace OrderBouncer.Web.Controllers.v1
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] OrderCreatedShopifyRequestDto requestDto){
+        public async Task<IActionResult> Create([FromBody] OrderCreatedShopifyRequestWrapperDto requestDto){
             //Add conversion mechanism
-            await _orderCreated.ExecuteAsync(requestDto, new CancellationToken());
+            try{
+                if(requestDto.Order is null) throw new ArgumentNullException("Order is null");
+
+                await _orderCreated.ExecuteAsync(requestDto.Order, new CancellationToken());
+            } catch (BrokenCircuitException){
+                _logger.LogWarning("Circuit is OPEN! Returning 503 Service Unavailable.");
+                return StatusCode(503, "Service unavailable due to repeated failures.");
+            } catch(Exception ex){
+                _logger.LogError("An error occurred\nmessage: {0}\nstack trace: {1}", ex.Message, ex.StackTrace);
+                return StatusCode(500, "Internal Server Error.");
+            }
             return Ok();
         }
 

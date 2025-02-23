@@ -23,7 +23,7 @@ public class OutboxExecutor : IOutboxExecutor
                 _logger.LogInformation("Trying to execute {0} publisher", publisher.TargetSystem);
                 await publisher.PublishAsync(dto, cancellationToken);
             } catch (Exception ex) {
-                _logger.LogError("An error occured while publishing {0}, Message: {1}", publisher.TargetSystem, ex.Message);
+                _logger.LogError("An error occurred while publishing {0}\nmessage: {1}\nstackTrace: {2}", publisher.TargetSystem, ex.Message, ex.StackTrace);
             }
         }
     }
@@ -48,7 +48,7 @@ public class OutboxExecutor : IOutboxExecutor
                 _logger.LogInformation("Trying to execute {0} publisher", publisher.TargetSystem);
                 //await publisher.PublishPathAsync(filePath, cancellationToken);
             } catch (Exception ex) {
-                _logger.LogError("An error occured while publishing {0}, Message: {1}", publisher.TargetSystem, ex.Message);
+                _logger.LogError("An error occurred while publishing {0}\nmessage: {1}\nstackTrace: {2}", publisher.TargetSystem, ex.Message, ex.StackTrace);
             }
         }
     }

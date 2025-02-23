@@ -2,7 +2,7 @@ using System;
 
 namespace OrderBouncer.Domain.Interfaces.Factories;
 
-public interface IEntityFactory<TDto, T>
+public interface IFactory<TIn, TOut>
 {
-    public T Create(TDto? dto);
+    public TOut Create(TIn? dto);
 }

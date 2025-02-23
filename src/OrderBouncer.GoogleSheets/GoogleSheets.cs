@@ -27,6 +27,11 @@ public static class GoogleSheets
             GoogleCredential credential;
             string accountKeyFilePath = configuration["Settings:Google:AccountKeyFilePath"] ?? string.Empty;
 
+            if(accountKeyFilePath == string.Empty){
+                throw new ArgumentNullException("AccountKeyFilePath is empty or non-existed");
+            }
+
+
             using (Stream stream = new FileStream(accountKeyFilePath, FileMode.Open, FileAccess.Read)){
                 credential = GoogleCredential.FromStream(stream).CreateScoped(SheetsService.ScopeConstants.Spreadsheets);
             }
