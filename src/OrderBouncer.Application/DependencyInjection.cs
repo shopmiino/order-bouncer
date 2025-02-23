@@ -43,7 +43,7 @@ public static class DependencyInjection
     {
         services.AddSingleton<ICreateRequestBufferService, CreateRequestBufferService>();
         services.AddTransient<ICreateRequestProcessorService, CreateRequestProcessorService>();
-
+        services.AddTransient<ICreateRequestConvertProcessorService, CreateRequestConvertProcessorService>();
         return services;
     }
 
