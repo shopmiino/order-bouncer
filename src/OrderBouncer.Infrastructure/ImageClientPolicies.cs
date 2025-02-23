@@ -14,7 +14,7 @@ public static class ImageClientPolicies
     }
 
     public static IAsyncPolicy<HttpResponseMessage> GetTimeoutPolicy(){
-        return Policy.TimeoutAsync<HttpResponseMessage>(TimeSpan.FromSeconds(10));
+        return Policy.TimeoutAsync<HttpResponseMessage>(TimeSpan.FromSeconds(30));
     }
 
     public static IAsyncPolicy<HttpResponseMessage> GetCircuitBreakerPolicy(ILogger logger){
