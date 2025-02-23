@@ -29,12 +29,12 @@ namespace OrderBouncer.Web.Controllers.v1
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] OrderCreatedShopifyRequestWrapperDto requestDto){
+        public async Task<IActionResult> Create([FromBody] OrderCreatedShopifyRequestDto requestDto){
             //Add conversion mechanism
             try{
-                if(requestDto.Order is null) throw new ArgumentNullException("Order is null");
+                //if(requestDto.Order is null) throw new ArgumentNullException("Order is null");
 
-                await _orderCreated.ExecuteAsync(requestDto.Order, new CancellationToken());
+                await _orderCreated.ExecuteAsync(requestDto, new CancellationToken());
             } catch (BrokenCircuitException){
                 _logger.LogWarning("Circuit is OPEN! Returning 503 Service Unavailable.");
                 return StatusCode(503, "Service unavailable due to repeated failures.");

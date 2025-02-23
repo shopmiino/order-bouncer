@@ -45,5 +45,6 @@ app.MapControllers();
 app.ConfigureHangfireDashboard();
 
 //app.UseMiddleware<FileCleanupMiddleware>();
+app.UseMiddleware<AuthenticationMiddleware>();
 
 app.Run();
