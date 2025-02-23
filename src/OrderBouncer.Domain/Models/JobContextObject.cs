@@ -4,7 +4,12 @@ namespace OrderBouncer.Domain.Models;
 
 public struct JobContextObject
 {
-    public Object obj {get; set;}
-    public Type type {get; set;}
+    public object Obj {get; set;}
+    public Type ObjType {get; set;}
+
+    public JobContextObject(object obj, Type type){
+        Obj = obj;
+        ObjType = type;
+    }
 
 }

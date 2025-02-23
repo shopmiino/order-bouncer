@@ -3,12 +3,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OrderBouncer.Application.DTOs;
 using OrderBouncer.Application.Interfaces.Buffer;
+using OrderBouncer.Application.Interfaces.Context;
 using OrderBouncer.Application.Interfaces.Converters;
 using OrderBouncer.Application.Interfaces.Executors;
 using OrderBouncer.Application.Interfaces.Extractors;
 using OrderBouncer.Application.Interfaces.Processors;
 using OrderBouncer.Application.Interfaces.UseCases;
 using OrderBouncer.Application.Services.Buffer;
+using OrderBouncer.Application.Services.Context;
 using OrderBouncer.Application.Services.Converters;
 using OrderBouncer.Application.Services.Executors;
 using OrderBouncer.Application.Services.Extractor;
@@ -31,6 +33,8 @@ public static class DependencyInjection
                 .ConfigureDtoConverterHelpers();
 
         services.AddScoped<IRequestConverterService<OrderCreatedShopifyRequestDto, OrderDto>, OrderCreatedRequestToOrderDtoConverterService>();
+
+        services.AddSingleton<IJobContext, JobContext>();
 
         return services;
     }

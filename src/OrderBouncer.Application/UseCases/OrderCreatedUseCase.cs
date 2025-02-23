@@ -22,12 +22,12 @@ public class OrderCreatedUseCase : IOrderCreatedUseCase
     {   
         _logger.LogInformation("Executing OrderCreatedUseCase");
 
-        Guid scopeId = Guid.NewGuid();
-        _logger.LogDebug("{0} job is running and converting", scopeId);
+        //Guid scopeId = Guid.NewGuid();
+        //_logger.LogDebug("{0} job is running and converting", scopeId);
         
-        OrderDto orderDto = await _requestConverter.Convert(requestDto, scopeId);
+        //OrderDto orderDto = await _requestConverter.Convert(requestDto, scopeId);
         
-        await _buffer.EnqueueAsync(orderDto,cancellationToken);
+        await _buffer.EnqueueAsync(requestDto, cancellationToken);
 
         return false;
     }

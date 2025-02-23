@@ -6,5 +6,5 @@ namespace OrderBouncer.Application.Interfaces.Processors;
 
 public interface ICreateRequestConvertProcessorService
 {
-    public Task<OrderDto> ConvertAsync(OrderCreatedShopifyRequestDto request, CancellationToken cancellationToken);
+    public Task ConvertAndStoreAsync(OrderCreatedShopifyRequestDto request, Guid jobId, CancellationToken cancellationToken);
 }

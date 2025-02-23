@@ -13,7 +13,10 @@ public class JobContext : IJobContext
     private ConcurrentDictionary<Guid, List<string>> _stringStore;
 
     public JobContext(){
-
+        _guidStore = [];
+        _intStore = [];
+        _objectStore = [];
+        _stringStore = [];
     }
 
     public (Guid, bool) TryGetGuid(Guid jobId, Func<Guid, bool> predicate)
@@ -37,11 +40,11 @@ public class JobContext : IJobContext
     public (T, bool) TryGetObject<T>(Guid jobId, Func<JobContextObject, bool> predicate)
     {
         if(_objectStore.TryGetValue(jobId, out List<JobContextObject>? objectStore)){
-            JobContextObject contextObject = objectStore.FirstOrDefault(predicate);
+            JobContextObject contextObject = objectStore.LastOrDefault(predicate);
 
-            contextObject.obj = Convert.ChangeType(contextObject.obj, contextObject.type);
+            contextObject.Obj = Convert.ChangeType(contextObject.Obj, contextObject.ObjType);
 
-            return ((T)contextObject.obj, true);
+            return ((T)contextObject.Obj, true);
         }
 
         return (default, false);
@@ -58,7 +61,7 @@ public class JobContext : IJobContext
 
     public void TryStoreGuid(Guid jobId, Guid value)
     {
-        _ =_guidStore.AddOrUpdate(
+        _ = _guidStore.AddOrUpdate(
             jobId,
             _ => [value],
             (_, store) => {
@@ -71,16 +74,42 @@ public class JobContext : IJobContext
 
     public void TryStoreInt(Guid jobId, int value)
     {
-        throw new NotImplementedException();
+        _ = _intStore.AddOrUpdate(
+            jobId,
+            _ => [value],
+            (_, store) => {
+                lock (store){
+                    store.Add(value);
+                };
+                return store;
+            });
     }
 
     public void TryStoreObject<T>(Guid jobId, T value)
     {
-        throw new NotImplementedException();
+        if(value is null) throw new ArgumentNullException("The value that are going to be added to the store can not be null");
+
+        _ = _objectStore.AddOrUpdate(
+            jobId,
+            _ => [new JobContextObject(value, typeof(T))],
+            (_, store) => {
+                lock (store){
+                    store.Add(new JobContextObject(value, typeof(T)));
+                };
+                return store;
+            });
     }
 
     public void TryStoreString(Guid jobId, string value)
     {
-        throw new NotImplementedException();
+        _ = _stringStore.AddOrUpdate(
+            jobId,
+            _ => [value],
+            (_, store) => {
+                lock (store){
+                    store.Add(value);
+                };
+                return store;
+            });
     }
 }

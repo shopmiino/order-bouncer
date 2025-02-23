@@ -2,6 +2,7 @@ using System;
 using Hangfire;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using OrderBouncer.Application.DTOs;
 using OrderBouncer.Application.Interfaces.Buffer;
 using OrderBouncer.Application.Interfaces.Processors;
 using OrderBouncer.Domain.DTOs.Base;
@@ -22,18 +23,18 @@ public class OrderCreateRequestProcessWorker : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        await foreach (OrderDto request in _bufferService.Reader.ReadAllAsync(stoppingToken)){
+        await foreach (OrderCreatedShopifyRequestDto request in _bufferService.Reader.ReadAllAsync(stoppingToken)){
             if(stoppingToken.IsCancellationRequested) break;
             try{
                 _logger.LogInformation("Background service for OrderDto processing is Enqueing");
-                OrderDto orderDto;
 
-                string id = _backgroundJobClient.Enqueue<ICreateRequestConvertProcessorService, OrderDto>(service => service.ConvertAsync(new(), stoppingToken));
-                    
+                Guid jobId = Guid.NewGuid();
 
-                _backgroundJobClient.ContinueJobWith<ICreateRequestProcessorService>(id, (service, converted) => service.ProcessAsync(converted, stoppingToken));
+                string id = _backgroundJobClient.Enqueue<ICreateRequestConvertProcessorService>(service => service.ConvertAndStoreAsync(request, jobId, stoppingToken));
 
-                _logger.LogDebug("Job is enqueued with id of {0}", request.ScopeId);
+                _backgroundJobClient.ContinueJobWith<ICreateRequestProcessorService>(id, (service) => service.ProcessAsync(jobId, stoppingToken));
+
+                _logger.LogDebug("Job is enqueued with id of {0}", jobId);
             } catch(Exception ex){
                 _logger.LogError("Error occurred while trying to enqueue backgroundJob, message: {0}", ex.Message);
             }
