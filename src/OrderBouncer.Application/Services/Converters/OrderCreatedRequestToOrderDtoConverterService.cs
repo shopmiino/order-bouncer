@@ -20,15 +20,16 @@ public class OrderCreatedRequestToOrderDtoConverterService : IRequestConverterSe
         _settings = options.Value;
         _linesProcessor = linesProcessor;
     }
-    public async Task<OrderDto> Convert(OrderCreatedShopifyRequestDto input)
+    public async Task<OrderDto> Convert(OrderCreatedShopifyRequestDto input, Guid scopeId)
     {
         if(input.LineItems is null) throw new ArgumentNullException("LineItems are null, can not process further");
-        ProductDto productDto = await _linesProcessor.Process(input.LineItems);
+        ProductDto productDto = await _linesProcessor.Process(input.LineItems, scopeId);
 
         DateTime createdAt = input.CreatedAt is null ? default(DateTime) : input.CreatedAt.Value.UtcDateTime;
         string orderName = input.Name ?? "NONAME";
 
         OrderDto orderDto = new(orderName, [productDto], input.Note, createdAt);
+        orderDto.ScopeId = scopeId;
         
         return orderDto;
     }

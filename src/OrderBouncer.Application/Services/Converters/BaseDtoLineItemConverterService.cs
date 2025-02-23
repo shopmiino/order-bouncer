@@ -16,7 +16,7 @@ public class BaseDtoLineItemConverterService : ILineItemsBaseConverterService
         _helper = helper;
     }
 
-    public async Task<BaseDto> GenericConvert(LineItem lineItem, Func<NoteAttribute[], NoteAttribute[]?> noteGetter)
+    public async Task<BaseDto> GenericConvert(LineItem lineItem, Func<NoteAttribute[], NoteAttribute[]?> noteGetter, Guid scopeId)
     {
         var groupedImages = _extractor.GroupImages(lineItem.Properties);
         if(groupedImages is null){
@@ -27,7 +27,7 @@ public class BaseDtoLineItemConverterService : ILineItemsBaseConverterService
         NoteAttribute[]? notes = noteGetter(lineItem.Properties);
 
         for(int i = 0; i < groupedImages.Count; i++){
-            imagePaths = await _helper.BatchImageSaveAndAdd(groupedImages[i], imagePaths);
+            imagePaths = await _helper.BatchImageSaveAndAdd(groupedImages[i], imagePaths, scopeId);
         }
 
         return new(

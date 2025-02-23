@@ -28,7 +28,7 @@ public class LineItemsProcessorHelperService : ILineItemsProcessorHelperService
         _coupleFigureConverter = coupleFigureConverter;
     }
 
-    public async Task<ProductDto> FilterAndAdd(ShopifyProductsEnum productEnum, LineItem lineItem, ProductDto productDto)
+    public async Task<ProductDto> FilterAndAdd(ShopifyProductsEnum productEnum, LineItem lineItem, ProductDto productDto, Guid scopeId)
     {
         string NullErrorString(string collectionName)
         {
@@ -42,7 +42,7 @@ public class LineItemsProcessorHelperService : ILineItemsProcessorHelperService
                 {
                     throw new ArgumentNullException(NullErrorString(nameof(productDto.Figures)));
                 }
-                (FigureDto figureDto, PetDto? petDto) result = await _singleFigureConverter.ConvertWithExtraPet(lineItem);
+                (FigureDto figureDto, PetDto? petDto) result = await _singleFigureConverter.ConvertWithExtraPet(lineItem, scopeId);
                 productDto.Figures.Add(result.figureDto);
 
                 if(result.petDto is not null) productDto.Pets.Add(result.petDto);
@@ -53,7 +53,7 @@ public class LineItemsProcessorHelperService : ILineItemsProcessorHelperService
                     throw new ArgumentNullException(NullErrorString(nameof(productDto.Figures)));
                 }
 
-                (FigureDto[] figures, ICollection<PetDto>? pets, ICollection<AccessoryDto>? accessories) coupleResult = await _coupleFigureConverter.ConvertWithMultipleExtras(lineItem);
+                (FigureDto[] figures, ICollection<PetDto>? pets, ICollection<AccessoryDto>? accessories) coupleResult = await _coupleFigureConverter.ConvertWithMultipleExtras(lineItem, scopeId);
 
                 productDto.Figures.Add(coupleResult.figures[0]);
                 productDto.Figures.Add(coupleResult.figures[1]);
@@ -70,7 +70,7 @@ public class LineItemsProcessorHelperService : ILineItemsProcessorHelperService
                     throw new ArgumentNullException(NullErrorString(nameof(productDto.Keychains)));
                 }
                 
-                productDto.Keychains.Add(await _keychainConverter.Convert(lineItem));
+                productDto.Keychains.Add(await _keychainConverter.Convert(lineItem, scopeId));
                 break;
             case ShopifyProductsEnum.Miino_Pop_Evcil_Hayvan:
                 if (productDto.Pets is null)
@@ -78,7 +78,7 @@ public class LineItemsProcessorHelperService : ILineItemsProcessorHelperService
                     throw new ArgumentNullException(NullErrorString(nameof(productDto.Pets)));
                 }
 
-                productDto.Pets.Add(await _petConverter.Convert(lineItem));
+                productDto.Pets.Add(await _petConverter.Convert(lineItem, scopeId));
                 break;
             case ShopifyProductsEnum.Miino_Pop_Aksesuar:
                 if (productDto.Accessories is null)
@@ -86,7 +86,7 @@ public class LineItemsProcessorHelperService : ILineItemsProcessorHelperService
                     throw new ArgumentNullException(NullErrorString(nameof(productDto.Accessories)));
                 }
 
-                productDto.Accessories.Add(await _accessoryConverter.Convert(lineItem));
+                productDto.Accessories.Add(await _accessoryConverter.Convert(lineItem, scopeId));
                 break;
         }
 

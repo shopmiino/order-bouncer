@@ -6,9 +6,9 @@ namespace OrderBouncer.Application.Interfaces.Converters;
 
 public interface ILineItemsConverterService<TOut>
 {
-    public Task<TOut> Convert(LineItem lineItem);
-    public Task<(TOut, PetDto?)> ConvertWithExtraPet(LineItem lineItem);
-    public Task<(TOut, AccessoryDto?)> ConvertWithExtraAccessory(LineItem lineItem);
-    public Task<(TOut, PetDto?, AccessoryDto?)> ConvertWithExtras(LineItem lineItem);
-    public Task<(TOut, ICollection<PetDto>?, ICollection<AccessoryDto>?)> ConvertWithMultipleExtras(LineItem lineItem);
+    public Task<TOut> Convert(LineItem lineItem, Guid scopeId);
+    public Task<(TOut, PetDto?)> ConvertWithExtraPet(LineItem lineItem, Guid scopeId);
+    public Task<(TOut, AccessoryDto?)> ConvertWithExtraAccessory(LineItem lineItem, Guid scopeId);
+    public Task<(TOut, PetDto?, AccessoryDto?)> ConvertWithExtras(LineItem lineItem, Guid scopeId);
+    public Task<(TOut, ICollection<PetDto>?, ICollection<AccessoryDto>?)> ConvertWithMultipleExtras(LineItem lineItem, Guid scopeId);
 }

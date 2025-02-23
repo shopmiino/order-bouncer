@@ -26,7 +26,14 @@ public class OrderCreateRequestProcessWorker : BackgroundService
             if(stoppingToken.IsCancellationRequested) break;
             try{
                 _logger.LogInformation("Background service for OrderDto processing is Enqueing");
-                _backgroundJobClient.Enqueue<ICreateRequestProcessorService>(service => service.ProcessAsync(request, stoppingToken));
+                OrderDto orderDto;
+
+                string id = _backgroundJobClient.Enqueue<ICreateRequestConvertProcessorService, OrderDto>(service => service.ConvertAsync(new(), stoppingToken));
+                    
+
+                _backgroundJobClient.ContinueJobWith<ICreateRequestProcessorService>(id, (service, converted) => service.ProcessAsync(converted, stoppingToken));
+
+                _logger.LogDebug("Job is enqueued with id of {0}", request.ScopeId);
             } catch(Exception ex){
                 _logger.LogError("Error occurred while trying to enqueue backgroundJob, message: {0}", ex.Message);
             }

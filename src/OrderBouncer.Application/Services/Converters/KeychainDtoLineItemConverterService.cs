@@ -17,28 +17,28 @@ public class KeychainDtoLineItemConverterService : ILineItemsConverterService<Ke
         _baseConverter = baseConverter;
     }
     
-    public async Task<KeychainDto> Convert(LineItem lineItem)
+    public async Task<KeychainDto> Convert(LineItem lineItem, Guid scopeId)
     {
-        BaseDto baseDto = await _baseConverter.GenericConvert(lineItem, _extractor.GetKeychainNotes);
+        BaseDto baseDto = await _baseConverter.GenericConvert(lineItem, _extractor.GetKeychainNotes, scopeId);
         return baseDto.ToKeychainDto();
     }
 
-    public Task<(KeychainDto, AccessoryDto?)> ConvertWithExtraAccessory(LineItem lineItem)
+    public Task<(KeychainDto, AccessoryDto?)> ConvertWithExtraAccessory(LineItem lineItem, Guid scopeId)
     {
         throw new NotImplementedException();
     }
 
-    public Task<(KeychainDto, PetDto?)> ConvertWithExtraPet(LineItem lineItem)
+    public Task<(KeychainDto, PetDto?)> ConvertWithExtraPet(LineItem lineItem, Guid scopeId)
     {
         throw new NotImplementedException();
     }
 
-    public Task<(KeychainDto, PetDto?, AccessoryDto?)> ConvertWithExtras(LineItem lineItem)
+    public Task<(KeychainDto, PetDto?, AccessoryDto?)> ConvertWithExtras(LineItem lineItem, Guid scopeId)
     {
         throw new NotImplementedException();
     }
 
-    public Task<(KeychainDto, ICollection<PetDto>?, ICollection<AccessoryDto>?)> ConvertWithMultipleExtras(LineItem lineItem)
+    public Task<(KeychainDto, ICollection<PetDto>?, ICollection<AccessoryDto>?)> ConvertWithMultipleExtras(LineItem lineItem, Guid scopeId)
     {
         throw new NotImplementedException();
     }

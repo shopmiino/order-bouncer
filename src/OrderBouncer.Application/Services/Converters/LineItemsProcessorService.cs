@@ -19,7 +19,7 @@ public class LineItemsProcessorService : ILineItemsProcessorService
         _settings = options.Value;
         _helper = helper;
     }
-    public async ValueTask<ProductDto> Process(LineItem[] lineItems)
+    public async ValueTask<ProductDto> Process(LineItem[] lineItems, Guid scopeId)
     {
         //there should be LineItems based ProductDto Factory. We have to calculate which properties are gonna be null
        ProductDto productDto = new([],[],[],[]);
@@ -28,7 +28,7 @@ public class LineItemsProcessorService : ILineItemsProcessorService
             var selection = _settings.ProductIdTable.Single(p => p.ShopifyID == lineItem.ProductId);
             Type type = ProductMappings.ProductDtoPairs[(ShopifyProductsEnum)selection.InternalID];
             
-            productDto = await _helper.FilterAndAdd((ShopifyProductsEnum)selection.InternalID, lineItem, productDto);
+            productDto = await _helper.FilterAndAdd((ShopifyProductsEnum)selection.InternalID, lineItem, productDto, scopeId);
        }
        ProductDto finalProduct = new(
         figures: productDto.Figures.Count <= 0 ? null : productDto.Figures,

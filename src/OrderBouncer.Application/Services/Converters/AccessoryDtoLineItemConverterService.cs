@@ -18,29 +18,29 @@ public class AccessoryDtoLineItemConverterService : ILineItemsConverterService<A
         _baseConverter = baseConverter;
         _logger = logger;
     }
-    public async Task<AccessoryDto> Convert(LineItem lineItem)
+    public async Task<AccessoryDto> Convert(LineItem lineItem, Guid scopeId)
     {
         _logger.LogInformation("Converting lineItem to AccessoryDto");
-        BaseDto baseDto = await _baseConverter.GenericConvert(lineItem, _extractor.GetAccessoryNotes);
+        BaseDto baseDto = await _baseConverter.GenericConvert(lineItem, _extractor.GetAccessoryNotes, scopeId);
         return baseDto.ToAccessoryDto();
     }
 
-    public Task<(AccessoryDto, AccessoryDto?)> ConvertWithExtraAccessory(LineItem lineItem)
+    public Task<(AccessoryDto, AccessoryDto?)> ConvertWithExtraAccessory(LineItem lineItem, Guid scopeId)
     {
         throw new NotImplementedException();
     }
 
-    public Task<(AccessoryDto, PetDto?)> ConvertWithExtraPet(LineItem lineItem)
+    public Task<(AccessoryDto, PetDto?)> ConvertWithExtraPet(LineItem lineItem, Guid scopeId)
     {
         throw new NotImplementedException();
     }
 
-    public Task<(AccessoryDto, PetDto?, AccessoryDto?)> ConvertWithExtras(LineItem lineItem)
+    public Task<(AccessoryDto, PetDto?, AccessoryDto?)> ConvertWithExtras(LineItem lineItem, Guid scopeId)
     {
         throw new NotImplementedException();
     }
 
-    public Task<(AccessoryDto, ICollection<PetDto>?, ICollection<AccessoryDto>?)> ConvertWithMultipleExtras(LineItem lineItem)
+    public Task<(AccessoryDto, ICollection<PetDto>?, ICollection<AccessoryDto>?)> ConvertWithMultipleExtras(LineItem lineItem, Guid scopeId)
     {
         throw new NotImplementedException();
     }

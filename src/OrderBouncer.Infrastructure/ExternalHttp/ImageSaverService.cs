@@ -20,7 +20,7 @@ public class ImageSaverService : IImageSaverService
         _logger = logger;
     }
 
-    public async Task<string> Save(string url, string fileName, string fileExtension)
+    public async Task<string> Save(string url, string fileName, string fileExtension, Guid jobId)
     {
         _logger.LogInformation("Saving Image from url: {0}, with fileName: {1} and extension: {2}", url, fileName, fileExtension);
         if (string.IsNullOrWhiteSpace(url) || !Uri.IsWellFormedUriString(url, UriKind.Absolute)){
@@ -49,7 +49,7 @@ public class ImageSaverService : IImageSaverService
             await stream.CopyToAsync(fs);
             _logger.LogDebug("Stream is successfully copied into FileStream and it wrote image into path: {0}", fullPath);
 
-            _cleanupService.Register(fullPath);
+            _cleanupService.Register(jobId, fullPath);
  
             return fullPath;
 

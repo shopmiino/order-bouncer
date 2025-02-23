@@ -22,7 +22,7 @@ public static class DependencyInjection
 
         services.ConfigureHangfire(configuration);
 
-        services.AddScoped<IFileCleanupService, FileCleanupService>();
+        services.AddSingleton<IFileCleanupService, FileCleanupService>();
 
         return services;
     }

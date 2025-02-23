@@ -26,15 +26,15 @@ public class SingleFigureDtoLineItemConverterService : ILineItemsConverterServic
         _extrasConverter = extrasConverter;
     }
 
-    public async Task<FigureDto> Convert(LineItem lineItem){
+    public async Task<FigureDto> Convert(LineItem lineItem, Guid scopeId){
         return new();
     }
-    public async Task<(FigureDto, AccessoryDto?)> ConvertWithExtraAccessory(LineItem lineItem)
+    public async Task<(FigureDto, AccessoryDto?)> ConvertWithExtraAccessory(LineItem lineItem, Guid scopeId)
     {
         throw new NotImplementedException();
     }
     
-    public async Task<(FigureDto, PetDto?)> ConvertWithExtraPet(LineItem lineItem)
+    public async Task<(FigureDto, PetDto?)> ConvertWithExtraPet(LineItem lineItem, Guid scopeId)
     {
         if(lineItem.VariantId is null) throw new ArgumentNullException("VariantId is null");
 
@@ -57,7 +57,7 @@ public class SingleFigureDtoLineItemConverterService : ILineItemsConverterServic
         NoteAttribute[]? nameNotes = _extractor.GetNameNotes(lineItem.Properties);
 
         if(variant.HasExtraPet){
-            BaseDto baseDto = await _extrasConverter.ConvertExtra(lineItem, groupedImages, _extractor.GetPetNotes, startPos);
+            BaseDto baseDto = await _extrasConverter.ConvertExtra(scopeId, lineItem, groupedImages, _extractor.GetPetNotes, startPos);
             petDto = baseDto.ToPetDto();
 
             if(petDto.ImagePaths is not null) startPos++;
@@ -65,14 +65,14 @@ public class SingleFigureDtoLineItemConverterService : ILineItemsConverterServic
 
         if (variant.HasExtraAccessory)
         {
-            BaseDto baseDto = await _extrasConverter.ConvertExtra(lineItem, groupedImages, _extractor.GetAccessoryNotes, startPos);
+            BaseDto baseDto = await _extrasConverter.ConvertExtra(scopeId, lineItem, groupedImages, _extractor.GetAccessoryNotes, startPos);
             accessoryDto = baseDto.ToAccessoryDto();
 
             if(accessoryDto.ImagePaths is not null) startPos++;
         }
 
         for(int i = startPos; i < groupedImages.Count; i++){
-            imagePaths = await _helper.BatchImageSaveAndAdd(groupedImages[i], imagePaths);
+            imagePaths = await _helper.BatchImageSaveAndAdd(groupedImages[i], imagePaths, scopeId);
         }
 
         FigureDto figureDto = new(
@@ -85,12 +85,12 @@ public class SingleFigureDtoLineItemConverterService : ILineItemsConverterServic
         return (figureDto, petDto);
     }
 
-    public Task<(FigureDto, PetDto?, AccessoryDto?)> ConvertWithExtras(LineItem lineItem)
+    public Task<(FigureDto, PetDto?, AccessoryDto?)> ConvertWithExtras(LineItem lineItem, Guid scopeId)
     {
         throw new NotImplementedException();
     }
 
-    public Task<(FigureDto, ICollection<PetDto>?, ICollection<AccessoryDto>?)> ConvertWithMultipleExtras(LineItem lineItem)
+    public Task<(FigureDto, ICollection<PetDto>?, ICollection<AccessoryDto>?)> ConvertWithMultipleExtras(LineItem lineItem, Guid scopeId)
     {
         throw new NotImplementedException();
         }

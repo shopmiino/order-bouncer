@@ -25,28 +25,28 @@ public class CoupleFigureDtoLineItemConverterService : ILineItemsConverterServic
         _logger = logger;
     }
 
-    public Task<FigureDto[]> Convert(LineItem lineItem)
+    public Task<FigureDto[]> Convert(LineItem lineItem, Guid scopeId)
     {
         throw new NotImplementedException();
     }
 
-    public Task<(FigureDto[], AccessoryDto?)> ConvertWithExtraAccessory(LineItem lineItem)
+    public Task<(FigureDto[], AccessoryDto?)> ConvertWithExtraAccessory(LineItem lineItem, Guid scopeId)
     {
         throw new NotImplementedException();
     }
 
-    public Task<(FigureDto[], PetDto?)> ConvertWithExtraPet(LineItem lineItem)
+    public Task<(FigureDto[], PetDto?)> ConvertWithExtraPet(LineItem lineItem, Guid scopeId)
     {
         throw new NotImplementedException();
     }
 
-    public Task<(FigureDto[], PetDto?, AccessoryDto?)> ConvertWithExtras(LineItem lineItem)
+    public Task<(FigureDto[], PetDto?, AccessoryDto?)> ConvertWithExtras(LineItem lineItem, Guid scopeId)
     {
         throw new NotImplementedException();
     }
 
     //TODO add detailed logging
-    public async Task<(FigureDto[], ICollection<PetDto>?, ICollection<AccessoryDto>?)> ConvertWithMultipleExtras(LineItem lineItem)
+    public async Task<(FigureDto[], ICollection<PetDto>?, ICollection<AccessoryDto>?)> ConvertWithMultipleExtras(LineItem lineItem, Guid scopeId)
     {
         _logger.LogInformation("Couple Figure Dto Line Item Converter's ConvertWithMultipleExtras starting.");
 
@@ -102,7 +102,7 @@ public class CoupleFigureDtoLineItemConverterService : ILineItemsConverterServic
         if(variant.HasExtraPet){
             _logger.LogInformation("Variant has extra pet, processing");
 
-            BaseDto baseDto = await _extrasConverter.ConvertExtra(lineItem, groupedImages, _extractor.GetPetNotes, startPos);
+            BaseDto baseDto = await _extrasConverter.ConvertExtra(scopeId, lineItem, groupedImages, _extractor.GetPetNotes, startPos);
             petDto = baseDto.ToPetDto();
 
             if(petDto.ImagePaths is not null && petDto.ImagePaths.Count() > 0) {
@@ -117,7 +117,7 @@ public class CoupleFigureDtoLineItemConverterService : ILineItemsConverterServic
             _logger.LogInformation("Variant has extra accessory for FIRST figure, processing");
 
             _logger.LogDebug("Starting convert with startPos: {0}, notePosition: {1}", startPos, 0);
-            BaseDto baseDto = await _extrasConverter.ConvertExtra(lineItem, groupedImages, _extractor.GetAccessoryNotes, startPos, hasNoImage: true);
+            BaseDto baseDto = await _extrasConverter.ConvertExtra(scopeId, lineItem, groupedImages, _extractor.GetAccessoryNotes, startPos, hasNoImage: true);
             firstAccessoryDto = baseDto.ToAccessoryDto();
 
             if(firstAccessoryDto.ImagePaths is not null && firstAccessoryDto.ImagePaths.Count() > 0) {
@@ -131,7 +131,7 @@ public class CoupleFigureDtoLineItemConverterService : ILineItemsConverterServic
         _logger.LogDebug("{0} iterations are starting for FIRST FIGURE's images. First iteration for head images, second iteration for body images", FIGURE_ITERATION_COUNT);
         for(int i = 0; i<FIGURE_ITERATION_COUNT; i++){
             _logger.LogDebug("Iteration: {0}, BatchImageSaveAndAdd starting with startPos: {1}", i, startPos);
-            firstImagePaths = await _helper.BatchImageSaveAndAdd(groupedImages[startPos], firstImagePaths);
+            firstImagePaths = await _helper.BatchImageSaveAndAdd(groupedImages[startPos], firstImagePaths, scopeId);
 
             _logger.LogDebug("Image paths retrieved, increasing startPos count");
             startPos++;
@@ -143,7 +143,7 @@ public class CoupleFigureDtoLineItemConverterService : ILineItemsConverterServic
             int notePosition = 1;
 
             _logger.LogDebug("Starting convert with startPos: {0}, notePosition: {1}", startPos, notePosition);
-            BaseDto baseDto = await _extrasConverter.ConvertExtra(lineItem, groupedImages, _extractor.GetAccessoryNotes, startPos, notePosition, hasNoImage: true);
+            BaseDto baseDto = await _extrasConverter.ConvertExtra(scopeId, lineItem, groupedImages, _extractor.GetAccessoryNotes, startPos, notePosition, hasNoImage: true);
             secondAccessoryDto = baseDto.ToAccessoryDto();
 
             if(secondAccessoryDto.ImagePaths is not null && secondAccessoryDto.ImagePaths.Count() > 0) {
@@ -157,7 +157,7 @@ public class CoupleFigureDtoLineItemConverterService : ILineItemsConverterServic
          _logger.LogDebug("{0} iterations are starting for SECOND FIGURE's images. First iteration for head images, second iteration for body images", FIGURE_ITERATION_COUNT);
         for(int i = 0; i<FIGURE_ITERATION_COUNT; i++){
             _logger.LogDebug("Iteration: {0}, BatchImageSaveAndAdd starting with startPos: {1}", i, startPos);
-            secondImagePaths = await _helper.BatchImageSaveAndAdd(groupedImages[startPos], secondImagePaths);
+            secondImagePaths = await _helper.BatchImageSaveAndAdd(groupedImages[startPos], secondImagePaths, scopeId);
 
             _logger.LogDebug("Image paths retrieved, increasing startPos count");
             startPos++;

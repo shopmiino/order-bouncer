@@ -8,16 +8,25 @@ namespace OrderBouncer.Infrastructure.Services;
 public class FileCleanupService : IFileCleanupService
 {
     private readonly ILogger<FileCleanupService> _logger;
-    private ConcurrentBag<string> _files = [];
+    private ConcurrentDictionary<Guid, List<string>> _files = [];
+
     public FileCleanupService(ILogger<FileCleanupService> logger)
     {
         _logger = logger;
     }
-    public void CleanupAsync()
-    {
-        foreach (string path in _files)
-        {
 
+    public void Cleanup(Guid jobId)
+    {
+        if(!_files.ContainsKey(jobId)){
+            _logger.LogWarning("Cleanup dictionary does not have a member of {0} key", jobId);
+            return;
+        }
+
+        var jobFiles = _files[jobId];
+        _logger.LogInformation("Found {0} files that matching {1} jobId specified", jobFiles.Count(), jobId);
+
+        foreach (var path in jobFiles)
+        {
             if (!File.Exists(path))
             {
                 _logger.LogWarning("No file exists at {0}", path);
@@ -31,14 +40,23 @@ public class FileCleanupService : IFileCleanupService
             }
             catch (Exception ex)
             {
-                _logger.LogError("Error while deleting file at {0}\nMessage: {1}", path, ex.Message);
+                _logger.LogError("Error while deleting file at {0}\njobId: {1}\nMessage: {2}", path, jobId, ex.Message);
             }
         }
     }
 
-    public void Register(string path)
+    public void Register(Guid jobId, string path)
     {
-        _files.Add(path);
+        _files.AddOrUpdate(
+            jobId,
+            _ => [path], 
+            (_, existingList) => {
+                lock (existingList){
+                    existingList.Add(path);
+                }
+                return existingList;
+            }
+        );
         _logger.LogInformation("File added to the cleanup registry, path: {0}", path);
     }
 }

@@ -16,28 +16,28 @@ public class PetDtoLineItemConverterService : ILineItemsConverterService<PetDto>
         _baseConverter = baseConverter;
     }
 
-    public async Task<PetDto> Convert(LineItem lineItem)
+    public async Task<PetDto> Convert(LineItem lineItem, Guid scopeId)
     {
-        BaseDto baseDto = await _baseConverter.GenericConvert(lineItem, _extractor.GetPetNotes);
+        BaseDto baseDto = await _baseConverter.GenericConvert(lineItem, _extractor.GetPetNotes, scopeId);
         return baseDto.ToPetDto();
     }
 
-    public Task<(PetDto, AccessoryDto?)> ConvertWithExtraAccessory(LineItem lineItem)
+    public Task<(PetDto, AccessoryDto?)> ConvertWithExtraAccessory(LineItem lineItem, Guid scopeId)
     {
         throw new NotImplementedException();
     }
 
-    public Task<(PetDto, PetDto?)> ConvertWithExtraPet(LineItem lineItem)
+    public Task<(PetDto, PetDto?)> ConvertWithExtraPet(LineItem lineItem, Guid scopeId)
     {
         throw new NotImplementedException();
     }
 
-    public Task<(PetDto, PetDto?, AccessoryDto?)> ConvertWithExtras(LineItem lineItem)
+    public Task<(PetDto, PetDto?, AccessoryDto?)> ConvertWithExtras(LineItem lineItem, Guid scopeId)
     {
         throw new NotImplementedException();
     }
 
-    public Task<(PetDto, ICollection<PetDto>?, ICollection<AccessoryDto>?)> ConvertWithMultipleExtras(LineItem lineItem)
+    public Task<(PetDto, ICollection<PetDto>?, ICollection<AccessoryDto>?)> ConvertWithMultipleExtras(LineItem lineItem, Guid scopeId)
     {
         throw new NotImplementedException();
     }

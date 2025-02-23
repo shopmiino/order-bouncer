@@ -6,5 +6,5 @@ namespace OrderBouncer.Application.Interfaces.Converters;
 
 public interface ILineItemsProcessorService
 {
-    public ValueTask<ProductDto> Process(LineItem[] lineItems);
+    public ValueTask<ProductDto> Process(LineItem[] lineItems, Guid scopeId);
 }

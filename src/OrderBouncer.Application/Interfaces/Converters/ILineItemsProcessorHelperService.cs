@@ -7,5 +7,5 @@ namespace OrderBouncer.Application.Interfaces.Converters;
 
 public interface ILineItemsProcessorHelperService
 {
-    public Task<ProductDto> FilterAndAdd(ShopifyProductsEnum productEnum, LineItem lineItem, ProductDto productDto);
+    public Task<ProductDto> FilterAndAdd(ShopifyProductsEnum productEnum, LineItem lineItem, ProductDto productDto, Guid scopeId);
 }

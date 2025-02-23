@@ -17,7 +17,7 @@ public class LineItemConverterHelperService : ILineItemConverterHelperService
         _logger = logger;
     }
 
-    public async Task<ICollection<string>> BatchImageSaveAndAdd(NoteAttribute[] props, ICollection<string> imagePaths)
+    public async Task<ICollection<string>> BatchImageSaveAndAdd(NoteAttribute[] props, ICollection<string> imagePaths, Guid jobId)
     {
         _logger.LogInformation("BatchImageSaveAndAdd is starting with imagePath count: {0}, property count: {1}", imagePaths.Count(), props.Count());
         char[] splitters = ['.','/'];
@@ -31,7 +31,7 @@ public class LineItemConverterHelperService : ILineItemConverterHelperService
             string name = splitted[^2]; 
             _logger.LogDebug("Selected extension for {0}, {1}, is: {2} and the name is: {3}", p.Value, p.Name, extension, name);
 
-            string path = await _imageSaver.Save(p.Value, name, extension);
+            string path = await _imageSaver.Save(p.Value, name, extension, jobId);
             results.Add(path);
         });
         /*
