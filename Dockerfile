@@ -1,5 +1,5 @@
 # Use official .NET 8 SDK for building the application
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /app
 
 # Copy solution file and restore dependencies
@@ -25,7 +25,7 @@ COPY . ./
 RUN dotnet publish src/OrderBouncer.Web/OrderBouncer.Web.csproj -c Release -o /publish --no-restore
 
 # Use the .NET 8 runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
 WORKDIR /app
 
 # Expose port 8080
