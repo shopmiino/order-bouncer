@@ -19,16 +19,6 @@ namespace OrderBouncer.Web.Controllers.v1
         }
 
         [HttpPost]
-        public async Task<IActionResult> Created([FromBody]OrderDto orderDto){
-            //TODO: implement Cancellation Token 
-            //await _orderCreated.ExecuteAsync(orderDto, new CancellationToken());
-            //Order created
-            //JsonNode ile bu stingden verileri extract et
-            //Add to database and upload to google drive
-            return Ok(orderDto);
-        }
-
-        [HttpPost]
         public async Task<IActionResult> Create([FromBody] OrderCreatedShopifyRequestDto requestDto){
             //Add conversion mechanism
             try{
@@ -44,6 +34,5 @@ namespace OrderBouncer.Web.Controllers.v1
             }
             return Ok();
         }
-
     }
 }

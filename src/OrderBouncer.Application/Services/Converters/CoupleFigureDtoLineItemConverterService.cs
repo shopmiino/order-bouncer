@@ -45,7 +45,6 @@ public class CoupleFigureDtoLineItemConverterService : ILineItemsConverterServic
         throw new NotImplementedException();
     }
 
-    //TODO add detailed logging
     public async Task<(FigureDto[], ICollection<PetDto>?, ICollection<AccessoryDto>?)> ConvertWithMultipleExtras(LineItem lineItem, Guid scopeId)
     {
         _logger.LogInformation("Couple Figure Dto Line Item Converter's ConvertWithMultipleExtras starting.");
@@ -56,7 +55,13 @@ public class CoupleFigureDtoLineItemConverterService : ILineItemsConverterServic
         
         if(lineItem.Properties is null) throw new ArgumentNullException("Properties are null");
 
-        var groupedImages = _extractor.GroupImages(lineItem.Properties);
+        IList<NoteAttribute[]>? groupedImages = null;
+        try{
+            groupedImages = _extractor.GroupImages(lineItem.Properties);
+        } catch (Exception ex) {
+            _logger.LogError("Error while grouping images\nmesssage: {0}\nstackTrace: {1}", ex.Message, ex.StackTrace);
+        }
+
         if(groupedImages is null){
             throw new ArgumentNullException("No Grouped Images here, element is null");
         }
@@ -90,78 +95,110 @@ public class CoupleFigureDtoLineItemConverterService : ILineItemsConverterServic
         PetDto? petDto = null;
         _logger.LogDebug("Petdto iniliatized to null");
 
-        NoteAttribute[]? figureNotes = _extractor.GetFigureNotes(lineItem.Properties);
-        _logger.LogDebug("Figure notes got from extractor. Total of {0}", figureNotes?.Count());
+        NoteAttribute[]? figureNotes = null;
+        try{
+            figureNotes = _extractor.GetFigureNotes(lineItem.Properties);
+            _logger.LogDebug("Figure notes got from extractor. Total of {0}", figureNotes?.Count());
+        } catch (Exception ex){
+            _logger.LogError("Error while getting FIGURE NOTES\nmessage: {0}\nstackTrace: {1}", ex.Message, ex.StackTrace);
+        }
 
-        NoteAttribute[]? nameNotes = _extractor.GetNameNotes(lineItem.Properties);
-        _logger.LogDebug("Name notes got from extractor. Total of {0}", nameNotes?.Count());
+        NoteAttribute[]? nameNotes = null;
+        try{
+            nameNotes = _extractor.GetNameNotes(lineItem.Properties);
+            _logger.LogDebug("Name notes got from extractor. Total of {0}", nameNotes?.Count());
+        } catch (Exception ex){
+            _logger.LogError("Error while getting NAME NOTES\nmessage: {0}\nstackTrace: {1}", ex.Message, ex.StackTrace);
+        }
 
         int startPos = 0;
         _logger.LogDebug("StartPos is {0}", startPos);
 
-        if(variant.HasExtraPet){
-            _logger.LogInformation("Variant has extra pet, processing");
+        try{
+            if(variant.HasExtraPet){
+                _logger.LogInformation("Variant has extra pet, processing");
 
-            BaseDto baseDto = await _extrasConverter.ConvertExtra(scopeId, lineItem, groupedImages, _extractor.GetPetNotes, startPos);
-            petDto = baseDto.ToPetDto();
+                BaseDto baseDto = await _extrasConverter.ConvertExtra(scopeId, lineItem, groupedImages, _extractor.GetPetNotes, startPos);
+                petDto = baseDto.ToPetDto();
 
-            if(petDto.ImagePaths is not null && petDto.ImagePaths.Count() > 0) {
-                _logger.LogDebug("Pet's imagePaths are not null or empty, increasing startPos for next check");
-                startPos++;
+                if(petDto.ImagePaths is not null && petDto.ImagePaths.Count() > 0) {
+                    _logger.LogDebug("Pet's imagePaths are not null or empty, increasing startPos for next check");
+                    startPos++;
+                }
+
+                _logger.LogDebug("StartPos is {0}", startPos);
             }
-
-            _logger.LogDebug("StartPos is {0}", startPos);
+        } catch (Exception ex){
+            _logger.LogError("Error while configuring EXTRA PET options\nmessage: {0}\nstackTrace: {1}", ex.Message, ex.StackTrace);
         }
 
-        if(variant.HasExtraAccessoryForFirst){
-            _logger.LogInformation("Variant has extra accessory for FIRST figure, processing");
+        try{
+            if(variant.HasExtraAccessoryForFirst){
+                _logger.LogInformation("Variant has extra accessory for FIRST figure, processing");
 
-            _logger.LogDebug("Starting convert with startPos: {0}, notePosition: {1}", startPos, 0);
-            BaseDto baseDto = await _extrasConverter.ConvertExtra(scopeId, lineItem, groupedImages, _extractor.GetAccessoryNotes, startPos, hasNoImage: true);
-            firstAccessoryDto = baseDto.ToAccessoryDto();
+                _logger.LogDebug("Starting convert with startPos: {0}, notePosition: {1}", startPos, 0);
+                BaseDto baseDto = await _extrasConverter.ConvertExtra(scopeId, lineItem, groupedImages, _extractor.GetAccessoryNotes, startPos, hasNoImage: true);
+                firstAccessoryDto = baseDto.ToAccessoryDto();
 
-            if(firstAccessoryDto.ImagePaths is not null && firstAccessoryDto.ImagePaths.Count() > 0) {
-                _logger.LogDebug("First figure's accessory imagePaths are not null or empty, increasing startPos for next check");
-                startPos++;
+                if(firstAccessoryDto.ImagePaths is not null && firstAccessoryDto.ImagePaths.Count() > 0) {
+                    _logger.LogDebug("First figure's accessory imagePaths are not null or empty, increasing startPos for next check");
+                    startPos++;
+                }
+
+                _logger.LogDebug("StartPos is {0}", startPos);
             }
-
-            _logger.LogDebug("StartPos is {0}", startPos);
+        } catch (Exception ex) {
+                _logger.LogError("Error while configuring FIRST FIGURE'S ACCESSORY\nmessage: {0}\nstackTrace: {1}", ex.Message, ex.StackTrace);
         }
 
         _logger.LogDebug("{0} iterations are starting for FIRST FIGURE's images. First iteration for head images, second iteration for body images", FIGURE_ITERATION_COUNT);
-        for(int i = 0; i<FIGURE_ITERATION_COUNT; i++){
-            _logger.LogDebug("Iteration: {0}, BatchImageSaveAndAdd starting with startPos: {1}", i, startPos);
-            firstImagePaths = await _helper.BatchImageSaveAndAdd(groupedImages[startPos], firstImagePaths, scopeId);
 
-            _logger.LogDebug("Image paths retrieved, increasing startPos count");
-            startPos++;
-            _logger.LogDebug("StartPos is {0}", startPos);
-        }
+        try{
+            for(int i = 0; i<FIGURE_ITERATION_COUNT; i++){
+                _logger.LogDebug("Iteration: {0}, BatchImageSaveAndAdd starting with startPos: {1}", i, startPos);
+                firstImagePaths = await _helper.BatchImageSaveAndAdd(groupedImages[startPos], firstImagePaths, scopeId);
 
-        if(variant.HasExtraAccessoryForSecond){
-            _logger.LogInformation("Variant has extra accessory for SECOND figure, processing");
-            int notePosition = 1;
-
-            _logger.LogDebug("Starting convert with startPos: {0}, notePosition: {1}", startPos, notePosition);
-            BaseDto baseDto = await _extrasConverter.ConvertExtra(scopeId, lineItem, groupedImages, _extractor.GetAccessoryNotes, startPos, notePosition, hasNoImage: true);
-            secondAccessoryDto = baseDto.ToAccessoryDto();
-
-            if(secondAccessoryDto.ImagePaths is not null && secondAccessoryDto.ImagePaths.Count() > 0) {
-                _logger.LogDebug("Secnod figure's accessory imagePaths are not null or empty, increasing startPos for next check");
+                _logger.LogDebug("Image paths retrieved, increasing startPos count");
                 startPos++;
+                _logger.LogDebug("StartPos is {0}", startPos);
             }
-
-            _logger.LogDebug("StartPos is {0}", startPos);
+        } catch (Exception ex) {
+                _logger.LogError("Error while iterating over FIRST FIGURE'S IMAGES\nmessage: {0}\nstackTrace: {1}", ex.Message, ex.StackTrace);
         }
 
-         _logger.LogDebug("{0} iterations are starting for SECOND FIGURE's images. First iteration for head images, second iteration for body images", FIGURE_ITERATION_COUNT);
-        for(int i = 0; i<FIGURE_ITERATION_COUNT; i++){
-            _logger.LogDebug("Iteration: {0}, BatchImageSaveAndAdd starting with startPos: {1}", i, startPos);
-            secondImagePaths = await _helper.BatchImageSaveAndAdd(groupedImages[startPos], secondImagePaths, scopeId);
+        try{
+            if(variant.HasExtraAccessoryForSecond){
+                _logger.LogInformation("Variant has extra accessory for SECOND figure, processing");
+                int notePosition = 1;
 
-            _logger.LogDebug("Image paths retrieved, increasing startPos count");
-            startPos++;
-            _logger.LogDebug("StartPos is {0}", startPos);
+                _logger.LogDebug("Starting convert with startPos: {0}, notePosition: {1}", startPos, notePosition);
+                BaseDto baseDto = await _extrasConverter.ConvertExtra(scopeId, lineItem, groupedImages, _extractor.GetAccessoryNotes, startPos, notePosition, hasNoImage: true);
+                secondAccessoryDto = baseDto.ToAccessoryDto();
+
+                if(secondAccessoryDto.ImagePaths is not null && secondAccessoryDto.ImagePaths.Count() > 0) {
+                    _logger.LogDebug("Secnod figure's accessory imagePaths are not null or empty, increasing startPos for next check");
+                    startPos++;
+                }
+
+                _logger.LogDebug("StartPos is {0}", startPos);
+            }
+        } catch (Exception ex) {
+                _logger.LogError("Error while configuring SECOND FIGURE'S ACCESSORY\nmessage: {0}\nstackTrace: {1}", ex.Message, ex.StackTrace);
+        }
+
+        _logger.LogDebug("{0} iterations are starting for SECOND FIGURE's images. First iteration for head images, second iteration for body images", FIGURE_ITERATION_COUNT);
+        
+        try{
+            for(int i = 0; i<FIGURE_ITERATION_COUNT; i++){
+                _logger.LogDebug("Iteration: {0}, BatchImageSaveAndAdd starting with startPos: {1}", i, startPos);
+                secondImagePaths = await _helper.BatchImageSaveAndAdd(groupedImages[startPos], secondImagePaths, scopeId);
+
+                _logger.LogDebug("Image paths retrieved, increasing startPos count");
+                startPos++;
+                _logger.LogDebug("StartPos is {0}", startPos);
+            }
+        } catch (Exception ex) {
+                _logger.LogError("Error while iterating over SECOND FIGURE'S IMAGES\nmessage: {0}\nstackTrace: {1}", ex.Message, ex.StackTrace);
         }
 
         _logger.LogDebug("Creating the FIRST FIGURE");

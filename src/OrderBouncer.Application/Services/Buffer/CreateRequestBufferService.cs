@@ -26,7 +26,7 @@ public class CreateRequestBufferService : ICreateRequestBufferService
 
     public async Task EnqueueAsync(OrderCreatedShopifyRequestDto orderDto, CancellationToken cancellationToken)
     {
-        _logger.LogDebug("Adding OrderDto into the queue");
+        _logger.LogDebug("Adding OrderCreatedShopifyRequestDto into the queue");
         await _channel.Writer.WriteAsync(orderDto, cancellationToken);
     }
 

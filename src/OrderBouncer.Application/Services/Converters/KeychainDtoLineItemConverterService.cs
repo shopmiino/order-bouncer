@@ -1,4 +1,5 @@
 using System;
+using Microsoft.Extensions.Logging;
 using OrderBouncer.Application.Constants;
 using OrderBouncer.Application.DTOs;
 using OrderBouncer.Application.Interfaces.Converters;
@@ -11,15 +12,28 @@ public class KeychainDtoLineItemConverterService : ILineItemsConverterService<Ke
 {
     private readonly ILineItemPropertyExtractor _extractor;
     private readonly ILineItemsBaseConverterService _baseConverter;
+    private readonly ILogger<KeychainDtoLineItemConverterService> _logger;
 
-    public KeychainDtoLineItemConverterService(ILineItemPropertyExtractor extractor, ILineItemsBaseConverterService baseConverter){
+    public KeychainDtoLineItemConverterService(ILineItemPropertyExtractor extractor, ILineItemsBaseConverterService baseConverter, ILogger<KeychainDtoLineItemConverterService> logger){
         _extractor = extractor;
         _baseConverter = baseConverter;
+        _logger = logger;
     }
     
     public async Task<KeychainDto> Convert(LineItem lineItem, Guid scopeId)
     {
-        BaseDto baseDto = await _baseConverter.GenericConvert(lineItem, _extractor.GetKeychainNotes, scopeId);
+        _logger.LogInformation("Converting lineItem to KeychainDto");
+        BaseDto? baseDto = null;
+
+        try{
+            baseDto = await _baseConverter.GenericConvert(lineItem, _extractor.GetKeychainNotes, scopeId);
+        } catch (Exception ex) {
+            _logger.LogError("Error while GenericConverting KEYCHAINDTO to BASEDTO\nmessage: {0}\nstackTrace: {1}", ex.Message, ex.StackTrace);
+        }
+
+        if(baseDto is null){
+            throw new ArgumentNullException("Converted BaseDto is null, there is a problem. Throwing.");
+        }
         return baseDto.ToKeychainDto();
     }
 
