@@ -21,7 +21,17 @@ public class AccessoryDtoLineItemConverterService : ILineItemsConverterService<A
     public async Task<AccessoryDto> Convert(LineItem lineItem, Guid scopeId)
     {
         _logger.LogInformation("Converting lineItem to AccessoryDto");
-        BaseDto baseDto = await _baseConverter.GenericConvert(lineItem, _extractor.GetAccessoryNotes, scopeId);
+        BaseDto? baseDto = null;
+        
+        try{
+            baseDto = await _baseConverter.GenericConvert(lineItem, _extractor.GetAccessoryNotes, scopeId);
+        } catch (Exception ex) {
+            _logger.LogError(ex, "Error while GenericConverting ACCESSORYDTO to BASEDTO");
+        }
+
+        if(baseDto is null){
+            throw new ArgumentNullException("Converted BaseDto is null, there is a problem. Throwing.");
+        }
         return baseDto.ToAccessoryDto();
     }
 
