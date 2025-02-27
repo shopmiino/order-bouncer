@@ -17,7 +17,13 @@ public class AuthenticationMiddleware
 
     public async Task Invoke(HttpContext context, IConfiguration configuration){
         _logger.LogInformation("AuthenticationMiddleware is starting");
-
+        int requestPort = context.Connection.LocalPort;
+        
+        if(requestPort.ToString() != configuration["ASPNET_PORT"]){
+            _logger.LogDebug("Request is not going to analyzed for Shopify Webhook Secret");
+            await _next(context);
+        }
+        
         string? shopifySecret = configuration["Shopify:WebhookSecret"];
         if(shopifySecret is null) throw new ArgumentNullException("ShopifySecret is null, can not retrieve from appsettings");
 
