@@ -5,6 +5,7 @@ using OrderBouncer.GoogleSheets;
 using OrderBouncer.Application;
 using OrderBouncer.Application.Options;
 using OrderBouncer.Web.Middlewares;
+using Prometheus;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,7 +36,6 @@ builder.Services.Configure<ExtractorSettings>(builder.Configuration.GetSection("
 
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
 
 
 app.UseHttpsRedirection();
@@ -44,7 +44,13 @@ app.MapControllers();
 
 app.ConfigureHangfireDashboard();
 
+app.UseMetricServer();
+app.UseHttpMetrics();
+
 //app.UseMiddleware<FileCleanupMiddleware>();
 app.UseMiddleware<AuthenticationMiddleware>();
+
+app.MapMetrics();
+app.MapGet("/", () => "Hello World!");
 
 app.Run();

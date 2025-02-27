@@ -27,7 +27,7 @@ public class PetDtoLineItemConverterService : ILineItemsConverterService<PetDto>
         try{
             baseDto = await _baseConverter.GenericConvert(lineItem, _extractor.GetPetNotes, scopeId);
         } catch (Exception ex) {
-            _logger.LogError("Error while GenericConverting PETDTO to BASEDTO\nmessage: {0}\nstackTrace: {1}", ex.Message, ex.StackTrace);
+            _logger.LogError(ex, "Error while GenericConverting PETDTO to BASEDTO");
         }
 
         if(baseDto is null){

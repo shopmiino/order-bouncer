@@ -26,7 +26,7 @@ public class AccessoryDtoLineItemConverterService : ILineItemsConverterService<A
         try{
             baseDto = await _baseConverter.GenericConvert(lineItem, _extractor.GetAccessoryNotes, scopeId);
         } catch (Exception ex) {
-            _logger.LogError("Error while GenericConverting ACCESSORYDTO to BASEDTO\nmessage: {0}\nstackTrace: {1}", ex.Message, ex.StackTrace);
+            _logger.LogError(ex, "Error while GenericConverting ACCESSORYDTO to BASEDTO");
         }
 
         if(baseDto is null){

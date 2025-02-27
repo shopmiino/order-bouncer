@@ -25,7 +25,7 @@ public class BaseDtoLineItemConverterService : ILineItemsBaseConverterService
         try{
             groupedImages = _extractor.GroupImages(lineItem.Properties);
         } catch (Exception ex) {
-            _logger.LogError("Error while grouping images\nmesssage: {0}\nstackTrace: {1}", ex.Message, ex.StackTrace);
+            _logger.LogError(ex, "Error while grouping images");
         }
 
         if(groupedImages is null){
@@ -43,7 +43,7 @@ public class BaseDtoLineItemConverterService : ILineItemsBaseConverterService
             notes = noteGetter(lineItem.Properties);
             _logger.LogDebug("Notes got from selected extractor. Total of {0}", notes?.Count());
         } catch (Exception ex){
-            _logger.LogError("Error while getting NOTES\nmessage: {0}\nstackTrace: {1}", ex.Message, ex.StackTrace);
+            _logger.LogError(ex, "Error while getting NOTES");
         }
 
         _logger.LogDebug("{0} iterations are starting for figure images. First iteration for head images, second iteration for body images", groupedImages.Count());
@@ -53,7 +53,7 @@ public class BaseDtoLineItemConverterService : ILineItemsBaseConverterService
                 imagePaths = await _helper.BatchImageSaveAndAdd(groupedImages[i], imagePaths, scopeId);
             }
         } catch (Exception ex) {
-            _logger.LogError("Error while iterating FIGURE'S IMAGES\nmessage: {0}\nstackTrace: {1}", ex.Message, ex.StackTrace);
+            _logger.LogError(ex, "Error while iterating FIGURE'S IMAGES");
         }
 
         return new(

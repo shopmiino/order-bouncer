@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  order-bouncer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: order-bouncer-container
+    restart: on-failure
+    ports:
+      - "5000:8080"
+    env_file:
+      - .env.production
+    environment:
+      - Serilog__MinimumLevel__Default=Verbose
+      - Shopify__WebhookSecret=${SHOPIFY_WEBHOOKSECRET}
+    depends_on:
+      - loki
+      - prometheus
+      - grafana
+
+  loki:
+    image: grafana/loki:latest
+    container_name: loki
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./config/loki-config.yml:/etc/loki/loki-config.yml
+    command: -config.file=/etc/loki/loki-config.yml
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env.production
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GP_ADMIN_USERNAME}
+      - GF_SECURITY_ADMIN_PASSWORD=${GP_ADMIN_PASSWORD}
+    volumes:
+      - grafana-data:/var/lib/grafana
+
+volumes:
+  grafana-data:
+    driver: local

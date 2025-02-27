@@ -6,6 +6,7 @@
 **/tmp
 # dotenv files
 .env
+.env.*
 /src/OrderBouncer.Web/Secret
 # User-specific files
 *.rsuser

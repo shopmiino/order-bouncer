@@ -59,7 +59,7 @@ public class CoupleFigureDtoLineItemConverterService : ILineItemsConverterServic
         try{
             groupedImages = _extractor.GroupImages(lineItem.Properties);
         } catch (Exception ex) {
-            _logger.LogError("Error while grouping images\nmesssage: {0}\nstackTrace: {1}", ex.Message, ex.StackTrace);
+            _logger.LogError(ex, "Error while grouping images");
         }
 
         if(groupedImages is null){
@@ -100,7 +100,7 @@ public class CoupleFigureDtoLineItemConverterService : ILineItemsConverterServic
             figureNotes = _extractor.GetFigureNotes(lineItem.Properties);
             _logger.LogDebug("Figure notes got from extractor. Total of {0}", figureNotes?.Count());
         } catch (Exception ex){
-            _logger.LogError("Error while getting FIGURE NOTES\nmessage: {0}\nstackTrace: {1}", ex.Message, ex.StackTrace);
+            _logger.LogError(ex, "Error while getting FIGURE NOTES");
         }
 
         NoteAttribute[]? nameNotes = null;
@@ -108,7 +108,7 @@ public class CoupleFigureDtoLineItemConverterService : ILineItemsConverterServic
             nameNotes = _extractor.GetNameNotes(lineItem.Properties);
             _logger.LogDebug("Name notes got from extractor. Total of {0}", nameNotes?.Count());
         } catch (Exception ex){
-            _logger.LogError("Error while getting NAME NOTES\nmessage: {0}\nstackTrace: {1}", ex.Message, ex.StackTrace);
+            _logger.LogError(ex, "Error while getting NAME NOTES");
         }
 
         int startPos = 0;
@@ -129,7 +129,7 @@ public class CoupleFigureDtoLineItemConverterService : ILineItemsConverterServic
                 _logger.LogDebug("StartPos is {0}", startPos);
             }
         } catch (Exception ex){
-            _logger.LogError("Error while configuring EXTRA PET options\nmessage: {0}\nstackTrace: {1}", ex.Message, ex.StackTrace);
+            _logger.LogError(ex, "Error while configuring EXTRA PET options");
         }
 
         try{
@@ -148,7 +148,7 @@ public class CoupleFigureDtoLineItemConverterService : ILineItemsConverterServic
                 _logger.LogDebug("StartPos is {0}", startPos);
             }
         } catch (Exception ex) {
-                _logger.LogError("Error while configuring FIRST FIGURE'S ACCESSORY\nmessage: {0}\nstackTrace: {1}", ex.Message, ex.StackTrace);
+                _logger.LogError(ex, "Error while configuring FIRST FIGURE'S ACCESSORY");
         }
 
         _logger.LogDebug("{0} iterations are starting for FIRST FIGURE's images. First iteration for head images, second iteration for body images", FIGURE_ITERATION_COUNT);
@@ -163,7 +163,7 @@ public class CoupleFigureDtoLineItemConverterService : ILineItemsConverterServic
                 _logger.LogDebug("StartPos is {0}", startPos);
             }
         } catch (Exception ex) {
-                _logger.LogError("Error while iterating over FIRST FIGURE'S IMAGES\nmessage: {0}\nstackTrace: {1}", ex.Message, ex.StackTrace);
+                _logger.LogError(ex, "Error while iterating over FIRST FIGURE'S IMAGES");
         }
 
         try{
@@ -183,7 +183,7 @@ public class CoupleFigureDtoLineItemConverterService : ILineItemsConverterServic
                 _logger.LogDebug("StartPos is {0}", startPos);
             }
         } catch (Exception ex) {
-                _logger.LogError("Error while configuring SECOND FIGURE'S ACCESSORY\nmessage: {0}\nstackTrace: {1}", ex.Message, ex.StackTrace);
+                _logger.LogError(ex, "Error while configuring SECOND FIGURE'S ACCESSORY");
         }
 
         _logger.LogDebug("{0} iterations are starting for SECOND FIGURE's images. First iteration for head images, second iteration for body images", FIGURE_ITERATION_COUNT);
