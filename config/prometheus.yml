@@ -5,4 +5,4 @@ scrape_configs:
   - job_name: 'order-bouncer'
     metrics_path: '/metrics'
     static_configs:
-      - targets: ['orderbouncer:8080']
+      - targets: ['order-bouncer:8080']
