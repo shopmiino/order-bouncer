@@ -32,7 +32,7 @@ services:
     restart: always
     ports:
       - "3100:3100"
-    user: "0:0"
+    user: "$(id -u):$(id -g)"
     volumes:
       - ./config/loki-config.yml:/etc/loki/loki-config.yml
       - ./loki-data:/loki
