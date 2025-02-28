@@ -6,3 +6,7 @@ scrape_configs:
     metrics_path: '/metrics'
     static_configs:
       - targets: ['order-bouncer:8080']
+
+  - job_name: 'loki'
+    static_configs:
+      - targets: ['loki:3100']
