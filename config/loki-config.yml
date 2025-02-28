@@ -12,6 +12,11 @@ common:
       store: inmemory
   replication_factor: 1
 
+
+ingester:
+  wal:
+    dir: /loki/wal
+
 schema_config:
   configs:
     - from: 2025-02-28 
