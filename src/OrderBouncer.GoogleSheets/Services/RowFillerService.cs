@@ -18,7 +18,7 @@ public class RowFillerService : IRowFillerService
         _helper = helper;
     }
 
-    public FlattenRowDto FillFlattenWithElements(RowElements elements, FlattenRowDto flatten)
+    public FlattenRowDto FillFlattenWithElements(RowElements elements, FlattenRowDto flatten, string? name = null)
     {
         bool hasAccessory = elements.Elements.Contains(EntityTypeEnum.Accessory);
         bool hasKeychain = elements.Elements.Contains(EntityTypeEnum.Keychain);
@@ -27,7 +27,7 @@ public class RowFillerService : IRowFillerService
 
         RowTypeEnum rowType = hasKeychain ? hasFigure ? RowTypeEnum.Figure : RowTypeEnum.Keychain : RowTypeEnum.Default;
         
-        return new FlattenRowDto(flatten.OrderCode, flatten.Date, rowType, hasAccessory, hasPet, hasKeychain, hasFigure);
+        return new FlattenRowDto(flatten.OrderCode, flatten.Date, name, rowType, hasAccessory, hasPet, hasKeychain, hasFigure);
     }
 
     public OrderRow FillWithFlatten(FlattenRowDto dto, OrderRow baseRow)

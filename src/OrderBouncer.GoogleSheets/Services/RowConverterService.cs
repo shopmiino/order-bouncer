@@ -40,9 +40,11 @@ public class RowConverterService : IRowConverterService
         ICollection<FlattenRowDto> flattens = [];
         int elementCount = elements.Count;
 
+        IList<string?>? names = orderDto.Products?.First().Figures?.Select(f => f.Name).ToList();
+
         for(int i = 0; i < elementCount; i++){
             var element = elements.Pop();
-            var flatten = _filler.FillFlattenWithElements(element, new(code, date));
+            var flatten = _filler.FillFlattenWithElements(element, new(code, date, names?[i]));
 
             flattens.Add(flatten);
         }
