@@ -27,5 +27,10 @@ public class GoogleDriveArchitector : IGoogleDriveArchitector
         foreach(FolderNamesEnum folder in folders){
             await _helper.Generate(dto.Products, folder, generalFolderId);
         }
+
+        //add order note
+        if(dto.Note is not null && dto.Note != string.Empty){
+            await _repository.UploadNote(dto.Note, generalFolderId);
+        }
     }
 }

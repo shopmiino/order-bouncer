@@ -38,11 +38,17 @@ public class ManyToManyUseCase<T> : IManyToManyUseCase<T> where T : BaseDto
             else 
                 folderId = parentIdX;
 
-            if(item.ImagePaths is not null && !GoogleDriveExtensions.IsFolderCreation(mode))
+            if(item.ImagePaths is not null && !GoogleDriveExtensions.IsFolderCreation(mode)){
                 await _repository.BatchUploadFile(
                     item.ImagePaths, 
-                    GoogleDriveExtensions.IsFolderAndFileCreation(mode) ? folderId : parentIdX
+                    GoogleDriveExtensions.IsFolderAndFileCreation(mode) ? folderId : parentIdX,
+                    item.Note
                     );
+
+                if(item.Note is not null && item.Note != string.Empty) {
+                    await _repository.UploadNote(item.Note, GoogleDriveExtensions.IsFolderAndFileCreation(mode) ? folderId : parentIdX);
+                }
+            }
 
             folderIds.Add(changedParentId);
 
