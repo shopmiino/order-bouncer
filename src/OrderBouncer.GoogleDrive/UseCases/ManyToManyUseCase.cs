@@ -46,7 +46,7 @@ public class ManyToManyUseCase<T> : IManyToManyUseCase<T> where T : BaseDto
                     );
 
                 if(item.Note is not null && item.Note != string.Empty) {
-                    await _repository.UploadNote(item.Note, GoogleDriveExtensions.IsFolderAndFileCreation(mode) ? folderId : parentIdX);
+                    await _repository.UploadNote(item.Note, parentIdX);
                 }
             }
 
