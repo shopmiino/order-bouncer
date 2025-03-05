@@ -18,10 +18,18 @@ public class RowOrganizerHelper : IRowOrganizerHelper
         if (dto.Products is null) throw new ArgumentNullException("Order has no product in it");
 
         Dictionary<EntityTypeEnum, int> keyValuePairs = [];
-
         ProductDto pDto = dto.Products.First();
 
-        keyValuePairs.Add(EntityTypeEnum.Accessory, GetCount(pDto.Accessories));
+        int? figureAccessories = pDto.Figures?.Select(p => p.Accessories).Sum(p => p?.Count);
+
+        if(figureAccessories != null && figureAccessories > 0){
+            int sum = figureAccessories.Value + GetCount(pDto.Accessories);
+
+            keyValuePairs.Add(EntityTypeEnum.Accessory, sum);
+        } else {
+            keyValuePairs.Add(EntityTypeEnum.Accessory, GetCount(pDto.Accessories));
+        }
+
         keyValuePairs.Add(EntityTypeEnum.Pet, GetCount(pDto.Pets));
         keyValuePairs.Add(EntityTypeEnum.Keychain, GetCount(pDto.Keychains));
         keyValuePairs.Add(EntityTypeEnum.Figure, GetCount(pDto.Figures));

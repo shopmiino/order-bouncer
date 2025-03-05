@@ -1,4 +1,5 @@
 using System;
+using Microsoft.Extensions.Logging;
 using OrderBouncer.Domain.DTOs.Base;
 using OrderBouncer.GoogleDrive.Constants;
 using OrderBouncer.GoogleDrive.Interfaces.Architectors;
@@ -9,9 +10,11 @@ namespace OrderBouncer.GoogleDrive.Services;
 public class GoogleDriveEngine : IGoogleDriveEngine
 {
     private readonly IGoogleDriveArchitector _architector;
+    private readonly ILogger<GoogleDriveEngine> _logger;
 
-    public GoogleDriveEngine(IGoogleDriveArchitector architector){
+    public GoogleDriveEngine(IGoogleDriveArchitector architector, ILogger<GoogleDriveEngine> logger){
         _architector = architector;
+        _logger = logger;
     }
 
     public async Task UploadOrder(OrderDto dto, CancellationToken cancellationToken)
@@ -20,7 +23,7 @@ public class GoogleDriveEngine : IGoogleDriveEngine
         try{
             await _architector.ExecuteAsync(dto,types,cancellationToken);
         } catch(Exception ex){
-            throw;
+            _logger.LogError(ex, "An error occured while trying to {0} in {1}", nameof(UploadOrder), nameof(GoogleDriveEngine));
         }
     }
 }

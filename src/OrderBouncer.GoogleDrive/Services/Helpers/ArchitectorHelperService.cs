@@ -23,6 +23,7 @@ public class ArchitectorHelperService : IArchitectorHelperService
         _manyToOneUseCase = manyToOneUseCase;
         _manyToManyUseCase = manyToManyUseCase;
     }
+    //TODO There is missing dtos when it comes to process figures. It can not extract accessories in them.
     public Func<ProductDto, ICollection<BaseDto>?> CollectionInitializer(FolderNamesEnum type)
     {
         switch (type)
@@ -40,16 +41,29 @@ public class ArchitectorHelperService : IArchitectorHelperService
         }
     }
 
+    private Func<ProductDto, ICollection<BaseDto>?>? FigureAccessoryCollectionInitializer(){
+        return prod => prod.Figures?.Select(f => f.Accessories?.FirstOrDefault()).Cast<BaseDto>().ToList();
+    }
+
     public async Task Generate<T>(ICollection<T>? collection, FolderNamesEnum type, string parentId) where T : ProductDto
     {
         if(collection is null) return;
         if(collection.Count <= 0) return;
         
         Func<ProductDto, ICollection<BaseDto>?> coll = CollectionInitializer(type);
-        int productCount = GetCount(collection);
+        Func<ProductDto, ICollection<BaseDto>?>? accColl = null;
 
+        if(type == FolderNamesEnum.Figure){
+            accColl = FigureAccessoryCollectionInitializer();
+        }
+
+        int productCount = GetCount(collection);
+        int pos = 0;
         foreach(T product in collection){
             ICollection<BaseDto>? tempColl = coll(product);
+            ICollection<BaseDto>? tempAccList = null;
+
+            if(type == FolderNamesEnum.Figure && accColl is not null) tempAccList = accColl(product);
 
             if (tempColl is null) continue;
             
@@ -60,7 +74,13 @@ public class ArchitectorHelperService : IArchitectorHelperService
             }
 
             ICollection<string> parents = await _manyToOneUseCase.ExecuteAsync(FolderNamesEnum.Id, tempColl, parentFolderId); // 1, 2, 3, 4 ...  
-            ICollection<string> ppp = await _manyToManyUseCase.ExecuteAsync(FolderNamesEnum.Images, tempColl, (IList<string>)parents, CreationModes.FolderAndFile);
+            ICollection<string> ppp = await _manyToManyUseCase.ExecuteAsync(FolderNamesEnum.Images, tempColl, parents.Cast<string>().ToList(), CreationModes.FolderAndFile);
+
+            if(type == FolderNamesEnum.Figure && tempAccList is not null){
+                await _manyToManyUseCase.ExecuteAsync(FolderNamesEnum.Figure, tempAccList, parents.Cast<string>().ToList(), CreationModes.File);
+            }
+
+            pos++;
         }
     }
 

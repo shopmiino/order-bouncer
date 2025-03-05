@@ -1,4 +1,5 @@
 using System;
+using Microsoft.Extensions.Logging;
 using OrderBouncer.GoogleSheets.Constants;
 using OrderBouncer.GoogleSheets.DTOs;
 using OrderBouncer.GoogleSheets.Entities;
@@ -12,21 +13,30 @@ namespace OrderBouncer.GoogleSheets.Services;
 public class RowFillerService : IRowFillerService
 {
     private readonly IRowFillerHelperService _helper;
+    private readonly ILogger<RowFillerService> _logger;
 
-    public RowFillerService(IRowFillerHelperService helper)
+    public RowFillerService(IRowFillerHelperService helper, ILogger<RowFillerService> logger)
     {
         _helper = helper;
+        _logger = logger;
     }
 
     public FlattenRowDto FillFlattenWithElements(RowElements elements, FlattenRowDto flatten, string? name = null)
     {
+        _logger.LogInformation("{className}'s {methodName} is started", nameof(RowFillerService), nameof(FillFlattenWithElements));
+        _logger.LogInformation("Desired Name for this row is {0}", name);
+
         bool hasAccessory = elements.Elements.Contains(EntityTypeEnum.Accessory);
         bool hasKeychain = elements.Elements.Contains(EntityTypeEnum.Keychain);
         bool hasPet = elements.Elements.Contains(EntityTypeEnum.Pet);
         bool hasFigure = elements.Elements.Contains(EntityTypeEnum.Figure);
 
+        _logger.LogDebug("HasAccessory: {0}, HasKeychain: {1}, HasPet: {2}, HasFigure: {3}", hasAccessory, hasKeychain, hasPet, hasFigure);
+
         RowTypeEnum rowType = hasKeychain ? hasFigure ? RowTypeEnum.Figure : RowTypeEnum.Keychain : RowTypeEnum.Default;
         
+        _logger.LogDebug("Calculated RowType is {0}", nameof(rowType));
+
         return new FlattenRowDto(flatten.OrderCode, flatten.Date, name, rowType, hasAccessory, hasPet, hasKeychain, hasFigure);
     }
 
@@ -45,14 +55,18 @@ public class RowFillerService : IRowFillerService
         Cell orderCodeCell = new("");
         orderCodeCell.MarkAsOrderCode(dto.OrderCode);
 
+        Cell nameCell = new("");
+        nameCell.MarkAsName(dto.Name);
+
         baseRow.SetAccessory(accessoryCell);
         baseRow.SetPet(petCell);
         baseRow.SetKeychain(keychainCell);
         baseRow.SetDate(dateCell);
         baseRow.SetOrderCode(orderCodeCell);
         baseRow.SetLatestShipmentDate(latestShipmentDateCell);
-
         //standard colors of cells
+
+        baseRow.SetName(nameCell);
         
         baseRow.PrintReceived.SetStandardColor(ColorsEnum.Red);
         baseRow.Sticker.SetStandardColor(ColorsEnum.Red);

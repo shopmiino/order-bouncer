@@ -59,4 +59,11 @@ public class Cell
         StandardColor = color;
         return this;
     }
+
+    public Cell MarkAsName(string name){
+        Name = "Name";
+        CellType = CellTypesEnum.Text;
+        InnerText = name;
+        return this;
+    }
 }
