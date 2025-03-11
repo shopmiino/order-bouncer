@@ -43,7 +43,7 @@ public class RowFactory : IRowFactory
 
     public IRowFactory Create()
     {
-        _internalRow = new(new("Diagram"), new("Date", cellType: CellTypesEnum.Date), new("OrderCode"), new("SkinColor"), new("HairColor"), new("Gender"), new("KeychainType"), new("HeadModel"), new("BodyModel"), new("HeadPrint"), new("BodyPrint"), new("PrintReceived"), new("Sticker"), new("ExtraNotes"), new("Urgent"), new("Accessory"), new("AccessoryPrint"), new("Pet"), new("PetPrint"), new("Keychain"), new("KeychainPrint"), new("LatestShipmentDate"), new("ShipmentStatus"), new("Name"), new("PrintNotes"));
+        _internalRow = new(new("Diagram"), new("Date", cellType: CellTypesEnum.Date), new("OrderCode"), new("SkinColor"), new("HairColor"), new("Gender"), new("KeychainType"), new("HeadModel"), new("BodyModel"), new("HeadPrint"), new("BodyPrint"), new("PrintReceived"), new("Sticker"), new("ExtraNotes"), new("Urgent"), new("Accessory"), new("AccessoryPrint"), new("Pet"), new("PetPrint"), new("Keychain"), new("KeychainPrint"), new("LatestShipmentDate"), new("ShipmentStatus"), new("Name"), new("PrintNotes"), new("SlicerPaint"));
 
         return this;
     }

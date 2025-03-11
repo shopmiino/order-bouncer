@@ -77,7 +77,7 @@ public class ArchitectorHelperService : IArchitectorHelperService
             ICollection<string> ppp = await _manyToManyUseCase.ExecuteAsync(FolderNamesEnum.Images, tempColl, parents.Cast<string>().ToList(), CreationModes.FolderAndFile);
 
             if(type == FolderNamesEnum.Figure && tempAccList is not null){
-                await _manyToManyUseCase.ExecuteAsync(FolderNamesEnum.Accessory, tempAccList, parents.Cast<string>().ToList(), CreationModes.FolderAndFile);
+                await _manyToManyUseCase.ExecuteAsync(FolderNamesEnum.Accessory, tempAccList, [.. parents], CreationModes.FolderAndFile);
             }
 
             pos++;

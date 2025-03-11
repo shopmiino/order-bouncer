@@ -14,12 +14,13 @@ public class OrderRow
     public Cell KeychainType { get; private set; }
     public Cell HeadModel { get; private set; }
     public Cell BodyModel { get; private set; }
+    public Cell SlicerPaint { get; private set; } //
     public Cell HeadPrint { get; private set; }
     public Cell BodyPrint { get; private set; }
+    public Cell PrintNotes {get; private set;}
     public Cell PrintReceived { get; private set; }
     public Cell Sticker { get; private set; }
     public Cell Name {get; private set;}
-    public Cell PrintNotes {get; private set;}
     public Cell ExtraNotes { get; private set; }
     public Cell Urgent { get; private set; }
     public Cell Accessory { get; private set; }
@@ -31,7 +32,7 @@ public class OrderRow
     public Cell LatestShipmentDate { get; private set; }
     public Cell ShipmentStatus { get; private set; }
 
-    public OrderRow(Cell diagram, Cell date, Cell orderCode, Cell skinColor, Cell hairColor, Cell gender, Cell keychainType, Cell headModel, Cell bodyModel, Cell headPrint, Cell bodyPrint, Cell printReceived, Cell sticker, Cell extraNotes, Cell urgent, Cell accessory, Cell accessoryPrint, Cell pet, Cell petPrint, Cell keychain, Cell keychainPrint, Cell latestShipmentDate, Cell shipmentStatus, Cell name, Cell printNotes)
+    public OrderRow(Cell diagram, Cell date, Cell orderCode, Cell skinColor, Cell hairColor, Cell gender, Cell keychainType, Cell headModel, Cell bodyModel, Cell headPrint, Cell bodyPrint, Cell printReceived, Cell sticker, Cell extraNotes, Cell urgent, Cell accessory, Cell accessoryPrint, Cell pet, Cell petPrint, Cell keychain, Cell keychainPrint, Cell latestShipmentDate, Cell shipmentStatus, Cell name, Cell printNotes, Cell slicerPaint)
     {
         Date = date;
         OrderCode = orderCode;
@@ -148,12 +149,13 @@ public class OrderRow
                 KeychainType,
                 HeadModel,
                 BodyModel,
+                SlicerPaint,
                 HeadPrint,
                 BodyPrint,
+                PrintNotes,
                 PrintReceived,
                 Sticker,
                 Name,
-                PrintNotes,
                 ExtraNotes,
                 Urgent,
                 Accessory,

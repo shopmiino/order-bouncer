@@ -16,7 +16,6 @@ services:
     env_file:
       - .env.production
     environment:
-      - Serilog__MinimumLevel__Default=Verbose
       - Shopify__WebhookSecret=${SHOPIFY_WEBHOOKSECRET}
       - ASPNET_PORT=8080
     depends_on:
