@@ -63,7 +63,7 @@ public class RowConverterService : IRowConverterService
                 _logger.LogError(ex, "There is an error ocurred while getting name from IList collection");
             }
 
-            var flatten = _filler.FillFlattenWithElements(element, new(code, date, name));
+            var flatten = _filler.FillFlattenWithElements(element, new(code, date, name: name), name);
 
             flattens.Add(flatten);
         }
