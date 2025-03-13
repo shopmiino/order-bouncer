@@ -59,6 +59,7 @@ public class OrderRow
         Diagram = diagram;
         Name = name;
         PrintNotes = printNotes;
+        SlicerPaint = slicerPaint;
     }
 
     public OrderRow SetAccessory(Cell cell)
