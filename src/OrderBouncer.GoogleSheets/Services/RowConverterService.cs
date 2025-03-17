@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using Google.Apis.Sheets.v4.Data;
+using Microsoft.Extensions.Logging;
 using OrderBouncer.Domain.DTOs.Base;
 using OrderBouncer.GoogleSheets.Constants;
 using OrderBouncer.GoogleSheets.DTOs;
@@ -16,9 +17,11 @@ public class RowConverterService : IRowConverterService
 {
     private readonly IRowFillerService _filler;
     private readonly IRowConverterHelperService _helper;
-    public RowConverterService(IRowFillerService filler, IRowConverterHelperService helper){
+    private readonly ILogger<RowConverterService> _logger;
+    public RowConverterService(IRowFillerService filler, IRowConverterHelperService helper, ILogger<RowConverterService> logger){
         _filler = filler;
         _helper = helper;
+        _logger = logger;
     }
 
     public IList<CellData> ConvertToCellDatas(OrderRow row)
@@ -34,17 +37,33 @@ public class RowConverterService : IRowConverterService
 
     public ICollection<FlattenRowDto> ConvertToFlatten(Stack<RowElements> elements, OrderDto orderDto)
     {
+        _logger.LogInformation("ConvertToFlatten is started with {0} elements", elements.Count);
+
         string code = orderDto.ShopifyOrderID;
         DateTime date = orderDto.Date ?? DateTime.Now;
         
         ICollection<FlattenRowDto> flattens = [];
         int elementCount = elements.Count;
 
-        IList<string?>? names = orderDto.Products?.First().Figures?.Select(f => f?.Name).ToList();
+        IEnumerable<string>? tempNames = orderDto.Products?.First().Figures?.Select(f => f.Name ?? string.Empty);
+        IList<string>? names = tempNames is null ? null : [.. tempNames];
+        _logger.LogDebug("Names collection is generated with {0} elements", names?.Count);
 
         for(int i = 0; i < elementCount; i++){
             var element = elements.Pop();
-            var flatten = _filler.FillFlattenWithElements(element, new(code, date, names?[i]));
+
+            string name = string.Empty; 
+
+            try{
+                _logger.LogDebug("Trying to get {0}. name from generated names collection", i);
+                name = names?[i] ?? string.Empty;
+                _logger.LogInformation("Extracted name for flat conversion is {0}", name);
+            }
+            catch (Exception ex){
+                _logger.LogError(ex, "There is an error ocurred while getting name from IList collection");
+            }
+
+            var flatten = _filler.FillFlattenWithElements(element, new(code, date, name: name), name);
 
             flattens.Add(flatten);
         }
