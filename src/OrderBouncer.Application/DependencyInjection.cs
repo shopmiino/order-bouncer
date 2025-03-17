@@ -7,6 +7,7 @@ using OrderBouncer.Application.Interfaces.Context;
 using OrderBouncer.Application.Interfaces.Converters;
 using OrderBouncer.Application.Interfaces.Executors;
 using OrderBouncer.Application.Interfaces.Extractors;
+using OrderBouncer.Application.Interfaces.Normalizers;
 using OrderBouncer.Application.Interfaces.Processors;
 using OrderBouncer.Application.Interfaces.UseCases;
 using OrderBouncer.Application.Services.Buffer;
@@ -14,6 +15,7 @@ using OrderBouncer.Application.Services.Context;
 using OrderBouncer.Application.Services.Converters;
 using OrderBouncer.Application.Services.Executors;
 using OrderBouncer.Application.Services.Extractor;
+using OrderBouncer.Application.Services.Normalizers;
 using OrderBouncer.Application.Services.Processors;
 using OrderBouncer.Application.UseCases;
 using OrderBouncer.Domain.DTOs.Base;
@@ -58,6 +60,8 @@ public static class DependencyInjection
         services.AddScoped<ILineItemExtrasConverterService, LineItemExtrasConverterService>();
         services.AddScoped<ILineItemPropertyExtractor, LineItemPropertyExtractor>();
         services.AddScoped<ILineItemsProcessorService, LineItemsProcessorService>();
+
+        services.AddScoped<ILineItemsNormalizer, LineItemsNormalizer>();
 
         return services;
     }
