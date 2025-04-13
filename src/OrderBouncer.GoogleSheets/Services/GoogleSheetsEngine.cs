@@ -45,7 +45,7 @@ public class GoogleSheetsEngine : IGoogleSheetsEngine
         List<RowData> rowDatas = [];
 
         foreach(OrderRow row in orderRows){
-            RowData rowData = new RowData{
+            RowData rowData = new RowData(){
                 Values = _converter.ConvertToCellDatas(row),
             };
 

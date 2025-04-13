@@ -49,15 +49,23 @@ public class RowConverterService : IRowConverterService
         IList<string>? names = tempNames is null ? null : [.. tempNames];
         _logger.LogDebug("Names collection is generated with {0} elements", names?.Count);
 
+        int nameIteration = 0;
+
         for(int i = 0; i < elementCount; i++){
             var element = elements.Pop();
 
             string name = string.Empty; 
 
             try{
-                _logger.LogDebug("Trying to get {0}. name from generated names collection", i);
-                name = names?[i] ?? string.Empty;
-                _logger.LogInformation("Extracted name for flat conversion is {0}", name);
+                bool hasFigure = element.Elements.Any(p => p == SharedKernel.Enums.EntityTypeEnum.Figure);
+                if(hasFigure){
+                    _logger.LogDebug("Trying to get {0}. name from generated names collection", nameIteration);
+
+                    name = names?[nameIteration] ?? string.Empty;
+                    nameIteration++;
+
+                    _logger.LogInformation("Extracted name for flat conversion is {0}", name);
+                }
             }
             catch (Exception ex){
                 _logger.LogError(ex, "There is an error ocurred while getting name from IList collection");

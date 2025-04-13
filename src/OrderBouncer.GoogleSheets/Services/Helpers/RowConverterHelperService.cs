@@ -10,7 +10,7 @@ public class RowConverterHelperService : IRowConverterHelperService
 {
     public CellData CellToSpreadSheetCell(Cell cell)
     {
-        return new CellData{
+        return new CellData(){
             UserEnteredValue = new ExtendedValue { StringValue = cell.InnerText ?? "" },
             UserEnteredFormat = new CellFormat
             {

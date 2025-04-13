@@ -42,15 +42,15 @@ public class RowFillerService : IRowFillerService
 
     public OrderRow FillWithFlatten(FlattenRowDto dto, OrderRow baseRow)
     {
-        Cell accessoryCell = new("Accessory", _helper.HasCondition(dto.HasAccessory));
-        Cell petCell = new("Pet", _helper.HasCondition(dto.HasPet));
+        Cell accessoryCell = new("Accessory", _helper.StandaloneOrExtraColorCondition(dto, dto.HasAccessory));
+        Cell petCell = new("Pet", _helper.StandaloneOrExtraColorCondition(dto, dto.HasPet));
         Cell keychainCell = new("Keychain", _helper.HasCondition(dto.HasKeychain));
 
         Cell dateCell = new("");
         dateCell.MarkAsDate(dto.Date);
 
         Cell latestShipmentDateCell = new("");
-        latestShipmentDateCell.MarkAsDate(dto.Date.AddDays(10));
+        latestShipmentDateCell.MarkAsDate(dto.Date.AddDays(14));
 
         Cell orderCodeCell = new("");
         orderCodeCell.MarkAsOrderCode(dto.OrderCode);
@@ -69,7 +69,12 @@ public class RowFillerService : IRowFillerService
         baseRow.SetName(nameCell);
         
         baseRow.PrintReceived.SetStandardColor(ColorsEnum.Red);
-        baseRow.Sticker.SetStandardColor(ColorsEnum.Red);
+
+        if(dto.HasFigure){
+            baseRow.Sticker.SetStandardColor(ColorsEnum.Red);
+        } else {
+            baseRow.Sticker.SetStandardColor(ColorsEnum.White);
+        }
 
         if(dto.HasAccessory){
             baseRow.AccessoryPrint.SetStandardColor(ColorsEnum.Red);
