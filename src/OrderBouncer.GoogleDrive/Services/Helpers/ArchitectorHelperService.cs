@@ -24,7 +24,7 @@ public class ArchitectorHelperService : IArchitectorHelperService
         _manyToManyUseCase = manyToManyUseCase;
     }
     //TODO There is missing dtos when it comes to process figures. It can not extract accessories in them.
-    public Func<ProductDto, ICollection<BaseDto>?> CollectionInitializer(FolderNamesEnum type)
+    public Func<ProductDto, List<BaseDto>?> CollectionInitializer(FolderNamesEnum type)
     {
         switch (type)
         {
@@ -41,17 +41,17 @@ public class ArchitectorHelperService : IArchitectorHelperService
         }
     }
 
-    private Func<ProductDto, ICollection<BaseDto>?>? FigureAccessoryCollectionInitializer(){
+    private Func<ProductDto, List<BaseDto>?>? FigureAccessoryCollectionInitializer(){
         return prod => prod.Figures?.Select(f => f.Accessories?.FirstOrDefault()).Cast<BaseDto>().ToList();
     }
 
-    public async Task Generate<T>(ICollection<T>? collection, FolderNamesEnum type, string parentId) where T : ProductDto
+    public async Task Generate<T>(List<T>? collection, FolderNamesEnum type, string parentId) where T : ProductDto
     {
         if(collection is null) return;
         if(collection.Count <= 0) return;
         
-        Func<ProductDto, ICollection<BaseDto>?> coll = CollectionInitializer(type);
-        Func<ProductDto, ICollection<BaseDto>?>? accColl = null;
+        Func<ProductDto, List<BaseDto>?> coll = CollectionInitializer(type);
+        Func<ProductDto, List<BaseDto>?>? accColl = null;
 
         if(type == FolderNamesEnum.Figure){
             accColl = FigureAccessoryCollectionInitializer();
@@ -60,8 +60,8 @@ public class ArchitectorHelperService : IArchitectorHelperService
         int productCount = GetCount(collection);
         int pos = 0;
         foreach(T product in collection){
-            ICollection<BaseDto>? tempColl = coll(product);
-            ICollection<BaseDto>? tempAccList = null;
+            List<BaseDto>? tempColl = coll(product);
+            List<BaseDto>? tempAccList = null;
 
             if(type == FolderNamesEnum.Figure && accColl is not null) tempAccList = accColl(product);
 
@@ -73,8 +73,8 @@ public class ArchitectorHelperService : IArchitectorHelperService
                 parentFolderId = await GenerateGeneric(productCount, FolderNamesEnum.Product, parentId);
             }
 
-            ICollection<string> parents = await _manyToOneUseCase.ExecuteAsync(FolderNamesEnum.Id, tempColl, parentFolderId); // 1, 2, 3, 4 ...  
-            ICollection<string> ppp = await _manyToManyUseCase.ExecuteAsync(FolderNamesEnum.Images, tempColl, parents.Cast<string>().ToList(), CreationModes.FolderAndFile);
+            List<string> parents = await _manyToOneUseCase.ExecuteAsync(FolderNamesEnum.Id, tempColl, parentFolderId); // 1, 2, 3, 4 ...  
+            List<string> ppp = await _manyToManyUseCase.ExecuteAsync(FolderNamesEnum.Images, tempColl, parents.Cast<string>().ToList(), CreationModes.FolderAndFile);
 
             if(type == FolderNamesEnum.Figure && tempAccList is not null){
                 await _manyToManyUseCase.ExecuteAsync(FolderNamesEnum.Accessory, tempAccList, [.. parents], CreationModes.FolderAndFile);
@@ -95,7 +95,7 @@ public class ArchitectorHelperService : IArchitectorHelperService
         return entityFolderId;
     }
 
-    public int GetCount<T>(ICollection<T>? paths)
+    public int GetCount<T>(IList<T>? paths)
     {
         return paths is null ? 0 : paths.Count;
     }

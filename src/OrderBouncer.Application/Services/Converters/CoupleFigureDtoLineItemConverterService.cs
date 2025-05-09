@@ -45,7 +45,7 @@ public class CoupleFigureDtoLineItemConverterService : ILineItemsConverterServic
         throw new NotImplementedException();
     }
 
-    public async Task<(FigureDto[], ICollection<PetDto>?, ICollection<AccessoryDto>?)> ConvertWithMultipleExtras(LineItem lineItem, Guid scopeId)
+    public async Task<(FigureDto[], List<PetDto>?, List<AccessoryDto>?)> ConvertWithMultipleExtras(LineItem lineItem, Guid scopeId)
     {
         _logger.LogInformation("Couple Figure Dto Line Item Converter's ConvertWithMultipleExtras starting.");
 
@@ -55,7 +55,7 @@ public class CoupleFigureDtoLineItemConverterService : ILineItemsConverterServic
         
         if(lineItem.Properties is null) throw new ArgumentNullException("Properties are null");
 
-        IList<NoteAttribute[]>? groupedImages = null;
+        List<NoteAttribute[]>? groupedImages = null;
         try{
             groupedImages = _extractor.GroupImages(lineItem.Properties);
         } catch (Exception ex) {
@@ -84,8 +84,8 @@ public class CoupleFigureDtoLineItemConverterService : ILineItemsConverterServic
         FigureDto? secondFigure = null;
         _logger.LogDebug("First and second figure dtos iniliatized to null");
 
-        ICollection<string> firstImagePaths = [];
-        ICollection<string> secondImagePaths = [];
+        List<string> firstImagePaths = [];
+        List<string> secondImagePaths = [];
         _logger.LogDebug("First and second figure imagePath collections iniliatized to empty");
 
         AccessoryDto? firstAccessoryDto = null;
@@ -209,7 +209,7 @@ public class CoupleFigureDtoLineItemConverterService : ILineItemsConverterServic
         string? firstFigureName = nameNotes?[0].Value;
         _logger.LogTrace("FIRST FIGURE's name is {0}", firstFigureName);
 
-        ICollection<AccessoryDto>? firstAccessoryDtos = firstAccessoryDto is null ? null : [firstAccessoryDto];
+        List<AccessoryDto>? firstAccessoryDtos = firstAccessoryDto is null ? null : [firstAccessoryDto];
         _logger.LogTrace("FIRST FIGURE's accessories is {0}", firstAccessoryDtos is null ? "null" : "not null");
 
         firstFigure = new(
@@ -228,7 +228,7 @@ public class CoupleFigureDtoLineItemConverterService : ILineItemsConverterServic
         string? secondFigureName = nameNotes?[1].Value;
         _logger.LogTrace("SECOND FIGURE's name is {0}", secondFigureName);
 
-        ICollection<AccessoryDto>? secondAccessoryDtos = secondAccessoryDto is null ? null : [secondAccessoryDto];
+        List<AccessoryDto>? secondAccessoryDtos = secondAccessoryDto is null ? null : [secondAccessoryDto];
         _logger.LogTrace("SECOND FIGURE's accessories is {0}", secondAccessoryDtos is null ? "null" : "not null");
         
         secondFigure = new(

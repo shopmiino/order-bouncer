@@ -9,6 +9,6 @@ namespace OrderBouncer.GoogleSheets.Interfaces.Services;
 
 public interface IRowConverterService
 {
-    public ICollection<FlattenRowDto> ConvertToFlatten(Stack<RowElements> elements, OrderDto orderDto);
-    public IList<CellData> ConvertToCellDatas(OrderRow row);
+    public List<FlattenRowDto> ConvertToFlatten(Stack<RowElements> elements, OrderDto orderDto);
+    public List<CellData> ConvertToCellDatas(OrderRow row);
 }

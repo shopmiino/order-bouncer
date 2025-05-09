@@ -52,7 +52,7 @@ public class KeychainDtoLineItemConverterService : ILineItemsConverterService<Ke
         throw new NotImplementedException();
     }
 
-    public Task<(KeychainDto, ICollection<PetDto>?, ICollection<AccessoryDto>?)> ConvertWithMultipleExtras(LineItem lineItem, Guid scopeId)
+    public Task<(KeychainDto, List<PetDto>?, List<AccessoryDto>?)> ConvertWithMultipleExtras(LineItem lineItem, Guid scopeId)
     {
         throw new NotImplementedException();
     }

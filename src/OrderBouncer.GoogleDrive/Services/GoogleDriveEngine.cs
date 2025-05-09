@@ -19,7 +19,7 @@ public class GoogleDriveEngine : IGoogleDriveEngine
 
     public async Task UploadOrder(OrderDto dto, CancellationToken cancellationToken)
     {
-        ICollection<FolderNamesEnum> types = [FolderNamesEnum.Accessory, FolderNamesEnum.Figure, FolderNamesEnum.Keychain, FolderNamesEnum.Pet];
+        List<FolderNamesEnum> types = [FolderNamesEnum.Accessory, FolderNamesEnum.Figure, FolderNamesEnum.Keychain, FolderNamesEnum.Pet];
         try{
             await _architector.ExecuteAsync(dto,types,cancellationToken);
         } catch(Exception ex){

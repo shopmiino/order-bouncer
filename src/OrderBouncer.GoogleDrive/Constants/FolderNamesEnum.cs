@@ -9,5 +9,6 @@ public enum FolderNamesEnum
     Id,
     Images,
     Product,
-    FigureAccessory
+    FigureAccessory,
+    IdWName
 }

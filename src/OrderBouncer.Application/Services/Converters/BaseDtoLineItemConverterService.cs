@@ -21,7 +21,7 @@ public class BaseDtoLineItemConverterService : ILineItemsBaseConverterService
 
     public async Task<BaseDto> GenericConvert(LineItem lineItem, Func<NoteAttribute[], NoteAttribute[]?> noteGetter, Guid scopeId)
     {
-        IList<NoteAttribute[]>? groupedImages = null;
+        List<NoteAttribute[]>? groupedImages = null;
         try{
             groupedImages = _extractor.GroupImages(lineItem.Properties);
         } catch (Exception ex) {
@@ -35,7 +35,7 @@ public class BaseDtoLineItemConverterService : ILineItemsBaseConverterService
             throw new ArgumentNullException("No Grouped Images here, element is empty");
         }
 
-        ICollection<string> imagePaths = [];
+        List<string> imagePaths = [];
         _logger.LogDebug("ImagePath collection initialized to empty");
 
         NoteAttribute[]? notes = null;

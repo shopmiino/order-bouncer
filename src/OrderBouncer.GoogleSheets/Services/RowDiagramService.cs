@@ -6,7 +6,7 @@ namespace OrderBouncer.GoogleSheets.Services;
 
 public class RowDiagramService : IRowDiagramService
 {
-    public IList<OrderRow> MarkRowDiagrams(IList<OrderRow> rows)
+    public List<OrderRow> MarkRowDiagrams(List<OrderRow> rows)
     {
         int rowCount = rows.Count;
         int middleCount = rowCount - 2;

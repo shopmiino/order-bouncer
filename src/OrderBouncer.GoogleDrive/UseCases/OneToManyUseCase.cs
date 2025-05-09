@@ -19,16 +19,16 @@ public class OneToManyUseCase<T> : IOneToManyUseCase<T> where T : BaseDto
         _nameService = nameService;
         _repository = repository;
     }
-    public async Task<ICollection<string>> ExecuteAsync(FolderNamesEnum name, T dto, ICollection<string> parents, CreationModes mode = CreationModes.Folder)
+    public async Task<List<string>> ExecuteAsync(FolderNamesEnum name, T dto, List<string> parents, CreationModes mode = CreationModes.Folder)
     {
-        ICollection<string> folderIds = [];
+        List<string> folderIds = [];
 
-        Func<int, string> namingMethod = _nameService.NamingMethod(name);
+        Func<int, string?, string> namingMethod = _nameService.NamingMethod(name);
 
         int i = 0;
         foreach (string parentId in parents)
         {
-            string folderName = namingMethod(i);
+            string folderName = namingMethod(i, "Naming Work Ongoing");
             string folderId = string.Empty;
 
             if(!GoogleDriveExtensions.IsFileCreation(mode))

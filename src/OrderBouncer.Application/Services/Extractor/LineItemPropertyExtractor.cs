@@ -59,7 +59,7 @@ public class LineItemPropertyExtractor : ILineItemPropertyExtractor
         return [.. notes];
     }
 
-    public IList<NoteAttribute[]>? GroupImages(NoteAttribute[] properties)
+    public List<NoteAttribute[]>? GroupImages(NoteAttribute[] properties)
     {
         _logger.LogInformation("GroupImages is starting");
 
@@ -94,7 +94,7 @@ public class LineItemPropertyExtractor : ILineItemPropertyExtractor
         return imagePropertyGroup.Select(p => p.ToArray()).ToList();
     }
 
-    public IList<NoteAttribute[]>? GroupNotes(NoteAttribute[] properties)
+    public List<NoteAttribute[]>? GroupNotes(NoteAttribute[] properties)
     {
         _logger.LogInformation("GroupNotes is starting");
 

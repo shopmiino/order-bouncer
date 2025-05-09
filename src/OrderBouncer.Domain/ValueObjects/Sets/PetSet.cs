@@ -6,7 +6,7 @@ namespace OrderBouncer.Domain.ValueObjects.Sets;
 
 public class PetSet
 {
-    public ICollection<PetEntity>? Pets {get; set;} = null;
+    public List<PetEntity>? Pets {get; set;} = null;
     
     public PetSet(){
 

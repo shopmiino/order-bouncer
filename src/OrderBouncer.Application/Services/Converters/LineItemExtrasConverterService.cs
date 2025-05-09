@@ -16,12 +16,12 @@ public class LineItemExtrasConverterService : ILineItemExtrasConverterService
         _logger = logger;
     }
     
-    public async Task<BaseDto> ConvertExtra(Guid scopeId, LineItem lineItem, IList<NoteAttribute[]> props, Func<NoteAttribute[], NoteAttribute[]?> noteGetter, int position = 0, int notePosition = 0, bool hasNoImage = false)
+    public async Task<BaseDto> ConvertExtra(Guid scopeId, LineItem lineItem, List<NoteAttribute[]> props, Func<NoteAttribute[], NoteAttribute[]?> noteGetter, int position = 0, int notePosition = 0, bool hasNoImage = false)
     {
         _logger.LogInformation("ConvertExtra is starting with propArrayCount: {0}, position: {1}, notePosition: {1}", props.Count(), position, notePosition);
         NoteAttribute[]? notes = noteGetter(lineItem.Properties);
         //NoteAttribute[]? notes = _extractor.GetPetNotes(lineItem.Properties);
-        ICollection<string>? images = null;
+        List<string>? images = null;
         _logger.LogDebug("imagePaths initialized to null");
 
         if(hasNoImage) goto NoImage;

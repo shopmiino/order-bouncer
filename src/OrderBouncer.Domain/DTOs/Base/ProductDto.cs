@@ -2,13 +2,13 @@ namespace OrderBouncer.Domain.DTOs.Base;
 
 public record class ProductDto
 {
-    public ICollection<FigureDto>? Figures {get; init;}
-    public ICollection<AccessoryDto>? Accessories {get; init;}
-    public ICollection<KeychainDto>? Keychains {get; init;}
-    public ICollection<PetDto>? Pets {get; init;}
+    public List<FigureDto>? Figures {get; init;}
+    public List<AccessoryDto>? Accessories {get; init;}
+    public List<KeychainDto>? Keychains {get; init;}
+    public List<PetDto>? Pets {get; init;}
 
     public ProductDto(){}
-    public ProductDto(ICollection<FigureDto>? figures, ICollection<AccessoryDto>? accessories, ICollection<KeychainDto>? keychains, ICollection<PetDto>? pets){
+    public ProductDto(List<FigureDto>? figures, List<AccessoryDto>? accessories, List<KeychainDto>? keychains, List<PetDto>? pets){
         Figures = figures;
         Accessories = accessories;
         Keychains = keychains;

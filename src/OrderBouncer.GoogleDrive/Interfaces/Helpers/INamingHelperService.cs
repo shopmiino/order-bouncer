@@ -5,6 +5,6 @@ namespace OrderBouncer.GoogleDrive.Interfaces.Helpers;
 
 public interface INamingHelperService
 {
-    public Func<int, string> NamingMethod(FolderNamesEnum name);
+    public Func<int, string?, string> NamingMethod(FolderNamesEnum nameType);
     public string GenerateFolderName(FolderNamesEnum name, int count);
 }

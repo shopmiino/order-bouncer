@@ -24,7 +24,7 @@ public class RowConverterService : IRowConverterService
         _logger = logger;
     }
 
-    public IList<CellData> ConvertToCellDatas(OrderRow row)
+    public List<CellData> ConvertToCellDatas(OrderRow row)
     {
         List<CellData> cellDatas = [];
         
@@ -35,18 +35,18 @@ public class RowConverterService : IRowConverterService
         return cellDatas;
     }
 
-    public ICollection<FlattenRowDto> ConvertToFlatten(Stack<RowElements> elements, OrderDto orderDto)
+    public List<FlattenRowDto> ConvertToFlatten(Stack<RowElements> elements, OrderDto orderDto)
     {
         _logger.LogInformation("ConvertToFlatten is started with {0} elements", elements.Count);
 
         string code = orderDto.ShopifyOrderID;
         DateTime date = orderDto.Date ?? DateTime.Now;
         
-        ICollection<FlattenRowDto> flattens = [];
+        List<FlattenRowDto> flattens = [];
         int elementCount = elements.Count;
 
-        IEnumerable<string>? tempNames = orderDto.Products?.First().Figures?.Select(f => f.Name ?? string.Empty);
-        IList<string>? names = tempNames is null ? null : [.. tempNames];
+        List<string>? names = orderDto.Products?.FirstOrDefault()?.Figures?.Select(f => f.Name ?? string.Empty).ToList();
+        //IList<string>? names = tempNames is null ? null : [.. tempNames];
         _logger.LogDebug("Names collection is generated with {0} elements", names?.Count);
 
         int nameIteration = 0;

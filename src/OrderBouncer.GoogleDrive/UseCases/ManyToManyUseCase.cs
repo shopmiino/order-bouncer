@@ -15,20 +15,20 @@ public class ManyToManyUseCase<T> : IManyToManyUseCase<T> where T : BaseDto
         _nameService = nameService;
         _repository = repository;
     }
-    public async Task<ICollection<string>> ExecuteAsync(FolderNamesEnum name, ICollection<T> collection, IList<string> parents, CreationModes mode = CreationModes.Folder)
+    public async Task<List<string>> ExecuteAsync(FolderNamesEnum name, List<T> collection, List<string> parents, CreationModes mode = CreationModes.Folder)
     {
         if(parents.Count == 0 || parents.Count != collection.Count || collection.Count == 0) return [];
         
-        ICollection<string> folderIds = [];
+        List<string> folderIds = [];
 
-        Func<int, string> namingMethod = _nameService.NamingMethod(name);
+        Func<int, string?, string> namingMethod = _nameService.NamingMethod(name);
          
         string changedParentId = string.Empty;
 
         int i = 0;
         foreach (T item in collection)
         {
-            string folderName = namingMethod(i);
+            string folderName = namingMethod(i, "Naming Work Ongoing");
 
             string parentIdX = parents[i];
             string folderId = string.Empty;

@@ -6,6 +6,6 @@ namespace OrderBouncer.GoogleDrive.Interfaces.Architectors;
 
 public interface IGoogleDriveArchitector
 {
-    public Task ExecuteAsync(OrderDto dto, ICollection<FolderNamesEnum> folders, CancellationToken cancellationToken);
+    public Task ExecuteAsync(OrderDto dto, List<FolderNamesEnum> folders, CancellationToken cancellationToken);
 }
     

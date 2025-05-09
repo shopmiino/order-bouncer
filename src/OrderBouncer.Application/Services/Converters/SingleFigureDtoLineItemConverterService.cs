@@ -47,7 +47,7 @@ public class SingleFigureDtoLineItemConverterService : ILineItemsConverterServic
 
         if(lineItem.Properties is null) throw new ArgumentNullException("Properties are null");
 
-        IList<NoteAttribute[]>? groupedImages = null;
+        List<NoteAttribute[]>? groupedImages = null;
         try{
             groupedImages = _extractor.GroupImages(lineItem.Properties);
         } catch (Exception ex) {
@@ -61,7 +61,7 @@ public class SingleFigureDtoLineItemConverterService : ILineItemsConverterServic
             throw new ArgumentNullException("No Grouped Images here, element is empty");
         }
 
-        ICollection<string> imagePaths = [];
+        List<string> imagePaths = [];
         _logger.LogDebug("ImagePath collection initialized to empty");
 
         AccessoryDto? accessoryDto = null;
@@ -165,7 +165,7 @@ public class SingleFigureDtoLineItemConverterService : ILineItemsConverterServic
         throw new NotImplementedException();
     }
 
-    public Task<(FigureDto, ICollection<PetDto>?, ICollection<AccessoryDto>?)> ConvertWithMultipleExtras(LineItem lineItem, Guid scopeId)
+    public Task<(FigureDto, List<PetDto>?, List<AccessoryDto>?)> ConvertWithMultipleExtras(LineItem lineItem, Guid scopeId)
     {
         throw new NotImplementedException();
         }

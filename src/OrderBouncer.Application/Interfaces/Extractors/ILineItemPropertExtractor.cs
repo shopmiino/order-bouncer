@@ -5,8 +5,8 @@ namespace OrderBouncer.Application.Interfaces.Extractors;
 
 public interface ILineItemPropertyExtractor
 {
-    public IList<NoteAttribute[]>? GroupImages(NoteAttribute[] properties);
-    public IList<NoteAttribute[]>? GroupNotes(NoteAttribute[] properties);
+    public List<NoteAttribute[]>? GroupImages(NoteAttribute[] properties);
+    public List<NoteAttribute[]>? GroupNotes(NoteAttribute[] properties);
     
     public NoteAttribute[]? GetFigureNotes(NoteAttribute[] properties);
     public NoteAttribute[]? GetAccessoryNotes(NoteAttribute[] properties);

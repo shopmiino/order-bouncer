@@ -50,7 +50,7 @@ public class AccessoryDtoLineItemConverterService : ILineItemsConverterService<A
         throw new NotImplementedException();
     }
 
-    public Task<(AccessoryDto, ICollection<PetDto>?, ICollection<AccessoryDto>?)> ConvertWithMultipleExtras(LineItem lineItem, Guid scopeId)
+    public Task<(AccessoryDto, List<PetDto>?, List<AccessoryDto>?)> ConvertWithMultipleExtras(LineItem lineItem, Guid scopeId)
     {
         throw new NotImplementedException();
     }

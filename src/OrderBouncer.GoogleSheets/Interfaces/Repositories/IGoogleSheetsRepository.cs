@@ -12,6 +12,6 @@ public interface IGoogleSheetsRepository
     public Task UpdateRow(int row, string[] rowElements);
     public Task<string[]?> GetRow(int row);
     public Task<string[]?> GetRowByName(string name);
-    public Task<ICollection<string[]>?> GetRows(string range);
+    public Task<List<string[]>?> GetRows(string range);
     public Task DeleteRow(int row);
 }

@@ -6,5 +6,5 @@ namespace OrderBouncer.GoogleDrive.Interfaces.UseCases;
 
 public interface IManyToOneUseCase<T> where T : BaseDto
 {
-    public Task<ICollection<string>> ExecuteAsync(FolderNamesEnum name, ICollection<T> collection, string parentId, CreationModes mode = CreationModes.Folder);
+    public Task<List<string>> ExecuteAsync(FolderNamesEnum name, List<T> collection, string parentId, CreationModes mode = CreationModes.Folder);
 }

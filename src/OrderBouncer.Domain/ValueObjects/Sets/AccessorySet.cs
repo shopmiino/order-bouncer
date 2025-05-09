@@ -7,7 +7,7 @@ namespace OrderBouncer.Domain.ValueObjects.Sets;
 
 public class AccessorySet
 {
-    public ICollection<AccessoryEntity>? Accessories { get; private set; } = null;
+    public List<AccessoryEntity>? Accessories { get; private set; } = null;
     private EntityTypeEnum _parentType { get; set; }
 
     public AccessorySet(EntityTypeEnum parentType)

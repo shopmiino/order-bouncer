@@ -27,11 +27,11 @@ public class GoogleSheetsEngine : IGoogleSheetsEngine
     }
     public async Task UploadOrder(OrderDto dto, CancellationToken cancellationToken)
     {
-        IList<OrderRow> orderRows = [];
+        List<OrderRow> orderRows = [];
 
         Stack<RowElements> organizedElements = _organizer.Organize(dto, cancellationToken);
         
-        ICollection<FlattenRowDto> flattenRows = _converter.ConvertToFlatten(organizedElements, dto);
+        List<FlattenRowDto> flattenRows = _converter.ConvertToFlatten(organizedElements, dto);
 
         foreach(FlattenRowDto flat in flattenRows){
             OrderRow orderRow = _rowFactory.Create().From(flat).Build(); 
@@ -39,7 +39,7 @@ public class GoogleSheetsEngine : IGoogleSheetsEngine
         }
 
 
-        orderRows = [.. orderRows.Reverse()];
+        orderRows.Reverse();
         orderRows = _diagram.MarkRowDiagrams(orderRows);
         
         List<RowData> rowDatas = [];

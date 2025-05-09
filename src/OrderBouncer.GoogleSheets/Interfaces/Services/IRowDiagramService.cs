@@ -5,5 +5,5 @@ namespace OrderBouncer.GoogleSheets.Interfaces.Services;
 
 public interface IRowDiagramService
 {
-    public IList<OrderRow> MarkRowDiagrams(IList<OrderRow> rows);
+    public List<OrderRow> MarkRowDiagrams(List<OrderRow> rows);
 }

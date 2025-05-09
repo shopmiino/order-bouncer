@@ -41,17 +41,17 @@ public class LineItemsProcessorService : ILineItemsProcessorService
         }
         _logger.LogTrace("Iterations finished, continuing with ProductDto creation");
         
-        ICollection<FigureDto>? figureDtos = productDto.Figures.Count <= 0 ? null : productDto.Figures;
-        _logger.LogTrace("Created FigureDto collection {0}", figureDtos is null ? "is null" : $"has {productDto.Figures.Count()} elements");
+        List<FigureDto>? figureDtos = productDto?.Figures?.Count <= 0 ? null : productDto?.Figures;
+        _logger.LogTrace("Created FigureDto collection {0}", figureDtos is null ? "is null" : $"has {productDto?.Figures?.Count()} elements");
 
-        ICollection<AccessoryDto>? accessoryDtos = productDto.Accessories.Count <= 0 ? null : productDto.Accessories;
-        _logger.LogTrace("Created AccessoryDto collection {0}", accessoryDtos is null ? "is null" : $"has {productDto.Accessories.Count()} elements");
+        List<AccessoryDto>? accessoryDtos = productDto?.Accessories?.Count <= 0 ? null : productDto?.Accessories;
+        _logger.LogTrace("Created AccessoryDto collection {0}", accessoryDtos is null ? "is null" : $"has {productDto?.Accessories?.Count()} elements");
 
-        ICollection<KeychainDto>? keychainDtos = productDto.Keychains.Count <= 0 ? null : productDto.Keychains;
-        _logger.LogTrace("Created KeychainDto collection {0}", keychainDtos is null ? "is null" : $"has {productDto.Keychains.Count()} elements");
+        List<KeychainDto>? keychainDtos = productDto?.Keychains?.Count <= 0 ? null : productDto?.Keychains;
+        _logger.LogTrace("Created KeychainDto collection {0}", keychainDtos is null ? "is null" : $"has {productDto?.Keychains?.Count()} elements");
 
-        ICollection<PetDto>? petDtos = productDto.Pets.Count <= 0 ? null : productDto.Pets;
-        _logger.LogTrace("Created PetDto collection {0}", petDtos is null ? "is null" : $"has {productDto.Pets.Count()} elements");
+        List<PetDto>? petDtos = productDto?.Pets?.Count <= 0 ? null : productDto?.Pets;
+        _logger.LogTrace("Created PetDto collection {0}", petDtos is null ? "is null" : $"has {productDto?.Pets?.Count()} elements");
 
         ProductDto finalProduct = new(
             figures: figureDtos,

@@ -20,7 +20,7 @@ public class GoogleDriveArchitector : IGoogleDriveArchitector
     }
 
     //TODO: I made it more clever but now it is so much complex ://
-    public async Task ExecuteAsync(OrderDto dto, ICollection<FolderNamesEnum> folders, CancellationToken cancellationToken)
+    public async Task ExecuteAsync(OrderDto dto, List<FolderNamesEnum> folders, CancellationToken cancellationToken)
     {
         string generalFolderId = await _repository.CreateFolder(dto.ShopifyOrderID); //1007
 

@@ -19,11 +19,11 @@ public class ManyToOneUseCase<T> : IManyToOneUseCase<T> where T : BaseDto
         _nameService = nameService;
         _repository = repository;
     }
-    public async Task<ICollection<string>> ExecuteAsync(FolderNamesEnum name, ICollection<T> collection, string parentId, CreationModes mode = CreationModes.Folder)
+    public async Task<List<string>> ExecuteAsync(FolderNamesEnum name, List<T> collection, string parentId, CreationModes mode = CreationModes.Folder)
     {
-        ICollection<string> folderIds = [];
+        List<string> folderIds = [];
 
-        Func<int, string> namingMethod = _nameService.NamingMethod(name);
+        Func<int, string?, string> namingMethod = _nameService.NamingMethod(name);
          
         string changedParentId = string.Empty;
 
@@ -34,7 +34,7 @@ public class ManyToOneUseCase<T> : IManyToOneUseCase<T> where T : BaseDto
         int i = 0;
         foreach (T item in collection)
         {
-            string folderName = namingMethod(i);
+            string folderName = namingMethod(i, "Naming Work Ongoing");
 
             if(!GoogleDriveExtensions.IsFileCreation(mode))
                 changedParentId = await _repository.CreateFolder(folderName, parentId);

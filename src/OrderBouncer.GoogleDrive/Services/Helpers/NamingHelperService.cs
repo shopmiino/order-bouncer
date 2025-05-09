@@ -6,14 +6,16 @@ namespace OrderBouncer.GoogleDrive.Services.Helpers;
 
 public class NamingHelperService : INamingHelperService
 {
-    public Func<int, string> NamingMethod(FolderNamesEnum name)
+    public Func<int, string?, string> NamingMethod(FolderNamesEnum nameType)
     {
-        switch (name)
+        switch (nameType)
         {
             case FolderNamesEnum.Id:
-                return index => (index + 1).ToString();
+                return (index, name) => (index + 1).ToString();
+            case FolderNamesEnum.IdWName:
+                return (index, name) => $"{index + 1} - {name}";
             default:
-                return _ => FolderNames.Names[name];
+                return (_,_) => FolderNames.Names[nameType];
         }
     }
 

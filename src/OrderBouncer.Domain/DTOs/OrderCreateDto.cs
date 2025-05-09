@@ -4,8 +4,8 @@ namespace OrderBouncer.Domain.DTOs;
 
 public record class OrderCreateDto
 {
-    public ICollection<ProductEntity>? Products {get; protected set;}
-    public OrderCreateDto(ICollection<ProductEntity>? products = null){
+    public List<ProductEntity>? Products {get; protected set;}
+    public OrderCreateDto(List<ProductEntity>? products = null){
         Products = products;
     }
 }

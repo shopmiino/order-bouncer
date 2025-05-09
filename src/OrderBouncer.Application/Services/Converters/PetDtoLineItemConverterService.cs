@@ -51,7 +51,7 @@ public class PetDtoLineItemConverterService : ILineItemsConverterService<PetDto>
         throw new NotImplementedException();
     }
 
-    public Task<(PetDto, ICollection<PetDto>?, ICollection<AccessoryDto>?)> ConvertWithMultipleExtras(LineItem lineItem, Guid scopeId)
+    public Task<(PetDto, List<PetDto>?, List<AccessoryDto>?)> ConvertWithMultipleExtras(LineItem lineItem, Guid scopeId)
     {
         throw new NotImplementedException();
     }

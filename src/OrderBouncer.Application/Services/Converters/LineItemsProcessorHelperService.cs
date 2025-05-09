@@ -64,7 +64,7 @@ public class LineItemsProcessorHelperService : ILineItemsProcessorHelperService
                     throw new ArgumentNullException(NullErrorString(nameof(productDto.Figures)));
                 }
 
-                (FigureDto[] figures, ICollection<PetDto>? pets, ICollection<AccessoryDto>? accessories) coupleResult = await _coupleFigureConverter.ConvertWithMultipleExtras(lineItem, scopeId);
+                (FigureDto[] figures, List<PetDto>? pets, List<AccessoryDto>? accessories) coupleResult = await _coupleFigureConverter.ConvertWithMultipleExtras(lineItem, scopeId);
 
                 productDto.Figures.Add(coupleResult.figures[0]);
                 productDto.Figures.Add(coupleResult.figures[1]);

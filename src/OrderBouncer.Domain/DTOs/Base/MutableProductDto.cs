@@ -1,10 +1,10 @@
 namespace OrderBouncer.Domain.DTOs.Base;
 
 public record class MutableProductDto(
-    ICollection<FigureDto>? Figures,
-    ICollection<AccessoryDto>? Accessories,
-    ICollection<KeychainDto>? Keychains,
-    ICollection<PetDto>? Pets)
+    List<FigureDto>? Figures,
+    List<AccessoryDto>? Accessories,
+    List<KeychainDto>? Keychains,
+    List<PetDto>? Pets)
 {
 
 }

@@ -25,7 +25,7 @@ public class GoogleDriveRepository : IGoogleDriveRepository
     }
 
     //TODO This can be waaay further optimizible with buffers and real batching. It is a wrapper just for now
-    public async Task BatchUploadFile(ICollection<string> filePaths, string? folderId = null, string? note = null)
+    public async Task BatchUploadFile(List<string> filePaths, string? folderId = null, string? note = null)
     {
         foreach (string filePath in filePaths)
         {

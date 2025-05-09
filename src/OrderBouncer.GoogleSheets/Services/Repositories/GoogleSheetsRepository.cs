@@ -64,7 +64,7 @@ public class GoogleSheetsRepository : IGoogleSheetsRepository
         throw new NotImplementedException();
     }
 
-    public Task<ICollection<string[]>?> GetRows(string range)
+    public Task<List<string[]>?> GetRows(string range)
     {
         throw new NotImplementedException();
     }

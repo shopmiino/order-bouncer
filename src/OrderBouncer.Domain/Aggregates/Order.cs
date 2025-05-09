@@ -7,11 +7,11 @@ namespace OrderBouncer.Domain.Aggregates;
 
 public class Order : BaseAggregate
 {
-    public ICollection<ProductEntity> Products { get; private set; }
+    public List<ProductEntity> Products { get; private set; }
     protected Order()
     {
     }
-    public Order(ICollection<ProductEntity>? products = null){
+    public Order(List<ProductEntity>? products = null){
         Products = products ?? [];
     }
 

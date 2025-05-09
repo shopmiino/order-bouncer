@@ -17,17 +17,29 @@ public class AuthenticationMiddleware
 
     public async Task Invoke(HttpContext context, IConfiguration configuration){
         _logger.LogInformation("AuthenticationMiddleware is starting");
+
+        PathString path = context.Request.Path;
+
+        if(path.StartsWithSegments("/metrics", StringComparison.OrdinalIgnoreCase)){
+            _logger.LogInformation("User came for metrics, I let that sink in.");
+
+            await _next(context);
+            return;
+        }
+
         int requestPort = context.Connection.LocalPort;
         
         if(requestPort.ToString() != configuration["ASPNET_PORT"]){
             _logger.LogDebug("Request is not going to analyzed for Shopify Webhook Secret");
             await _next(context);
+            return;
         }
         
         string? shopifySecret = configuration["Shopify:WebhookSecret"];
         if(shopifySecret is null) throw new ArgumentNullException("ShopifySecret is null, can not retrieve from appsettings");
 
         string hmacHeader = context.Request.Headers[SHOPIFY_AUTH_HEADER_NAME].ToString();
+        
 
         if(string.IsNullOrEmpty(hmacHeader)){
             _logger.LogError("Request missing Shopify HMAC Header");
@@ -58,5 +70,6 @@ public class AuthenticationMiddleware
         _logger.LogInformation("Shopify webhook successfully authenticated");
 
         await _next(context);
+        return;
     }
 }

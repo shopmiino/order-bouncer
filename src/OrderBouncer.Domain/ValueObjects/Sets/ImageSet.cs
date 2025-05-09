@@ -6,7 +6,7 @@ namespace OrderBouncer.Domain.ValueObjects.Sets;
 
 public class ImageSet
 {
-    public ICollection<ImageEntity>? Images { get; private set; } = null;
+    public List<ImageEntity>? Images { get; private set; } = null;
     public bool Required = false;
 
     public ImageSet(bool required = false)

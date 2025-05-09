@@ -7,7 +7,7 @@ namespace OrderBouncer.Domain.ValueObjects.Sets;
 
 public class FigureSet
 {
-    public ICollection<FigureEntity>? Figures {get; private set;}
+    public List<FigureEntity>? Figures {get; private set;}
     private ProductTypeEnum _parentProductType;
     public FigureSet(ProductTypeEnum parentProductType){
         _parentProductType = parentProductType;
